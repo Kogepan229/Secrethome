@@ -9,9 +9,9 @@ const Home: NextPage = () => {
 
   const handleSubmit = (event: any) => {
     event.preventDefault()
-    axios.post("/api/secretkey", {key: key}).then(res => {
+    axios.post("/api/secret/secretkey", {key: key}).then(res => {
       console.log(res.data)
-      router.push(res.data.url, "/")
+      router.push(res.data.url)
     })
   }
 

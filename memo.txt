@@ -1,0 +1,18 @@
+・park_contents
+id              varchar(64)
+title           varchar(128)
+description     varchar(4096)
+created_at
+updated_at
+
+・park_tags
+id              varchar(64)
+name            varchar(32)
+
+・park_tags_of_contents
+content_id      varchar(64)
+tag_id          varchar(64)
+
+
+SecretParkLayoutをDynamicComponent化
+document.referrerによって直リンクをブロック
