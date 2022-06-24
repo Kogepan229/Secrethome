@@ -20,7 +20,6 @@ const EditContentForm = (props: Props) => {
 
   const videoRef = useRef<HTMLVideoElement>(null)
   const [isEnableSaveImage, setIsEnableSaveImage] = useState(false)
-  //const [movieBlob, setMovieBlob] = useState("")
 
   const [videoSrc, setVideoSrc] = useState(props.isUpdate ? `${process.env.NEXT_PUBLIC_FILESERVER_URL}/contents/${props.id}/${props.id}.mp4` : "")
   const [imgSrc, setImgSrc] = useState(props.isUpdate ? `${process.env.NEXT_PUBLIC_FILESERVER_URL}/contents/${props.id}/${props.id}.webp` : "")
@@ -38,7 +37,6 @@ const EditContentForm = (props: Props) => {
 
   useEffect(() => {
     if (movie) {
-      //setMovieBlob(URL.createObjectURL(movie))
       setVideoSrc(URL.createObjectURL(movie))
       setUpdatedMovie(true)
     }
@@ -95,7 +93,7 @@ const EditContentForm = (props: Props) => {
     if (props.isUpdate != true || updatedImage) {
       file.append("image", imageBlob)
     }
-    //console.log(movie)
+
     axios.post(props.isUpdate ? "/api/secret/park/update_content" : "/api/secret/park/add_content", file, {headers: {'content-type': 'multipart/form-data',}, onUploadProgress}).then(res => {
       console.log(res.data.result)
       if (res.data.result == "success") {

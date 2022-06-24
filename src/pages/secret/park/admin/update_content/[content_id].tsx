@@ -20,63 +20,17 @@ const UpdateContent: NextPage = (props: Props) => {
     return <p>No content</p>;
   }
 
-  const [title, setTitle] = useState(props.title ?? "")
-  const [description, setDescription] = useState(props.description ?? "")
-  const [movie, setMovie] = useState<File | null>(null)
-  const [isEnableSubmit, setIsEnableSubmit] = useState<boolean>(false)
-
-  useEffect(() => {
-    if (title != "" && description != "") {
-      setIsEnableSubmit(true)
-    } else {
-      setIsEnableSubmit(false)
-    }
-  }, [title, description])
-
-  const handleChangeTitle = (event: any) => {
-    setTitle(event.target.value)
-  }
-
-  const handleChangeDescription = (event: any) => {
-    setDescription(event.target.value)
-  }
-
-  const handleChangeFile = (event: React.ChangeEvent<HTMLInputElement>) => {
-    if (event.target.files != null) {
-      setMovie(event.target.files[0])
-    }
-  }
-
-  const handleSubmit = (event: any) => {
-    event.preventDefault()
-
-    const file = new FormData();
-    file.append("id", props.id ?? "")
-    file.append("title", title)
-    file.append("description", description)
-    if (movie) {
-      file.append("movie", movie)
-    }
-    //console.log(movie)
-    axios.post("/api/secret/park/update_content", file, {headers: {'content-type': 'multipart/form-data',}, onUploadProgress}).then(res => {
-      Router.push("/secret/park/contents/" + props.id)
-    }).catch(err => [
-      console.log("err", err)
-    ])
-  }
-
-  const onUploadProgress = (progressEvent: any) => {
-    console.log(progressEvent)
-  }
-
   const onClickDelete = () => {
     let result = window.confirm("削除しますか")
     if (result) {
       axios.delete("/api/secret/park/delete_content", {data: {id: props.id}}).then(res => {
-        Router.push("/secret/park/contents/")
+        if (res.data.result == "success") {
+          Router.push("/secret/park/contents/")
+        } else {
+          console.error("res:", res.data.result)
+        }
       })
     }
-    console.log(result)
   }
 
   return (
@@ -91,7 +45,6 @@ const UpdateContent: NextPage = (props: Props) => {
 
 export const getServerSideProps: GetServerSideProps = async (context: GetServerSidePropsContext) => {
   //console.log(context.query.content_id)
-  //await DB.query("insert into park_contents values ('test1', 'titile dayo', 'description dayo', '2022-11-1 11:11:11', '2022-11-3 13:13:13')")
   let result = await DB.query<any[]>(`select title, description from park_contents where id='${context.query.content_id}'`);
   if (result.length == 0) {
     return { props: {} };

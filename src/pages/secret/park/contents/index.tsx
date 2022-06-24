@@ -32,12 +32,10 @@ export default Contents
 
 export const getServerSideProps: GetServerSideProps = async (context: GetServerSidePropsContext) => {
   //console.log(context.query.content_id)
-  //await DB.query("insert into park_contents values ('test1', 'titile dayo', 'description dayo', '2022-11-1 11:11:11', '2022-11-3 13:13:13')")
   let props: Props = {page_num: 0, contents: []};
   props.page_num = context.query.page ? Number(context.query.page) : 0;
-  //props.contents = [];
+
   let result = await DB.query<any[]>(`select count(*) from park_contents`);
-  // console.log(pageNum)
   //console.log("num", result[0]['count(*)'])
 
   let result2 = await DB.query<any[]>(`select id, title, description from park_contents limit ${props.page_num * 20}, 20`);

@@ -19,17 +19,17 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
       }).then(() => {
         fs.rename(`${process.env.FILE_DIRECTORY_PATH}/contents/${req.body.id}/${req.body.id}.mp4`, `${process.env.FILE_DIRECTORY_PATH}/deleted/${req.body.id}.mp4`, (err) => {
           if (err) {
-            console.error(err)
             throw err
           }
         })
       }).then(() => {
         fs.rm(`${process.env.FILE_DIRECTORY_PATH}/contents/${req.body.id}`, { recursive: true, force: true }, () => {
         });
+      }).then(() => {
+        res.status(200).json({ result: 'success' });
       }).catch(err => {
-        console.log(err)
-      }).finally(() => {
-        res.status(200).json({ result: 'seccess' });
+        console.error(err)
+        res.status(200).json({ result: 'server error' });
       })
   }
 };
