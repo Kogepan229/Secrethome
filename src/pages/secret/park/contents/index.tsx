@@ -8,12 +8,12 @@ import Link from 'next/link';
 
 type Props = {
   page_num: number,
-  contents: {id: string, title: string, description: string}[],
+  contents: {id: string, title: string, description: string, updated_at: string}[],
 }
 
 const Contents: NextPage<Props> = (props) => {
   const contents = props.contents.map(content => {
-    return (<ContentPost id={content.id} title={content.title} key={content.id}></ContentPost>)
+    return (<ContentPost id={content.id} title={content.title} key={content.id} updated_at={content.updated_at}></ContentPost>)
   })
 
   return (
@@ -38,10 +38,11 @@ export const getServerSideProps: GetServerSideProps = async (context: GetServerS
   let result = await DB.query<any[]>(`select count(*) from park_contents`);
   //console.log("num", result[0]['count(*)'])
 
-  let result2 = await DB.query<any[]>(`select id, title, description from park_contents limit ${props.page_num * 20}, 20`);
-  //console.log(result2)
-  for (let i=0;i<result2.length;i++) {
-    props.contents[i] = {id: result2[i].id, title: result2[i].title, description: result2[i].description}
+  let result2 = await DB.query<any[]>(`select id, title, description, updated_at from park_contents limit ${props.page_num * 20}, 20`);
+  const data = JSON.parse(JSON.stringify(result2));
+  //console.log(data)
+  for (let i=0;i<data.length;i++) {
+    props.contents[i] = {id: data[i].id, title: data[i].title, description: data[i].description, updated_at: data[i].updated_at}
   }
   //console.log(props)
 

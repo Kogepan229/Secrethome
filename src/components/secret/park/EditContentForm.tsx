@@ -144,7 +144,7 @@ const EditContentForm = (props: Props) => {
             <input type="file" accept=".mp4" className={css.input_file} onChange={handleChangeMovie}></input>
           </div>
           <div className={css.video_div}>
-            <video src={videoSrc} controls ref={videoRef} onPause={onStopVideo} onSeeked={onStopVideo} onPlay={onPlayingVideo} onSeeking={onPlayingVideo}></video>
+            <video src={videoSrc} controls ref={videoRef} onPause={onStopVideo} onSeeked={onStopVideo} onPlay={onPlayingVideo} onSeeking={onPlayingVideo} crossOrigin="anonymous"></video>
           </div>
           <div>
             <input type="file" accept="image/*" onChange={handleChangeImage}></input>
