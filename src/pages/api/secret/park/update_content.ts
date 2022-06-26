@@ -36,7 +36,7 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
         resolve()
       })
     }).then(() => {
-      if (id !== "" || id !== undefined || title !== undefined || description !== undefined) {
+      if (id == "" || id == undefined || title == undefined || description == undefined) {
         throw "invalid request"
       }
 
@@ -85,6 +85,7 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
     }).catch((err) => {
       console.log("err:", err)
       if (err === "invalid request") {
+        res.status(400).json({ result: 'invalid request' })
         return;
       }
 
