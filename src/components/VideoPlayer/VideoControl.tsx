@@ -170,7 +170,6 @@ const VideoControl = (props: Props) => {
 
   const onChangeVolume = (e: any) => {
     setVolume(e.target.value)
-    console.log(e.target.value)
     props.videoRef.current!.volume = e.target.value / 100
   }
 
