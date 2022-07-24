@@ -1,16 +1,6 @@
 import { ReactEventHandler, ReactNode, RefObject, useEffect, useRef, useState } from "react";
 import css from "./VideoControl.module.scss"
 
-const VideoControlButton = ({children, className, onClick}: {children: ReactNode, className?: string, onClick?: ReactEventHandler<HTMLButtonElement>}) => {
-  return(
-    <button className={`${css.video_control_button} ${className ?? ""}`} onClick={onClick}>
-      <div>
-        {children}
-      </div>
-    </button>
-  )
-}
-
 type Props = {
   videoRef: RefObject<HTMLVideoElement>;
   videoContainerRef: RefObject<HTMLDivElement>;
@@ -18,10 +8,13 @@ type Props = {
 
 const VideoControl = (props: Props) => {
   const controlContainerRef = useRef<HTMLDivElement>(null)
+  const controlVolumeSliderRef = useRef<HTMLInputElement>(null)
   const [videoWidth, setVideoWidth] = useState(0)
   const [videoHeight, setVideoHeight] = useState(0)
   const [isPlaying, setIsPlaying] = useState(false)
   const [videoCurrentTime, setVideoCurrentTime] = useState(0)
+  const [volume, setVolume] = useState(100)
+  const [isMute, setIsMute] = useState(false)
   const [displayTime, setDisplayTime] = useState("0:00 / 0:00")
   const [isFullScreen, setIsfullScreen] = useState(false)
   const [isCursorOutVideo, setIsCursorOutVideo] = useState(false)
@@ -169,6 +162,25 @@ const VideoControl = (props: Props) => {
     onVideoTimeUpdate()
   }
 
+  const onClickMute = () => {
+    if (!volume) return;
+    if (isMute) {
+      setIsMute(false)
+      controlVolumeSliderRef.current!.value = volume.toString()
+      props.videoRef.current!.volume = volume / 100
+    } else{
+      setIsMute(true)
+      controlVolumeSliderRef.current!.value = "0"
+      props.videoRef.current!.volume = 0
+    }
+  }
+
+  const onChangeVolume = (e: any) => {
+    setVolume(e.target.value)
+    console.log(e.target.value)
+    props.videoRef.current!.volume = e.target.value / 100
+  }
+
   const onClickFull = () => {
     if (isFullScreen) {
       document.exitFullscreen().then(() => {
@@ -191,11 +203,29 @@ const VideoControl = (props: Props) => {
     //console.log("c: false")
   }
 
+  const VideoControlButton = ({children, className, onClick}: {children: ReactNode, className?: string, onClick?: ReactEventHandler<HTMLButtonElement>}) => {
+    return(
+      <button className={`${css.video_control_button} ${className ?? ""}`} onClick={onClick}>
+        <div>
+          {children}
+        </div>
+      </button>
+    )
+  }
+
   const ControlPlayStop = () => {
     if (isPlaying) {
       return <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"><path d="M14,19H18V5H14M6,19H10V5H6V19Z" /></svg>
     } else {
       return <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg>
+    }
+  }
+
+  const ControlMute = () => {
+    if (volume != 0 && !isMute) {
+      return <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"><path d="M3 9v6h4l5 5V4L7 9H3zm13.5 3c0-1.77-1.02-3.29-2.5-4.03v8.05c1.48-.73 2.5-2.25 2.5-4.02zM14 3.23v2.06c2.89.86 5 3.54 5 6.71s-2.11 5.85-5 6.71v2.06c4.01-.91 7-4.49 7-8.77s-2.99-7.86-7-8.77z"/></svg>
+    } else {
+      return <svg xmlns="http://www.w3.org/2000/svg" version="1.1" width="24" height="24" viewBox="0 0 24 24"><path d="M3,9H7L12,4V20L7,15H3V9M16.59,12L14,9.41L15.41,8L18,10.59L20.59,8L22,9.41L19.41,12L22,14.59L20.59,16L18,13.41L15.41,16L14,14.59L16.59,12Z" /></svg>
     }
   }
 
@@ -230,6 +260,16 @@ const VideoControl = (props: Props) => {
             <VideoControlButton className={css.video_control_skip} onClick={onClickForward}>
               <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"><path d="M11.5 3C14.15 3 16.55 4 18.4 5.6L21 3V10H14L16.62 7.38C15.23 6.22 13.46 5.5 11.5 5.5C7.96 5.5 4.95 7.81 3.9 11L1.53 10.22C2.92 6.03 6.85 3 11.5 3M9 12H15V14H11V16H13C14.11 16 15 16.9 15 18V20C15 21.11 14.11 22 13 22H9V20H13V18H9V12Z" /></svg>
             </VideoControlButton>
+            <div className={css.video_volume_controller}>
+              <VideoControlButton className={css.video_control_mute} onClick={onClickMute}>
+                <ControlMute></ControlMute>
+              </VideoControlButton>
+              <div className={css.video_control_volume}>
+                <input className={css.video_control_volume_slider} ref={controlVolumeSliderRef} onChange={onChangeVolume} type="range" max="100"></input>
+                <div className={css.video_control_volume_base}></div>
+                <div className={css.video_control_volume_now} style={{width: `${isMute ? 0 : volume}%`}}></div>
+              </div>
+            </div>
             <div className={css.video_time_display}>
               <span>{displayTime}</span>
             </div>
