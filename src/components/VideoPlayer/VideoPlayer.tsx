@@ -12,7 +12,6 @@ const VideoPlayer = (props: Props) => {
   const videoContainerRef = useRef<HTMLDivElement>(null)
   const videoRef = useRef<HTMLVideoElement>(null)
 
-
   useEffect(() => {
     //console.log(isSupportBrowser)
     var hls = new Hls()
@@ -27,9 +26,6 @@ const VideoPlayer = (props: Props) => {
       hls.stopLoad()
     }
   }, [])
-
-
-
 
   return (
     <div className={css.video_container}  ref={videoContainerRef}>

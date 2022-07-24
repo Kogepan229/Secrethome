@@ -27,7 +27,6 @@ const VideoControl = (props: Props) => {
       //要素のサイズ確認
       setVideoWidth(resizeable.getBoundingClientRect().width)
       setVideoHeight(resizeable.getBoundingClientRect().height)
-      //console.log('size(w,h): ', videoWidth, videoHeight)
     })
     observer.observe(resizeable)
   }
@@ -37,13 +36,15 @@ const VideoControl = (props: Props) => {
 
     props.videoRef.current?.addEventListener("timeupdate", onVideoTimeUpdate)
     props.videoRef.current?.addEventListener("loadedmetadata", onVideoTimeUpdate)
+    props.videoRef.current?.addEventListener("loadedmetadata", () => {
+      controlVolumeSliderRef.current!.value = (props.videoRef.current!.volume * 100).toString()
+    })
   }, [])
 
   useEffect(() => {
     let moveTimer: number
 
     const onVideoMouseMove = () => {
-      //console.log("m")
       window.clearTimeout(moveTimer);
       setIsCursorOutVideo(false)
       moveTimer = window.setTimeout(() => {
@@ -52,7 +53,6 @@ const VideoControl = (props: Props) => {
     }
 
     const onVideoMouseOut = () => {
-      //console.log("o")
       window.clearTimeout(moveTimer);
       setIsCursorOutVideo(true)
     }
@@ -78,7 +78,6 @@ const VideoControl = (props: Props) => {
     if (isPlaying) {
       props.videoRef.current?.pause()
       setIsPlaying(false)
-      // setIsHideControls(false)
     } else {
       props.videoRef.current?.play()
       setIsPlaying(true)
@@ -86,17 +85,13 @@ const VideoControl = (props: Props) => {
   }
 
   const onChangeSlider = (e: any) => {
-    //videoRef.current?.currentTime = e.value
     if (!props.videoRef.current) return;
     props.videoRef.current.currentTime = e.target.value
     setVideoCurrentTime(e.target.value)
-    //console.log(e.target.value)
-    //console.log("change", e.target.value)
   }
 
   const onMouseDownSeekbar = () => {
     props.videoRef.current?.pause()
-    //setIsPlaying(false)
   }
 
   const onMouseUpSeekbar = () => {
@@ -105,7 +100,6 @@ const VideoControl = (props: Props) => {
         console.log("e:", error)
       })
     }
-    //setIsPlaying(true)
   }
 
   const getVideoTimeStr = () => {
@@ -139,7 +133,6 @@ const VideoControl = (props: Props) => {
   const onVideoTimeUpdate = () => {
     setDisplayTime(getVideoTimeStr())
     setVideoCurrentTime(props.videoRef.current?.currentTime!)
-    //console.log(props.videoRef.current?.currentTime! / getVideoMaxTime() * 100)
   }
 
   const onClickBack = () => {
@@ -195,12 +188,10 @@ const VideoControl = (props: Props) => {
 
   const onControlsMousemove = () => {
     setIsCursorOnControls(true);
-    //console.log("c: true")
   }
 
   const onControlsMouseleave = () => {
     setIsCursorOnControls(false);
-    //console.log("c: false")
   }
 
   const VideoControlButton = ({children, className, onClick}: {children: ReactNode, className?: string, onClick?: ReactEventHandler<HTMLButtonElement>}) => {
