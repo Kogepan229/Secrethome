@@ -1,0 +1,162 @@
+$seekbar_height: 16px;
+$controls_height: 48px;
+
+.control_container{
+  position: absolute;
+  top: 0;
+  left: 0;
+}
+
+.video_main_aria{
+  height: calc( 100% - #{$seekbar_height} - #{$controls_height} );
+}
+
+.video_bottom_control_aria{
+  height: calc( #{$seekbar_height} + #{$controls_height} );
+}
+
+.video_seekbar{
+  pointer-events: all;
+  position: absolute;
+  bottom: 48px;
+  margin-left: 12px;
+  margin-right: 12px;
+  width: calc(100% - 24px);
+  height: 16px;
+
+  div{
+    user-select: none;
+    pointer-events: none;
+    position: absolute;
+    bottom: 0;
+    height: 3px;
+  }
+
+  &:hover{
+    div{
+      display: block;
+      height: 5px;
+      bottom: -1px;
+    }
+  }
+}
+
+.video_seekbar_slider{
+  -webkit-appearance: none;
+  appearance: none;
+  cursor: pointer;
+  width: 100%;
+  height: 16px;
+
+  background-color: transparent;
+  outline: none;
+  border: none;
+
+  &::-webkit-slider-thumb{
+    -webkit-appearance: none;
+    appearance: none;
+    width: 12px;
+    height: 12px;
+    background-color: transparent;
+  }
+}
+
+.video_seekbar_base{
+  width: 100%;
+  background-color: rgba($color: #ffffff, $alpha: 0.2);
+}
+
+.video_seekbar_played{
+  background-color: red;
+}
+
+.video_seekbar_thumb_container{
+  display: none;
+  bottom: 0 !important;
+}
+
+.video_seekbar_thumb{
+  right: -6px;
+  width: 13px !important;
+  height: 13px !important;
+  bottom: -5px !important;
+  background-color: red;
+  border-radius: 50%;
+}
+
+.video_controls{
+  display: flex;
+  position: absolute;
+  bottom: 0px;
+  width: 100%;
+  height: 48px;
+}
+
+.video_left_controls{
+  display: flex;
+  float: left;
+  flex: 1;
+}
+
+.video_right_controls{
+  display: flex;
+  float: right;
+}
+
+.video_control_button{
+  position: relative;
+  width: 48px;
+  height: 48px;
+  padding: 0;
+  border: none;
+  background-color: transparent;
+  pointer-events: all;
+  cursor: pointer;
+
+  > div{
+    position: absolute;
+    left: 6px;
+    top: 6px;
+    width: 36px;
+    height: 36px;
+    padding: 0;
+
+    svg{
+      fill: white;
+      width: 36px;
+      height: 36px;
+    }
+  }
+}
+
+.video_control_skip{
+  > div{
+    left: 10px;
+    top: 10px;
+    width: 28px;
+    height: 28px;
+    svg{
+      width: 28px;
+      height: 28px;
+    }
+  }
+}
+
+.video_time_display{
+  user-select: none ;
+  height: 48px;
+  padding: 0 5px;
+
+  font-family: 'Roboto', sans-serif;
+  color: white;
+  line-height: 48px;
+  font-size: 13px;
+}
+
+.hide{
+  display: none;
+}
+
+.cursor_hide{
+  cursor: none;
+}

@@ -1,0 +1,248 @@
+import { ReactEventHandler, ReactNode, RefObject, useEffect, useRef, useState } from "react";
+import css from "./VideoControl.module.scss"
+
+const VideoControlButton = ({children, className, onClick}: {children: ReactNode, className?: string, onClick?: ReactEventHandler<HTMLButtonElement>}) => {
+  return(
+    <button className={`${css.video_control_button} ${className ?? ""}`} onClick={onClick}>
+      <div>
+        {children}
+      </div>
+    </button>
+  )
+}
+
+type Props = {
+  videoRef: RefObject<HTMLVideoElement>;
+  videoContainerRef: RefObject<HTMLDivElement>;
+}
+
+const VideoControl = (props: Props) => {
+  const controlContainerRef = useRef<HTMLDivElement>(null)
+  const [videoWidth, setVideoWidth] = useState(0)
+  const [videoHeight, setVideoHeight] = useState(0)
+  const [isPlaying, setIsPlaying] = useState(false)
+  const [videoCurrentTime, setVideoCurrentTime] = useState(0)
+  const [displayTime, setDisplayTime] = useState("0:00 / 0:00")
+  const [isFullScreen, setIsfullScreen] = useState(false)
+  const [isCursorOutVideo, setIsCursorOutVideo] = useState(false)
+  const [isCursorOnControls, setIsCursorOnControls] = useState(false)
+
+  const onVideoResize = () => {
+    //要素のリサイズイベント取得
+    const resizeable = props.videoRef.current!
+    const observer = new ResizeObserver(() => {
+      //要素のサイズ確認
+      setVideoWidth(resizeable.getBoundingClientRect().width)
+      setVideoHeight(resizeable.getBoundingClientRect().height)
+      //console.log('size(w,h): ', videoWidth, videoHeight)
+    })
+    observer.observe(resizeable)
+  }
+
+  useEffect(() => {
+    onVideoResize()
+
+    props.videoRef.current?.addEventListener("timeupdate", onVideoTimeUpdate)
+    props.videoRef.current?.addEventListener("loadedmetadata", onVideoTimeUpdate)
+  }, [])
+
+  useEffect(() => {
+    let moveTimer: number
+
+    const onVideoMouseMove = () => {
+      //console.log("m")
+      window.clearTimeout(moveTimer);
+      setIsCursorOutVideo(false)
+      moveTimer = window.setTimeout(() => {
+        setIsCursorOutVideo(true)
+      }, 2000)
+    }
+
+    const onVideoMouseOut = () => {
+      //console.log("o")
+      window.clearTimeout(moveTimer);
+      setIsCursorOutVideo(true)
+    }
+
+    controlContainerRef.current?.addEventListener("mousemove", onVideoMouseMove)
+    controlContainerRef.current?.addEventListener("mouseleave", onVideoMouseOut)
+
+    return () => {
+      controlContainerRef.current?.removeEventListener("mousemove", onVideoMouseMove)
+      controlContainerRef.current?.removeEventListener("mouseleave", onVideoMouseOut)
+    };
+  }, [])
+
+  const getVideoMaxTime = () => {
+    if (!isNaN(props.videoRef.current?.duration!) && props.videoRef.current?.duration) {
+      return props.videoRef.current?.duration
+    } else {
+      return 0
+    }
+  }
+
+  const switchPlayStop = () => {
+    if (isPlaying) {
+      props.videoRef.current?.pause()
+      setIsPlaying(false)
+      // setIsHideControls(false)
+    } else {
+      props.videoRef.current?.play()
+      setIsPlaying(true)
+    }
+  }
+
+  const onChangeSlider = (e: any) => {
+    //videoRef.current?.currentTime = e.value
+    if (!props.videoRef.current) return;
+    props.videoRef.current.currentTime = e.target.value
+    setVideoCurrentTime(e.target.value)
+    //console.log(e.target.value)
+    //console.log("change", e.target.value)
+  }
+
+  const onMouseDownSeekbar = () => {
+    props.videoRef.current?.pause()
+    //setIsPlaying(false)
+  }
+
+  const onMouseUpSeekbar = () => {
+    if (isPlaying) {
+      props.videoRef.current?.play().catch(error => {
+        console.log("e:", error)
+      })
+    }
+    //setIsPlaying(true)
+  }
+
+  const getVideoTimeStr = () => {
+    if (isNaN(props.videoRef.current?.currentTime!) || isNaN(props.videoRef.current?.duration!)) {
+      return "00:00 / 00:00"
+    }
+    let nowS = Math.round(props.videoRef.current?.currentTime!)
+    let nowM = Math.floor(nowS / 60)
+    nowS %= 60
+    let nowH = Math.floor(nowM / 60)
+    nowM %= 60
+
+    let maxS = Math.round(props.videoRef.current?.duration!)
+    let maxM = Math.floor(maxS / 60)
+    maxS %= 60
+    let maxH = Math.floor(maxM / 60)
+    maxM %= 60
+
+    let str = "";
+    str += nowH ? `${nowH}:` : ""
+    str += `${("00" + nowM).slice(-2)}:`
+    str += ("00" + nowS).slice(-2)
+    str += " / "
+    str += maxH ? `${maxH}:` : ""
+    str += `${("00" + maxM).slice(-2)}:`
+    str += ("00" + maxS).slice(-2)
+
+    return str
+  }
+
+  const onVideoTimeUpdate = () => {
+    setDisplayTime(getVideoTimeStr())
+    setVideoCurrentTime(props.videoRef.current?.currentTime!)
+    //console.log(props.videoRef.current?.currentTime! / getVideoMaxTime() * 100)
+  }
+
+  const onClickBack = () => {
+    if (!props.videoRef.current) return;
+    if (props.videoRef.current!.currentTime - 5 < 0) {
+      props.videoRef.current!.currentTime = 0
+    } else {
+      props.videoRef.current!.currentTime -= 5
+    }
+    onVideoTimeUpdate()
+  }
+
+  const onClickForward = () => {
+    if (!props.videoRef.current) return;
+    if (props.videoRef.current!.currentTime + 5 > props.videoRef.current.duration) {
+      props.videoRef.current!.currentTime = props.videoRef.current.duration
+    } else {
+      props.videoRef.current!.currentTime += 5
+    }
+    onVideoTimeUpdate()
+  }
+
+  const onClickFull = () => {
+    if (isFullScreen) {
+      document.exitFullscreen().then(() => {
+        setIsfullScreen(false)
+      })
+    } else {
+      props.videoContainerRef.current?.requestFullscreen().then(() => {
+        setIsfullScreen(true)
+      })
+    }
+  }
+
+  const onControlsMousemove = () => {
+    setIsCursorOnControls(true);
+    //console.log("c: true")
+  }
+
+  const onControlsMouseleave = () => {
+    setIsCursorOnControls(false);
+    //console.log("c: false")
+  }
+
+  const ControlPlayStop = () => {
+    if (isPlaying) {
+      return <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"><path d="M14,19H18V5H14M6,19H10V5H6V19Z" /></svg>
+    } else {
+      return <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg>
+    }
+  }
+
+  const ControlFullScrenn = () => {
+    if (isFullScreen) {
+      return <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"><path d="M5 16h3v3h2v-5H5v2zm3-8H5v2h5V5H8v3zm6 11h2v-3h3v-2h-5v5zm2-11V5h-2v5h5V8h-3z"/></svg>
+    } else {
+      return <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"><path d="M7 14H5v5h5v-2H7v-3zm-2-4h2V7h3V5H5v5zm12 7h-3v2h5v-5h-2v3zM14 5v2h3v3h2V5h-5z"/></svg>
+    }
+  }
+
+  return(
+    <div className={`${css.control_container} ${isCursorOutVideo && !isCursorOnControls && isPlaying ? css.cursor_hide: ""}`} ref={controlContainerRef} style={{width: `${videoWidth}px`, height: `${videoHeight}px`}}>
+      <div className={css.video_main_aria} onClick={switchPlayStop}></div>
+      <div className={css.video_bottom_control_aria} onMouseMove={onControlsMousemove} onMouseLeave={onControlsMouseleave}>
+        <div className={`${css.video_seekbar} ${isCursorOutVideo && !isCursorOnControls && isPlaying ? css.hide: ""}`}>
+          <input className={css.video_seekbar_slider} type="range" max={getVideoMaxTime()} onChange={onChangeSlider} onMouseDown={onMouseDownSeekbar} onMouseUp={onMouseUpSeekbar}></input>
+          <div className={css.video_seekbar_base}></div>
+          <div className={css.video_seekbar_played} style={{width: `${videoCurrentTime / getVideoMaxTime() * 100}%`}}></div>
+          <div className={css.video_seekbar_thumb_container} style={{width: `${videoCurrentTime / getVideoMaxTime() * 100}%`}}>
+            <div className={css.video_seekbar_thumb}></div>
+          </div>
+        </div>
+        <div className={`${css.video_controls} ${isCursorOutVideo && !isCursorOnControls && isPlaying ? css.hide: ""}`}>
+          <div className={css.video_left_controls}>
+            <VideoControlButton onClick={switchPlayStop}>
+              {ControlPlayStop()}
+            </VideoControlButton>
+            <VideoControlButton className={css.video_control_skip} onClick={onClickBack}>
+              <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"><path d="M12.5 3C17.15 3 21.08 6.03 22.47 10.22L20.1 11C19.05 7.81 16.04 5.5 12.5 5.5C10.54 5.5 8.77 6.22 7.38 7.38L10 10H3V3L5.6 5.6C7.45 4 9.85 3 12.5 3M9 12H15V14H11V16H13C14.11 16 15 16.9 15 18V20C15 21.11 14.11 22 13 22H9V20H13V18H9V12Z" /></svg>
+            </VideoControlButton>
+            <VideoControlButton className={css.video_control_skip} onClick={onClickForward}>
+              <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"><path d="M11.5 3C14.15 3 16.55 4 18.4 5.6L21 3V10H14L16.62 7.38C15.23 6.22 13.46 5.5 11.5 5.5C7.96 5.5 4.95 7.81 3.9 11L1.53 10.22C2.92 6.03 6.85 3 11.5 3M9 12H15V14H11V16H13C14.11 16 15 16.9 15 18V20C15 21.11 14.11 22 13 22H9V20H13V18H9V12Z" /></svg>
+            </VideoControlButton>
+            <div className={css.video_time_display}>
+              <span>{displayTime}</span>
+            </div>
+          </div>
+          <div className={css.video_right_controls}>
+            <VideoControlButton onClick={onClickFull}>
+              {ControlFullScrenn()}
+            </VideoControlButton>
+          </div>
+        </div>
+      </div>
+    </div>
+  )
+}
+
+export default VideoControl

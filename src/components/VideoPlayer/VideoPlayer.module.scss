@@ -1,0 +1,23 @@
+.video_container{
+  position: relative;
+  width: 100%;
+  height: max-content;
+
+  &:not(:root):fullscreen{
+    > div{
+      position: absolute;
+      left: 0;
+      top: 50%;
+      transform: translate(0, -50%);
+    }
+  }
+}
+
+.video_wrapper{
+}
+
+.video{
+  display: block;
+  max-width: 100%;
+  width: 100%;
+}

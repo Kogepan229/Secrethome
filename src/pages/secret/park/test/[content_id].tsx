@@ -6,10 +6,10 @@ import { DB } from 'util/sql';
 import SecretParkLayout from 'components/layout/secretParkLayout';
 import css from "styles/pages/secret/park/contents/content.module.scss"
 import { useEffect } from 'react';
+import VideoPlayer from 'components/VideoPlayer/VideoPlayer';
 
 //const HLSVideo = dynamic(() => import("components/secret/park/HLSPlayer"), {ssr: false})
 import HLSVideo from 'components/secret/park/HLSPlayer';
-import VideoPlayer from 'components/VideoPlayer/VideoPlayer';
 import Link from 'next/link';
 
 const Content: NextPage = (props: any) => {
@@ -28,7 +28,7 @@ const Content: NextPage = (props: any) => {
       <div className={css.container_wrapper}>
         <div className={css.container}>
           <div className={css.video_container}>
-            <VideoPlayer src={process.env.NEXT_PUBLIC_FILESERVER_URL + "/contents/" +  props.id + "/" + props.id + ".m3u8"}/>
+            <VideoPlayer src={process.env.NEXT_PUBLIC_FILESERVER_URL + "/contents/" +  props.id + "/" + props.id + ".m3u8"}></VideoPlayer>
           </div>
           <p className={css.title}>{props.title}</p>
           <p className={css.description}>{props.description}</p>
