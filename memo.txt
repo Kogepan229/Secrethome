@@ -7,6 +7,7 @@ updated_at
 
 ・park_tags
 id              varchar(64)
+index           int unsigned
 name            varchar(32)
 
 ・park_tags_of_contents
