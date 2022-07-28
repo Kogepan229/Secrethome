@@ -22,6 +22,7 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
 
     let title: string;
     let description: string;
+    let tagIDs: string[];
     let filePath: string;
     let imageBase64: string;
     let id: string;
@@ -29,6 +30,8 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
       form.parse(req, (err, fields, files) => {
         title = fields.title as string;
         description = fields.description as string;
+        tagIDs = JSON.parse(fields.tags as string)
+        //console.log(tagIDs)
         imageBase64 = fields.image as string;
 
         //console.log(fields);
@@ -61,6 +64,12 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
       let created_at = GetNowTime();
       //console.log("id: " + id)
       DB.query(`insert into park_contents values ('${id}', '${title}', '${description}', '${created_at}', '${created_at}')`);
+
+      tagIDs.forEach(value => {
+        DB.query(`insert into park_tags_of_contents values ('${id}', '${value}')`);
+      })
+
+
     }).then(() => {
       exec(`sh ${process.env.FILE_DIRECTORY_PATH}/contents/convert.sh ${process.env.FILE_DIRECTORY_PATH}/contents/${id}/${id}`, err => {
         if (err) {

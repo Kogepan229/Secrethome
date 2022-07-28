@@ -1,14 +1,18 @@
 import axios from "axios";
 import Router from "next/router";
 import { useEffect, useRef, useState } from "react";
+import { Tag } from "util/secret/park/tags"
 //import css from "styles/pages/secret/park/admin/add_content.module.scss"
 import css from "./EditContentForm.module.scss"
+import TagModal from "./TagModal";
 
 type Props = {
   isUpdate?: boolean;
   id?: string;
   title?: string;
   description?: string;
+  selectedTags?: Tag[];
+  tags: Tag[];
 }
 
 const EditContentForm = (props: Props) => {
@@ -25,6 +29,16 @@ const EditContentForm = (props: Props) => {
   const [imgSrc, setImgSrc] = useState(props.isUpdate ? `${process.env.NEXT_PUBLIC_FILESERVER_URL}/contents/${props.id}/${props.id}.webp` : "")
   const [updatedMovie, setUpdatedMovie] = useState(false)
   const [updatedImage, setUpdatedImage] = useState(false)
+
+  const [isOpenedTagModal, SetIsOpenedTagModal] = useState(false)
+  const [selectedTags, setSelectedTags] = useState<Tag[]>(props.selectedTags ?? [])
+
+  const addTag = (tag: Tag) => {
+    setSelectedTags([...selectedTags, tag].sort((a: Tag, b: Tag) => {return a.priority - b.priority}))
+    SetIsOpenedTagModal(false)
+  }
+
+
 
   useEffect(() => {
     if (title != "" && description != "") {
@@ -87,6 +101,7 @@ const EditContentForm = (props: Props) => {
     }
     file.append("title", title)
     file.append("description", description)
+    file.append("tags", JSON.stringify(selectedTags.map(value => value.id)))
     if (props.isUpdate != true || updatedMovie) {
       file.append("movie", movie!)
     }
@@ -129,34 +144,58 @@ const EditContentForm = (props: Props) => {
     setImageBlob(canvas.toDataURL("image/webp"))
   }
 
+  const TagItem = (tagProps: {id: string, name: string}) => {
+    const onClickTag = () => {
+      setSelectedTags(selectedTags.filter(value => value.id != tagProps.id))
+    }
+
+    return (
+      <div className={css.tag} onClick={onClickTag}>{tagProps.name}</div>
+    )
+  }
+
+  const TagItems = selectedTags.map(value => {
+    return <TagItem id={value.id} name={value.name} key={value.id}/>
+  })
+
   return (
-    <form className={css.form} onSubmit={handleSubmit}>
-          <div>
-            <p>タイトル</p>
-            <input spellCheck="false" autoComplete="off" type={"text"} name={"title"} value={title} className={css.input_title} onChange={handleChangeTitle}></input>
+    <>
+      <form className={css.form} onSubmit={handleSubmit}>
+        <div>
+          <p>タイトル</p>
+          <input spellCheck="false" autoComplete="off" type={"text"} name={"title"} value={title} className={css.input_title} onChange={handleChangeTitle}></input>
+        </div>
+        <div>
+          <p>説明</p>
+          <input spellCheck="false" autoComplete="off" type={"text"} name={"description"} value={description} className={css.input_description} onChange={handleChangeDescription}></input>
+        </div>
+        <div>
+          <p>タグ</p>
+          <button onClick={() => SetIsOpenedTagModal(true)}>タグを追加</button>
+          <div className={css.tags_container}>
+            {TagItems}
           </div>
-          <div>
-            <p>説明</p>
-            <input spellCheck="false" autoComplete="off" type={"text"} name={"description"} value={description} className={css.input_description} onChange={handleChangeDescription}></input>
-          </div>
-          <div>
-            <p>動画ファイル(mp4)</p>
-            <input type="file" accept=".mp4" className={css.input_file} onChange={handleChangeMovie}></input>
-          </div>
-          <div className={css.video_div}>
-            <video src={videoSrc} controls ref={videoRef} onPause={onStopVideo} onSeeked={onStopVideo} onPlay={onPlayingVideo} onSeeking={onPlayingVideo} crossOrigin="anonymous"></video>
-          </div>
-          <div>
-            <input type="file" accept="image/*" onChange={handleChangeImage}></input>
-            <button type="button" disabled={!isEnableSaveImage} onClick={saveImageFromVideo}>動画からセーブ</button>
-          </div>
-          <div className={css.image_div}>
-            <img src={imgSrc}></img>
-          </div>
-          <div>
-            <input type="submit" disabled={!isEnableSubmit}></input>
-          </div>
-        </form>
+        </div>
+        <div>
+          <p>動画ファイル(mp4)</p>
+          <input type="file" accept=".mp4" className={css.input_file} onChange={handleChangeMovie}></input>
+        </div>
+        <div className={css.video_div}>
+          <video src={videoSrc} controls ref={videoRef} onPause={onStopVideo} onSeeked={onStopVideo} onPlay={onPlayingVideo} onSeeking={onPlayingVideo} crossOrigin="anonymous"></video>
+        </div>
+        <div>
+          <input type="file" accept="image/*" onChange={handleChangeImage}></input>
+          <button type="button" disabled={!isEnableSaveImage} onClick={saveImageFromVideo}>動画からセーブ</button>
+        </div>
+        <div className={css.image_div}>
+          <img src={imgSrc}></img>
+        </div>
+        <div>
+          <input type="submit" disabled={!isEnableSubmit}></input>
+        </div>
+      </form>
+      <TagModal isShow={isOpenedTagModal} closeCallback={() => SetIsOpenedTagModal(false)} selectTagCallback={addTag} tagList={props.tags} excludeTagIDList={selectedTags.map(value => value.id)}/>
+    </>
   )
 }
 

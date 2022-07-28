@@ -60,6 +60,7 @@ const TagModal = (props: Props) => {
           if (res.data.result === "success") {
             console.log("success")
             props.tagList.unshift({id: res.data.id, priority: res.data.priority, name: createTagValue.trim()})
+            setCreatetagValue("")
             forceUpdate()
             //TagItems.fi
           } else {
@@ -68,6 +69,10 @@ const TagModal = (props: Props) => {
         })
       }
     }
+  }
+
+  if (!props.isShow) {
+    return null
   }
 
   return (

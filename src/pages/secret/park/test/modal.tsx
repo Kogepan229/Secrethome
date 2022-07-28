@@ -19,16 +19,20 @@ const TestModal = (props: Props) => {
     setExcludeTagIDList([...excludeTagIDList, tag.id])
   }
 
-  const Modal = () => {
+  const OpenModalButton = () => {
     //console.log(props.tags)
-    if (isOpenedModal) {
-      return <TagModal isShow={isOpenedModal} closeCallback={() => setIsOpenedModal(false)} selectTagCallback={selectTagCallback} tagList={props.tags} excludeTagIDList={excludeTagIDList}/>
-    } else {
+    if (!isOpenedModal) {
+      //return <TagModal isShow={isOpenedModal} closeCallback={() => setIsOpenedModal(false)} selectTagCallback={selectTagCallback} tagList={props.tags} excludeTagIDList={excludeTagIDList}/>
       return <button onClick={() => setIsOpenedModal(true)}>Open Modal</button>
+    } else {
+      return null
     }
   }
   return (
-    <Modal/>
+    <>
+      <TagModal isShow={isOpenedModal} closeCallback={() => setIsOpenedModal(false)} selectTagCallback={selectTagCallback} tagList={props.tags} excludeTagIDList={excludeTagIDList}/>
+      <OpenModalButton/>
+    </>
   )
 }
 

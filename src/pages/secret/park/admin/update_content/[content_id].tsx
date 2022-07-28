@@ -8,14 +8,17 @@ import css from "styles/pages/secret/park/admin/add_content.module.scss"
 import css2 from "styles/pages/secret/park/admin/update_content.module.scss"
 import Router from 'next/router';
 import EditContentForm from 'components/secret/park/EditContentForm';
+import { getContentTags, Tag } from 'util/secret/park/tags';
 
 type Props = {
   id?: string;
   title?: string;
   description?: string;
+  selectedTags: Tag[];
+  tags: Tag[];
 }
 
-const UpdateContent: NextPage = (props: Props) => {
+const UpdateContent: NextPage<Props> = (props: Props) => {
   if (props.id == undefined) {
     return <p>No content</p>;
   }
@@ -36,21 +39,22 @@ const UpdateContent: NextPage = (props: Props) => {
   return (
     <SecretParkLayout>
       <div>
-        <EditContentForm isUpdate={true} id={props.id} title={props.title} description={props.description}></EditContentForm>
+        <EditContentForm isUpdate={true} id={props.id} title={props.title} description={props.description} tags={props.tags} selectedTags={props.selectedTags}></EditContentForm>
         <button className={css2.delete_button} onClick={onClickDelete}>削除</button>
       </div>
     </SecretParkLayout>
   )
 };
 
-export const getServerSideProps: GetServerSideProps = async (context: GetServerSidePropsContext) => {
+export const getServerSideProps: GetServerSideProps<Props> = async (context: GetServerSidePropsContext) => {
   //console.log(context.query.content_id)
   let result = await DB.query<any[]>(`select title, description from park_contents where id='${context.query.content_id}'`);
+  let resultTag = await DB.query<Tag[]>(`select id, priority, name from park_tags`);
   if (result.length == 0) {
-    return { props: {} };
+    return { props: {tags: [], selectedTags: []} };
   } else {
     return {
-      props: { id: context.query.content_id, title: result[0].title, description: result[0].description },
+      props: { id: context.query.content_id as (string | undefined), title: result[0].title, description: result[0].description, tags: JSON.parse(JSON.stringify(resultTag)), selectedTags: await getContentTags(context.query.content_id as string)},
     };
   }
 };

@@ -14,7 +14,10 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
       console.log("delete id:", req.body.id)
       // TODO id check
       await new Promise<void>((resolve) => {
+        // delete content
         DB.query(`delete from park_contents where id='${req.body.id}'`)
+        // delete content tags
+        DB.query(`delete from park_tags_of_contents where content_id='${req.body.id}'`)
         resolve()
       }).then(() => {
         fs.rename(`${process.env.FILE_DIRECTORY_PATH}/contents/${req.body.id}/${req.body.id}.mp4`, `${process.env.FILE_DIRECTORY_PATH}/deleted/${req.body.id}.mp4`, (err) => {

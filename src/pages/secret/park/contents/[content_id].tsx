@@ -11,12 +11,21 @@ import { useEffect } from 'react';
 import HLSVideo from 'components/secret/park/HLSPlayer';
 import VideoPlayer from 'components/VideoPlayer/VideoPlayer';
 import Link from 'next/link';
+import { getContentTags, Tag } from 'util/secret/park/tags';
 
-const Content: NextPage = (props: any) => {
+type Props = {
+  id?: string;
+  title?: string;
+  description?: string;
+  tags: Tag[];
+}
+
+const Content: NextPage<Props> = (props: Props) => {
   const router = useRouter();
 
   useEffect(() => {
     //router.push("/secret/park/contents/")
+    console.log(props.tags)
   }, [])
 
   if (props.title == undefined) {
@@ -40,15 +49,15 @@ const Content: NextPage = (props: any) => {
   //return <p>Post: {content_id}</p>;
 };
 
-export const getServerSideProps: GetServerSideProps = async (context: GetServerSidePropsContext) => {
-  console.log(context.query.content_id)
+export const getServerSideProps: GetServerSideProps<Props> = async (context: GetServerSidePropsContext) => {
+  //console.log(context.query.content_id)
   //await DB.query("insert into park_contents values ('test1', 'titile dayo', 'description dayo', '2022-11-1 11:11:11', '2022-11-3 13:13:13')")
   let result = await DB.query<any[]>(`select title, description from park_contents where id='${context.query.content_id}'`);
   if (result.length == 0) {
-    return { props: {} };
+    return { props: {tags: []} };
   } else {
     return {
-      props: { id: context.query.content_id, title: result[0].title, description: result[0].description },
+      props: { id: context.query.content_id as string, title: result[0].title, description: result[0].description, tags: await getContentTags(context.query.content_id as string)},
     };
   }
 };

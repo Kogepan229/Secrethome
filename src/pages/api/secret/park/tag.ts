@@ -23,6 +23,7 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
         let result1 = await DB.query<any[]>(`select count(*) from park_tags where name='${req.body.name}'`);
         if (result1[0]['count(*)'] > 0) {
           reject("Already exists")
+          return
         }
 
         let result2 = await DB.query<any[]>(`select count(*) from park_tags`);
@@ -30,6 +31,7 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
         //DB.query(`delete from park_contents where id='${req.body.id}'`)
         if (result2[0]['count(*)'] == undefined) {
           reject("Failed get tag number.")
+          return
         }
         let id = ulid()
         let priority = result2[0]['count(*)'] + 1

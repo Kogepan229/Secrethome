@@ -4,6 +4,7 @@ import fs from "fs"
 import { DB } from 'util/sql';
 import { GetNowTime } from 'util/time';
 import { exec } from 'child_process';
+import { Tag } from 'util/secret/park/tags';
 
 export const config = {
   api: {
@@ -20,7 +21,8 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
 
     let id: string;
     let title: string;
-    let description: string
+    let description: string;
+    let tagIDs: string[];
     let filePath: string;
     let imageBase64: string;
     await new Promise<void>((resolve) => {
@@ -28,6 +30,8 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
         id = fields.id as string;
         title = fields.title as string;
         description = fields.description as string;
+        tagIDs = JSON.parse(fields.tags as string)
+        //console.log(tagIDs)
         imageBase64 = fields.image as string;
 
         if (files.movie !== undefined) {
@@ -44,6 +48,14 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
       let updated_at = GetNowTime()
       //console.log("id: " + id)
       DB.query(`update park_contents set title='${title}', description='${description}', updated_at='${updated_at}' where id='${id}'`)
+
+      // delete tags
+      DB.query(`delete from park_tags_of_contents where content_id='${id}'`)
+      // insert tags again
+      tagIDs.forEach(value => {
+        DB.query(`insert into park_tags_of_contents values ('${id}', '${value}')`);
+      })
+
       console.log("update info", id)
     }).then(() => {
       //id = ulid()
@@ -81,7 +93,7 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
         })
       }
     }).then(() => {
-      res.status(200).json({ result: 'seccess', id: id });
+      res.status(200).json({ result: 'success', id: id });
     }).catch((err) => {
       console.log("err:", err)
       if (err === "invalid request") {
