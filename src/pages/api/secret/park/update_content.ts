@@ -52,9 +52,14 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
       // delete tags
       DB.query(`delete from park_tags_of_contents where content_id='${id}'`)
       // insert tags again
+      for (let i = 0; i < tagIDs.length; i++) {
+        DB.query(`insert into park_tags_of_contents values ('${id}', '${tagIDs[i]}', ${i})`);
+      }
+      /*
       tagIDs.forEach(value => {
         DB.query(`insert into park_tags_of_contents values ('${id}', '${value}')`);
       })
+      */
 
       console.log("update info", id)
     }).then(() => {

@@ -27,7 +27,7 @@ export default AddContent
 export const getServerSideProps: GetServerSideProps<Props> = async (context: GetServerSidePropsContext) => {
   //console.log(context.query.content_id)
   //await DB.query("insert into park_contents values ('test1', 'titile dayo', 'description dayo', '2022-11-1 11:11:11', '2022-11-3 13:13:13')")
-  let result = await DB.query<Tag[]>(`select id, priority, name from park_tags`);
+  let result = await DB.query<Tag[]>(`select id, name from park_tags`);
   //console.log(result)
   if (result.length == 0) {
     return { props: {tags: []} };

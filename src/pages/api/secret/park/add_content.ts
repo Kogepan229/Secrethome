@@ -65,9 +65,14 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
       //console.log("id: " + id)
       DB.query(`insert into park_contents values ('${id}', '${title}', '${description}', '${created_at}', '${created_at}')`);
 
+      for (let i = 0; i < tagIDs.length; i++) {
+        DB.query(`insert into park_tags_of_contents values ('${id}', '${tagIDs[i]}', ${i})`);
+      }
+      /*
       tagIDs.forEach(value => {
         DB.query(`insert into park_tags_of_contents values ('${id}', '${value}')`);
       })
+      */
 
 
     }).then(() => {

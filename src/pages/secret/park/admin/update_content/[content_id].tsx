@@ -49,7 +49,7 @@ const UpdateContent: NextPage<Props> = (props: Props) => {
 export const getServerSideProps: GetServerSideProps<Props> = async (context: GetServerSidePropsContext) => {
   //console.log(context.query.content_id)
   let result = await DB.query<any[]>(`select title, description from park_contents where id='${context.query.content_id}'`);
-  let resultTag = await DB.query<Tag[]>(`select id, priority, name from park_tags`);
+  let resultTag = await DB.query<Tag[]>(`select id, name from park_tags`);
   if (result.length == 0) {
     return { props: {tags: [], selectedTags: []} };
   } else {

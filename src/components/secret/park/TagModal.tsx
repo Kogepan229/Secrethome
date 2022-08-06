@@ -17,10 +17,12 @@ const TagModal = (props: Props) => {
 
   useEffect(() => {
     if (props.isShow) {
+      /*
       props.tagList.sort((a: Tag, b: Tag) => {
         return a.priority - b.priority
       })
       forceUpdate()
+      */
     }
   }, [props.isShow])
 
@@ -59,7 +61,7 @@ const TagModal = (props: Props) => {
         axios.post("/api/secret/park/tag", {name: createTagValue.trim()}).then(res => {
           if (res.data.result === "success") {
             console.log("success")
-            props.tagList.unshift({id: res.data.id, priority: res.data.priority, name: createTagValue.trim()})
+            props.tagList.unshift({id: res.data.id, name: createTagValue.trim()})
             setCreatetagValue("")
             forceUpdate()
             //TagItems.fi

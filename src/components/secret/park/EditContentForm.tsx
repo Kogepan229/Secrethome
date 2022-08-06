@@ -34,7 +34,8 @@ const EditContentForm = (props: Props) => {
   const [selectedTags, setSelectedTags] = useState<Tag[]>(props.selectedTags ?? [])
 
   const addTag = (tag: Tag) => {
-    setSelectedTags([...selectedTags, tag].sort((a: Tag, b: Tag) => {return a.priority - b.priority}))
+    //setSelectedTags([...selectedTags, tag].sort((a: Tag, b: Tag) => {return a.priority - b.priority}))
+    setSelectedTags([...selectedTags, tag])
     SetIsOpenedTagModal(false)
   }
 
@@ -171,7 +172,7 @@ const EditContentForm = (props: Props) => {
         </div>
         <div>
           <p>タグ</p>
-          <button onClick={() => SetIsOpenedTagModal(true)}>タグを追加</button>
+          <button type="button" onClick={() => SetIsOpenedTagModal(true)}>タグを追加</button>
           <div className={css.tags_container}>
             {TagItems}
           </div>
