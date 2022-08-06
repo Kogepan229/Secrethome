@@ -16,7 +16,7 @@ const TestPopup = (props: any) => {
   }
   return (
     <>
-      <Popup isShow={isOpenedPopup} message="追加しました" buttonText="戻る"/>
+      <Popup isShow={isOpenedPopup} message="追加しました" buttonText="戻る" buttonCallback={() => setIsOpenedPopup(false)}/>
       <OpenPopupButton/>
     </>
   )

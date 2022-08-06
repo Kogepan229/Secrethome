@@ -9,6 +9,7 @@ import css2 from "styles/pages/secret/park/admin/update_content.module.scss"
 import Router from 'next/router';
 import EditContentForm from 'components/secret/park/EditContentForm';
 import { getContentTags, Tag } from 'util/secret/park/tags';
+import PopupWindowMessage from 'components/PopupWindowMessage';
 
 type Props = {
   id?: string;
@@ -19,6 +20,8 @@ type Props = {
 }
 
 const UpdateContent: NextPage<Props> = (props: Props) => {
+  const [isShowPopup, setIsShowPopup] = useState(false)
+
   if (props.id == undefined) {
     return <p>No content</p>;
   }
@@ -28,7 +31,7 @@ const UpdateContent: NextPage<Props> = (props: Props) => {
     if (result) {
       axios.delete("/api/secret/park/delete_content", {data: {id: props.id}}).then(res => {
         if (res.data.result == "success") {
-          Router.push("/secret/park/contents/")
+          setIsShowPopup(true)
         } else {
           console.error("res:", res.data.result)
         }
@@ -42,6 +45,7 @@ const UpdateContent: NextPage<Props> = (props: Props) => {
         <EditContentForm isUpdate={true} id={props.id} title={props.title} description={props.description} tags={props.tags} selectedTags={props.selectedTags}></EditContentForm>
         <button className={css2.delete_button} onClick={onClickDelete}>削除</button>
       </div>
+      <PopupWindowMessage isShow={isShowPopup} message="削除しました" buttonText='戻る' buttonCallback={() => Router.push("/secret/park/contents/")}/>
     </SecretParkLayout>
   )
 };

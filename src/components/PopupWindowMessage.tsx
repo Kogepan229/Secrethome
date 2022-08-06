@@ -7,6 +7,7 @@ type Props = {
   isShow: boolean;
   message: string;
   buttonText: string;
+  buttonCallback: () => void;
 }
 
 const PopupWindowMessage = (props: Props) => {
@@ -21,7 +22,7 @@ const PopupWindowMessage = (props: Props) => {
         <div className={css.message_aria}>
           <p className={css.message}>{props.message}</p>
         </div>
-        <button className={css.button}>{props.buttonText}</button>
+        <button className={css.button} onClick={props.buttonCallback}>{props.buttonText}</button>
       </div>
     </>
   )
