@@ -75,20 +75,7 @@ const VideoControl = (props: Props) => {
     }
   }
 
-  /*
-  const switchPlayStop = () => {
-    console.log("click")
-    if (isPlaying) {
-      props.videoRef.current?.pause()
-      setIsPlaying(false)
-    } else {
-      props.videoRef.current?.play()
-      setIsPlaying(true)
-    }
-  }
-  */
   const switchPlayStop = useCallback(() => {
-    console.log("click")
     if (isPlaying) {
       props.videoRef.current?.pause()
       setIsPlaying(false)
@@ -211,7 +198,6 @@ const VideoControl = (props: Props) => {
   }
 
   const VideoControlButton = ({children, className, onClick}: {children: ReactNode, className?: string, onClick?: ReactEventHandler<HTMLButtonElement>}) => {
-    //console.log(className)
     return(
       <button className={`${css.video_control_button} ${className ?? ""}`} onClick={onClick}>
         <div>
@@ -234,17 +220,6 @@ const VideoControl = (props: Props) => {
       </VideoControlButton>
     )
   }, [isPlaying, switchPlayStop])
-
-  /*
-  const ControlPlayStop = useMemo(() => {
-    console.log("kuso")
-    if (isPlaying) {
-      return <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"><path d="M14,19H18V5H14M6,19H10V5H6V19Z" /></svg>
-    } else {
-      return <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg>
-    }
-  }, [isPlaying])
-  */
 
   const ControlBack = useMemo(() => {
     return (
@@ -277,16 +252,6 @@ const VideoControl = (props: Props) => {
     )
   }, [volume, isMute, onClickMute])
 
-  /*
-  const ControlMute = () => {
-    if (volume != 0 && !isMute) {
-      return <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"><path d="M3 9v6h4l5 5V4L7 9H3zm13.5 3c0-1.77-1.02-3.29-2.5-4.03v8.05c1.48-.73 2.5-2.25 2.5-4.02zM14 3.23v2.06c2.89.86 5 3.54 5 6.71s-2.11 5.85-5 6.71v2.06c4.01-.91 7-4.49 7-8.77s-2.99-7.86-7-8.77z"/></svg>
-    } else {
-      return <svg xmlns="http://www.w3.org/2000/svg" version="1.1" width="24" height="24" viewBox="0 0 24 24"><path d="M3,9H7L12,4V20L7,15H3V9M16.59,12L14,9.41L15.41,8L18,10.59L20.59,8L22,9.41L19.41,12L22,14.59L20.59,16L18,13.41L15.41,16L14,14.59L16.59,12Z" /></svg>
-    }
-  }
-  */
-
   const ControlFullScreen = useMemo(() => {
     return (
       <VideoControlButton onClick={onClickFull}>
@@ -300,24 +265,6 @@ const VideoControl = (props: Props) => {
       </VideoControlButton>
     )
   }, [isFullScreen, onClickFull])
-
-  /*
-  const ControlFullScrenn = () => {
-    if (isFullScreen) {
-      return <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"><path d="M5 16h3v3h2v-5H5v2zm3-8H5v2h5V5H8v3zm6 11h2v-3h3v-2h-5v5zm2-11V5h-2v5h5V8h-3z"/></svg>
-    } else {
-      return <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"><path d="M7 14H5v5h5v-2H7v-3zm-2-4h2V7h3V5H5v5zm12 7h-3v2h5v-5h-2v3zM14 5v2h3v3h2V5h-5z"/></svg>
-    }
-  }
-  */
-
-  const getNowTime = () => {
-    if (props.videoRef.current) {
-      return props.videoRef.current.currentTime
-    }else {
-      return 0
-    }
-  }
 
   return(
     <div className={`${css.control_container} ${isCursorOutVideo && !isCursorOnControls && isPlaying ? css.cursor_hide: ""}`} ref={controlContainerRef} style={{width: `${videoWidth}px`, height: `${videoHeight}px`}}>
