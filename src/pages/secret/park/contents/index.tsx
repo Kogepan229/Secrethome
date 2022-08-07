@@ -5,15 +5,16 @@ import { DB } from "util/sql"
 
 import css from "styles/pages/secret/park/contents/contents.module.scss"
 import Link from 'next/link';
+import { getContentTags, Tag } from 'util/secret/park/tags';
 
 type Props = {
   page_num: number,
-  contents: {id: string, title: string, description: string, updated_at: string}[],
+  contents: {id: string, title: string, description: string, tags: Tag[], updated_at: string}[],
 }
 
 const Contents: NextPage<Props> = (props) => {
   const contents = props.contents.map(content => {
-    return (<ContentPost id={content.id} title={content.title} key={content.id} updated_at={content.updated_at}></ContentPost>)
+    return (<ContentPost id={content.id} title={content.title} tags={content.tags} updated_at={content.updated_at} key={content.id}></ContentPost>)
   })
 
   return (
@@ -42,7 +43,8 @@ export const getServerSideProps: GetServerSideProps = async (context: GetServerS
   const data = JSON.parse(JSON.stringify(result2));
   //console.log(data)
   for (let i=0;i<data.length;i++) {
-    props.contents[i] = {id: data[i].id, title: data[i].title, description: data[i].description, updated_at: data[i].updated_at}
+    let tags = await getContentTags(data[i].id)
+    props.contents[i] = {id: data[i].id, title: data[i].title, description: data[i].description, tags: tags, updated_at: data[i].updated_at}
   }
   //console.log(props)
 
