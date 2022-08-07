@@ -1,5 +1,6 @@
 import { useState } from "react"
 import Popup from "components/PopupWindowMessage"
+import SimpleButton from "components/SimpleButton"
 
 
 const TestPopup = (props: any) => {
@@ -9,7 +10,8 @@ const TestPopup = (props: any) => {
     //console.log(props.tags)
     if (!isOpenedPopup) {
       //return <TagModal isShow={isOpenedModal} closeCallback={() => setIsOpenedModal(false)} selectTagCallback={selectTagCallback} tagList={props.tags} excludeTagIDList={excludeTagIDList}/>
-      return <button onClick={() => setIsOpenedPopup(true)}>Open Popup</button>
+      return <SimpleButton onClick={() => setIsOpenedPopup(true)}>Open Popup</SimpleButton>
+      //return <button onClick={() => setIsOpenedPopup(true)}>Open Popup</button>
     } else {
       return null
     }
