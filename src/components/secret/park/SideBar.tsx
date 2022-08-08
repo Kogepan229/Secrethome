@@ -4,13 +4,14 @@ import css from "./SideBar.module.scss"
 
 type Props = {
   tags: {tag: Tag, count: number}[]
+  className?: string;
 }
 
 const SideBar = (props: Props) => {
   const Tags = props.tags.map(value => {
     return (
       <Link href={`/secret/park/tag/${value.tag.id}`} key={value.tag.id}>
-        <div className={css.sidebar_item_tag}>
+        <div className={`${css.sidebar_item_tag} ${props.className ?? ""}`}>
           <p className={css.sidebar_item_tag_name}>{value.tag.name}</p>
           <div className={css.sidebar_item_tag_count}>
             <p>{value.count}</p>
