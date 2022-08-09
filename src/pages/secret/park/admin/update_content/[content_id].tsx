@@ -1,7 +1,7 @@
 import { GetServerSideProps, GetServerSidePropsContext } from 'next';
 import type { NextPage } from 'next';
 import { DB } from 'util/sql';
-import SecretParkLayout from 'components/layout/secretParkLayout';
+import SecretParkLayout from 'components/layout/secretPageBase';
 import { useEffect, useState } from 'react';
 import axios from 'axios';
 import css from "styles/pages/secret/park/admin/add_content.module.scss"

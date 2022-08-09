@@ -3,7 +3,7 @@ import type { NextPage } from 'next';
 import { useRouter } from 'next/router';
 import dynamic from 'next/dynamic';
 import { DB } from 'util/sql';
-import SecretParkLayout from 'components/layout/secretParkLayout';
+import SecretParkLayout from 'components/layout/secretPageBase';
 import css from "styles/pages/secret/park/contents/content.module.scss"
 import { useEffect } from 'react';
 import VideoPlayer from 'components/VideoPlayer/VideoPlayer';

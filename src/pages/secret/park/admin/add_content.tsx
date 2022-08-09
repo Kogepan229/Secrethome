@@ -1,4 +1,4 @@
-import SecretParkLayout from "components/layout/secretParkLayout";
+import SecretParkLayout from "components/layout/secretPageBase";
 import EditContentForm from "components/secret/park/EditContentForm";
 import { NextPage } from "next";
 import css from "styles/pages/secret/park/admin/add_content.module.scss"
