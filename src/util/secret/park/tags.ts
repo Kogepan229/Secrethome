@@ -2,9 +2,10 @@ import { DB } from "util/sql";
 
 export type Tag = {
   id: string;
-  //priority: number;
   name: string;
 }
+
+export type SidebarTags = {tag: Tag, count: number}[]
 
 export const getContentTags = async (contentID: string) => {
   let result1 = await DB.query<{tag_id: string, priority: number}[]>(`select tag_id, priority from park_tags_of_contents where content_id='${contentID}'`);
@@ -28,6 +29,22 @@ export const getContentTags = async (contentID: string) => {
     return {id: value.id, name: value.name} as Tag
   })
 
-  //console.log("tags", tags)
   return tags
+}
+
+export const getSidebarTags = async () => {
+  let resultTag1 = await DB.query<Tag[]>(`select id, name from park_tags`);
+  const dataTag = JSON.parse(JSON.stringify(resultTag1)) as Tag[];
+  if (resultTag1.length == 0) {
+    return [];
+  } else {
+    let tags = await Promise.all(dataTag.map(async value => {
+      let resultTag2 = await DB.query<any[]>(`select count(*) from park_tags_of_contents where tag_id='${value.id}'`);
+      return {tag: value, count: resultTag2[0]['count(*)']}
+    }))
+    tags.sort((a: {tag: Tag, count: number}, b: {tag: Tag, count: number}) => {
+      return b.count - a.count
+    })
+    return tags
+  }
 }
