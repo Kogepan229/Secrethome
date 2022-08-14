@@ -1,11 +1,6 @@
 import type { NextApiRequest, NextApiResponse } from 'next';
 import { ulid } from 'ulid';
-import formidable from "formidable"
-import fs from "fs"
-import { exec } from 'child_process';
-
 import { DB } from 'util/sql';
-import { GetNowTime } from 'util/time';
 
 const handler = async (req: NextApiRequest, res: NextApiResponse) => {
   console.log(req.socket.remoteAddress)
@@ -25,7 +20,7 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
           reject("Already exists")
           return
         }
-
+        
         let result2 = await DB.query<any[]>(`select count(*) from park_tags`);
         //console.log(result1[0]['count(*)'])
         //DB.query(`delete from park_contents where id='${req.body.id}'`)
@@ -34,12 +29,11 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
           return
         }
         let id = ulid()
-        let priority = result2[0]['count(*)'] + 1
-        await DB.query<any[]>(`insert into  park_tags values ('${id}', ${priority}, '${req.body.name}')`);
-        resolve({id: id, priority: priority, name: req.body.name})
+        await DB.query<any[]>(`insert into  park_tags values ('${id}', '${req.body.name}')`);
+        resolve({id: id, name: req.body.name})
 
       }).then(value => {
-        res.status(200).json({ result: 'success', id: value.id, priority: value.priority, name: value.name});
+        res.status(200).json({ result: 'success', id: value.id, name: value.name});
       }).catch(reason => {
         console.log(reason)
         res.status(200).json({ result: reason})
