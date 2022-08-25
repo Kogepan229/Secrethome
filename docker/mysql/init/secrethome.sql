@@ -1,0 +1,103 @@
+-- MySQL dump 10.13  Distrib 8.0.30, for Linux (x86_64)
+--
+-- Host: localhost    Database: secrethome
+-- ------------------------------------------------------
+-- Server version	8.0.30-0ubuntu0.22.04.1
+
+/*!40101 SET @OLD_CHARACTER_SET_CLIENT=@@CHARACTER_SET_CLIENT */;
+/*!40101 SET @OLD_CHARACTER_SET_RESULTS=@@CHARACTER_SET_RESULTS */;
+/*!40101 SET @OLD_COLLATION_CONNECTION=@@COLLATION_CONNECTION */;
+/*!50503 SET NAMES utf8mb4 */;
+/*!40103 SET @OLD_TIME_ZONE=@@TIME_ZONE */;
+/*!40103 SET TIME_ZONE='+00:00' */;
+/*!40014 SET @OLD_UNIQUE_CHECKS=@@UNIQUE_CHECKS, UNIQUE_CHECKS=0 */;
+/*!40014 SET @OLD_FOREIGN_KEY_CHECKS=@@FOREIGN_KEY_CHECKS, FOREIGN_KEY_CHECKS=0 */;
+/*!40101 SET @OLD_SQL_MODE=@@SQL_MODE, SQL_MODE='NO_AUTO_VALUE_ON_ZERO' */;
+/*!40111 SET @OLD_SQL_NOTES=@@SQL_NOTES, SQL_NOTES=0 */;
+
+--
+-- Table structure for table `park_contents`
+--
+
+DROP TABLE IF EXISTS `park_contents`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
+CREATE TABLE `park_contents` (
+  `id` varchar(64) NOT NULL,
+  `title` varchar(128) DEFAULT NULL,
+  `description` varchar(4096) DEFAULT NULL,
+  `created_at` timestamp NULL DEFAULT NULL,
+  `updated_at` timestamp NULL DEFAULT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `park_contents`
+--
+
+LOCK TABLES `park_contents` WRITE;
+/*!40000 ALTER TABLE `park_contents` DISABLE KEYS */;
+INSERT INTO `park_contents` VALUES ('01G5VGT0AXWWQSCNKP28J6GTYS','tttest','ttest','2022-06-18 13:42:29','2022-08-08 13:34:52'),('01G680C31MX2FE47RKR43GGTMN','test2','test2','2022-06-23 10:05:24','2022-06-23 10:05:24'),('01G682P8J42JB6QKRV6CF2VFDP','','','2022-06-23 10:45:54','2022-06-23 10:45:54'),('01G6894AKPYC1Q0F7VCXF684RN','tekitou','gdsd','2022-06-23 12:38:27','2022-06-23 12:38:27'),('01G689HK120MS5VQ1354KJHD7F','hhhh','hhhh','2022-06-23 12:45:41','2022-06-26 02:22:38'),('01G68EB6EW5ZQFDM50W9X8M15T','333333','kjni','2022-06-23 14:09:35','2022-06-26 02:33:45'),('01G6B2D8HDBJF8TD8MBWR156X1','ggggggggg','segsegseg','2022-06-24 14:38:43','2022-08-08 13:21:12'),('01G9SRAAGY01G7XV92E7G5G5B9','あかさたなはまやらわおんがくだいすきな！！なんだよね！','tag test','2022-08-06 14:18:03','2022-08-09 11:44:15'),('01G9SWR973CTQBJNGH7Z6H62EJ','tuika test','da','2022-08-06 15:35:34','2022-08-06 15:35:34'),('test1','titile dayo','description dayo','2022-11-01 02:11:11','2022-11-03 04:13:13');
+/*!40000 ALTER TABLE `park_contents` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `park_tags`
+--
+
+DROP TABLE IF EXISTS `park_tags`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
+CREATE TABLE `park_tags` (
+  `id` varchar(64) NOT NULL,
+  `name` varchar(32) NOT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `park_tags`
+--
+
+LOCK TABLES `park_tags` WRITE;
+/*!40000 ALTER TABLE `park_tags` DISABLE KEYS */;
+INSERT INTO `park_tags` VALUES ('01G8ZQWPMAA440J9KTRH1SPZRP','test1'),('01G8ZR8K0G8Z629CAE56K5BJ3A','test2'),('01G8ZR8P8B2Q80RBJ4JK0KN9XK','test3'),('01G8ZYDXRHDW4WWX2XRW034QGR','test'),('01G8ZYHYYSAW5B5V5D3KQB8AVD','aaa'),('01G8ZYQ82PBHY66MA2SBEEN829','bbb'),('01G8ZZ1APRWVM1DCHVEK2KBBYA','ccc'),('01G8ZZ27DBKR77CQPZV5ZE7AC4','ddd'),('01G8ZZ2PDWPHA1TB4JJ0TW1F1F','eee'),('01G8ZZ357V4Z7ZNWHEB1PG0PXV','fff'),('01G927NK8KZH6DGHJ4CP19F6S6','ggg'),('01G929DC4XJ1ZDCXA6FMT0XYY8','test1'),('01G92B0R1AM07HWP5N469G81M1','そうだよね'),('01GA464PFJCTBNS07EKM7AWGWA','f1'),('01GA464XGP1VQ0GJKXYRVMNMEZ','f2'),('01GA464Z6HV5R5NFC37R0DCHW8','f3'),('01GA4650C3X49S1SKWMCGGRWGE','f4'),('01GA4651BGDYZWCGKYDQH8GHVQ','f5'),('01GA4653AVDZD2RSKDZ5WW07RY','f6'),('01GA4654S3041KN6J26T9JY1DG','f7'),('01GA4656YN11W5E8W921BS9C74','f8'),('01GA4658P3EAGAR840W03A5QQ5','f9'),('01GA465BEWKQ5Q3FS0QRXQ1BYS','f10');
+/*!40000 ALTER TABLE `park_tags` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `park_tags_of_contents`
+--
+
+DROP TABLE IF EXISTS `park_tags_of_contents`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
+CREATE TABLE `park_tags_of_contents` (
+  `content_id` varchar(64) NOT NULL,
+  `tag_id` varchar(64) NOT NULL,
+  `priority` int unsigned NOT NULL,
+  PRIMARY KEY (`content_id`,`tag_id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `park_tags_of_contents`
+--
+
+LOCK TABLES `park_tags_of_contents` WRITE;
+/*!40000 ALTER TABLE `park_tags_of_contents` DISABLE KEYS */;
+INSERT INTO `park_tags_of_contents` VALUES ('01G6B2D8HDBJF8TD8MBWR156X1','01G92B0R1AM07HWP5N469G81M1',0),('01G9SRAAGY01G7XV92E7G5G5B9','01G8ZQWPMAA440J9KTRH1SPZRP',1),('01G9SRAAGY01G7XV92E7G5G5B9','01G8ZYQ82PBHY66MA2SBEEN829',2),('01G9SRAAGY01G7XV92E7G5G5B9','01G8ZZ1APRWVM1DCHVEK2KBBYA',0),('01G9SWR973CTQBJNGH7Z6H62EJ','01G8ZR8P8B2Q80RBJ4JK0KN9XK',0);
+/*!40000 ALTER TABLE `park_tags_of_contents` ENABLE KEYS */;
+UNLOCK TABLES;
+/*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
+
+/*!40101 SET SQL_MODE=@OLD_SQL_MODE */;
+/*!40014 SET FOREIGN_KEY_CHECKS=@OLD_FOREIGN_KEY_CHECKS */;
+/*!40014 SET UNIQUE_CHECKS=@OLD_UNIQUE_CHECKS */;
+/*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
+/*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;
+/*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
+/*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
+
+-- Dump completed on 2022-08-18 21:17:06

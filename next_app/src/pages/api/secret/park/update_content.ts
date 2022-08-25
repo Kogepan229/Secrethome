@@ -68,11 +68,17 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
         // TODO Imageが消えないようにする
         fs.rmdirSync(`${process.env.FILE_DIRECTORY_PATH}/contents/${id}`)
         fs.mkdirSync(process.env.FILE_DIRECTORY_PATH + "/contents/" + id)
+
+        fs.copyFileSync(filePath, `${process.env.FILE_DIRECTORY_PATH}/contents/${id}/${id}.mp4`)
+        fs.unlinkSync(filePath)
+
+        /*
         fs.rename(filePath, `${process.env.FILE_DIRECTORY_PATH}/contents/${id}/${id}.mp4`, (err) => {
           if (err) {
             console.error(err)
           }
         })
+        */
       }
     }).then(() =>{
       if (imageBase64 && imageBase64 !== "") {

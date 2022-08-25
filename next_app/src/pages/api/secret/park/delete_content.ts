@@ -20,11 +20,17 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
         DB.query(`delete from park_tags_of_contents where content_id='${req.body.id}'`)
         resolve()
       }).then(() => {
+        if (fs.existsSync(`${process.env.FILE_DIRECTORY_PATH}/contents/${req.body.id}/${req.body.id}.mp4`)) {
+          fs.copyFileSync(`${process.env.FILE_DIRECTORY_PATH}/contents/${req.body.id}/${req.body.id}.mp4`, `${process.env.FILE_DIRECTORY_PATH}/deleted/${req.body.id}.mp4`)
+        }
+        /*
+        fs.unlinkSync(`${process.env.FILE_DIRECTORY_PATH}/contents/${req.body.id}/${req.body.id}.mp4`)
         fs.rename(`${process.env.FILE_DIRECTORY_PATH}/contents/${req.body.id}/${req.body.id}.mp4`, `${process.env.FILE_DIRECTORY_PATH}/deleted/${req.body.id}.mp4`, (err) => {
           if (err) {
             throw err
           }
         })
+        */
       }).then(() => {
         fs.rm(`${process.env.FILE_DIRECTORY_PATH}/contents/${req.body.id}`, { recursive: true, force: true }, () => {
         });

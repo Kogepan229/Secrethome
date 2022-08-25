@@ -8,6 +8,9 @@
     "start": "next start",
     "lint": "next lint"
   },
+  "engines": {
+    "npm": "Dockerコンテナ内でのみ使用可能です。 Can use only in Docker container."
+  },
   "dependencies": {
     "next": "12.1.6",
     "react": "18.1.0",
@@ -15,6 +18,7 @@
   },
   "devDependencies": {
     "@types/formidable": "^2.0.5",
+    "@types/fs-extra": "^9.0.13",
     "@types/hls.js": "^1.0.0",
     "@types/node": "17.0.33",
     "@types/react": "18.0.9",
@@ -23,6 +27,7 @@
     "eslint": "8.15.0",
     "eslint-config-next": "12.1.6",
     "formidable": "^2.0.1",
+    "fs-extra": "^10.1.0",
     "nookies": "^2.5.2",
     "sass": "^1.52.2",
     "serverless-mysql": "^1.5.4",

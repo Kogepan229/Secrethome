@@ -36,7 +36,8 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
 
         //console.log(fields);
         //console.log((files.movie as any)._writeStream.path);
-        //console.log(fields)
+        console.log(err)
+        //console.log(files.movie)
         filePath = (files.movie as any)._writeStream.path;
         //console.log(err)
         //g = err;
@@ -45,12 +46,18 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
     }).then(() => {
       id = ulid();
       fs.mkdirSync(process.env.FILE_DIRECTORY_PATH + '/contents/' + id);
+      fs.copyFileSync(filePath, `${process.env.FILE_DIRECTORY_PATH}/contents/${id}/${id}.mp4`)
+      //fs.copyFileSync(filePath, `${process.env.FILE_DIRECTORY_PATH}/test/${id}/${id}.mp4`)
+      fs.unlinkSync(filePath)
+
+      /*
       fs.rename(filePath, `${process.env.FILE_DIRECTORY_PATH}/contents/${id}/${id}.mp4`, err => {
         if (err) {
           console.log('id:', id);
           console.error(err);
         }
       });
+      */
 
       const image = Buffer.from(imageBase64.split(',')[1], 'base64');
       //console.log(image)

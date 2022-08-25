@@ -1,0 +1,9 @@
+{
+  "name": "Secrethome",
+  "dockerComposeFile": "./docker-compose.dev.yml",
+  "service": "web",
+  "workspaceFolder": "/next_app",
+  "extensions": [
+  ],
+  "shutdownAction": "stopCompose"
+}
