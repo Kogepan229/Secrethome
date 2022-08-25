@@ -4,6 +4,12 @@
   "service": "web",
   "workspaceFolder": "/next_app",
   "extensions": [
-  ],
+	"oderwat.indent-rainbow",
+	"ecmel.vscode-html-css",
+	"leizongmin.node-module-intellisense",
+	"esbenp.prettier-vscode",
+	"mrmlnc.vscode-scss",
+	"christian-kohler.path-intellisense"
+],
   "shutdownAction": "stopCompose"
 }
