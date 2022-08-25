@@ -4,7 +4,6 @@ import fs from "fs"
 import { DB } from 'util/sql';
 import { GetNowTime } from 'util/time';
 import { exec } from 'child_process';
-import { Tag } from 'util/secret/park/tags';
 
 export const config = {
   api: {
@@ -17,7 +16,6 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
 
   if (req.method === 'POST') {
     let form = new formidable.Formidable({encoding: "utf-8", uploadDir: "./tmp", maxFileSize: 1024 * 1024 * 1024 * 4});
-    //let g: any
 
     let id: string;
     let title: string;
@@ -31,7 +29,6 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
         title = fields.title as string;
         description = fields.description as string;
         tagIDs = JSON.parse(fields.tags as string)
-        //console.log(tagIDs)
         imageBase64 = fields.image as string;
 
         if (files.movie !== undefined) {
@@ -46,7 +43,6 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
 
     }).then(() => {
       let updated_at = GetNowTime()
-      //console.log("id: " + id)
       DB.query(`update park_contents set title='${title}', description='${description}', updated_at='${updated_at}' where id='${id}'`)
 
       // delete tags
@@ -55,11 +51,6 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
       for (let i = 0; i < tagIDs.length; i++) {
         DB.query(`insert into park_tags_of_contents values ('${id}', '${tagIDs[i]}', ${i})`);
       }
-      /*
-      tagIDs.forEach(value => {
-        DB.query(`insert into park_tags_of_contents values ('${id}', '${value}')`);
-      })
-      */
 
       console.log("update info", id)
     }).then(() => {
@@ -71,14 +62,6 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
 
         fs.copyFileSync(filePath, `${process.env.FILE_DIRECTORY_PATH}/contents/${id}/${id}.mp4`)
         fs.unlinkSync(filePath)
-
-        /*
-        fs.rename(filePath, `${process.env.FILE_DIRECTORY_PATH}/contents/${id}/${id}.mp4`, (err) => {
-          if (err) {
-            console.error(err)
-          }
-        })
-        */
       }
     }).then(() =>{
       if (imageBase64 && imageBase64 !== "") {
@@ -118,24 +101,7 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
       res.status(400).json({ result: 'invalid request' })
       return
     })
-
-
-
-
-
-    /*
-    let title = req.body.title;
-    let description = req.body.description;
-    let created_at = GetNowTime()
-    //console.log(`title: ${title}, desc: ${description}`)
-
-    await DB.query(`insert into park_contents values ('${ulid()}', '${title}', '${description}', '${created_at}', '${created_at}')`)
-    console.log("add")
-
-    res.status(200).json({ result: 'seccess' });
-    */
   }
-  //res.status(400);
 };
 
 export default handler;

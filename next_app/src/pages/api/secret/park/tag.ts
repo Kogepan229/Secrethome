@@ -6,8 +6,6 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
   console.log(req.socket.remoteAddress)
 
   if (req.method === 'POST') {
-      //console.log("name:", req.body.name)
-
       // TODO id check
       await new Promise<any>(async (resolve, reject) => {
         if (!req.body.name) {
@@ -20,10 +18,8 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
           reject("Already exists")
           return
         }
-        
+
         let result2 = await DB.query<any[]>(`select count(*) from park_tags`);
-        //console.log(result1[0]['count(*)'])
-        //DB.query(`delete from park_contents where id='${req.body.id}'`)
         if (result2[0]['count(*)'] == undefined) {
           reject("Failed get tag number.")
           return

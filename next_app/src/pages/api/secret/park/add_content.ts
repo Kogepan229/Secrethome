@@ -14,11 +14,10 @@ export const config = {
 };
 
 const handler = async (req: NextApiRequest, res: NextApiResponse) => {
-  console.log(req.socket.remoteAddress);
+  //console.log(req.socket.remoteAddress);
 
   if (req.method === 'POST') {
     let form = new formidable.Formidable({ encoding: 'utf-8', uploadDir: './tmp', maxFileSize: 1024 * 1024 * 1024 * 4 });
-    //let g: any
 
     let title: string;
     let description: string;
@@ -28,39 +27,23 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
     let id: string;
     await new Promise<void>(resolve => {
       form.parse(req, (err, fields, files) => {
+        if (err) console.log(err)
+
         title = fields.title as string;
         description = fields.description as string;
         tagIDs = JSON.parse(fields.tags as string)
-        //console.log(tagIDs)
         imageBase64 = fields.image as string;
-
-        //console.log(fields);
-        //console.log((files.movie as any)._writeStream.path);
-        console.log(err)
-        //console.log(files.movie)
         filePath = (files.movie as any)._writeStream.path;
-        //console.log(err)
-        //g = err;
+
         resolve();
       });
     }).then(() => {
       id = ulid();
       fs.mkdirSync(process.env.FILE_DIRECTORY_PATH + '/contents/' + id);
       fs.copyFileSync(filePath, `${process.env.FILE_DIRECTORY_PATH}/contents/${id}/${id}.mp4`)
-      //fs.copyFileSync(filePath, `${process.env.FILE_DIRECTORY_PATH}/test/${id}/${id}.mp4`)
       fs.unlinkSync(filePath)
 
-      /*
-      fs.rename(filePath, `${process.env.FILE_DIRECTORY_PATH}/contents/${id}/${id}.mp4`, err => {
-        if (err) {
-          console.log('id:', id);
-          console.error(err);
-        }
-      });
-      */
-
       const image = Buffer.from(imageBase64.split(',')[1], 'base64');
-      //console.log(image)
       fs.writeFile(`${process.env.FILE_DIRECTORY_PATH}/contents/${id}/${id}.webp`, image, err => {
         if (err) {
           console.log('id:', id);
@@ -69,17 +52,11 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
       });
 
       let created_at = GetNowTime();
-      //console.log("id: " + id)
       DB.query(`insert into park_contents values ('${id}', '${title}', '${description}', '${created_at}', '${created_at}')`);
 
       for (let i = 0; i < tagIDs.length; i++) {
         DB.query(`insert into park_tags_of_contents values ('${id}', '${tagIDs[i]}', ${i})`);
       }
-      /*
-      tagIDs.forEach(value => {
-        DB.query(`insert into park_tags_of_contents values ('${id}', '${value}')`);
-      })
-      */
 
 
     }).then(() => {
@@ -99,7 +76,6 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
       return;
     });
   }
-  //res.status(400);
 };
 
 export default handler;
