@@ -18,7 +18,7 @@ services:
       - ./data_files:/data_files
     tty: true
     ports:
-      - '60132:60132'
+      - '61132:60132'
     build:
       context: .
       dockerfile: ./docker/nginx/Dockerfile
@@ -30,7 +30,7 @@ services:
       - /next_app/node_modules
     tty: true
     ports:
-      - '60131:3000'
+      - '61131:3000'
     build:
       context: ./next_app
       dockerfile: Dockerfile
