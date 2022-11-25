@@ -1,5 +1,6 @@
 import type { NextApiRequest, NextApiResponse } from 'next';
 import fs from "fs"
+import { ulid } from 'ulid';
 
 import { DB } from 'util/sql';
 
@@ -17,7 +18,10 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
         resolve()
       }).then(() => {
         if (fs.existsSync(`${process.env.FILE_DIRECTORY_PATH}/contents/${req.body.id}/${req.body.id}.mp4`)) {
-          fs.copyFileSync(`${process.env.FILE_DIRECTORY_PATH}/contents/${req.body.id}/${req.body.id}.mp4`, `${process.env.FILE_DIRECTORY_PATH}/deleted/${req.body.id}.mp4`)
+          if (!fs.existsSync(`${process.env.FILE_DIRECTORY_PATH}/deleted/${req.body.id}`)) {
+            fs.mkdirSync(`${process.env.FILE_DIRECTORY_PATH}/deleted/${req.body.id}`)
+          }
+          fs.copyFileSync(`${process.env.FILE_DIRECTORY_PATH}/contents/${req.body.id}/${req.body.id}.mp4`, `${process.env.FILE_DIRECTORY_PATH}/deleted/${req.body.id}/${ulid()}.mp4`)
         }
       }).then(() => {
         fs.rm(`${process.env.FILE_DIRECTORY_PATH}/contents/${req.body.id}`, { recursive: true, force: true }, () => {

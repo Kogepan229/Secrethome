@@ -1,6 +1,7 @@
 import type { NextApiRequest, NextApiResponse } from 'next';
 import formidable from "formidable"
 import fs from "fs"
+import { ulid } from 'ulid';
 import { DB } from 'util/sql';
 import { GetNowTime } from 'util/time';
 import { exec } from 'child_process';
@@ -54,12 +55,15 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
 
       console.log("update info", id)
     }).then(() => {
-      //id = ulid()
       if (filePath !== undefined) {
-        // TODO Imageが消えないようにする
-        fs.rmdirSync(`${process.env.FILE_DIRECTORY_PATH}/contents/${id}`)
-        fs.mkdirSync(process.env.FILE_DIRECTORY_PATH + "/contents/" + id)
+        // backup
+        if (!fs.existsSync(`${process.env.FILE_DIRECTORY_PATH}/deleted/${id}`)) {
+          fs.mkdirSync(`${process.env.FILE_DIRECTORY_PATH}/deleted/${id}`)
+        }
+        fs.copyFileSync(`${process.env.FILE_DIRECTORY_PATH}/contents/${id}/${id}.mp4`, `${process.env.FILE_DIRECTORY_PATH}/deleted/${id}/${ulid()}.mp4`)
+        fs.unlinkSync(`${process.env.FILE_DIRECTORY_PATH}/contents/${id}/${id}.mp4`)
 
+        // process for new file
         fs.copyFileSync(filePath, `${process.env.FILE_DIRECTORY_PATH}/contents/${id}/${id}.mp4`)
         fs.unlinkSync(filePath)
       }
