@@ -36,6 +36,9 @@ const EditContentForm = (props: Props) => {
 
   const [isShowCompletePopup, setIsShowCompletePopup] = useState("")
 
+  const [isStartedUpload, setIsStartedUpload] = useState(false)
+  const [uploadProgress, setUploadProgress] = useState(0)
+
   const addTag = (tag: Tag) => {
     //setSelectedTags([...selectedTags, tag].sort((a: Tag, b: Tag) => {return a.priority - b.priority}))
     setSelectedTags([...selectedTags, tag])
@@ -113,6 +116,7 @@ const EditContentForm = (props: Props) => {
       file.append("image", imageBlob)
     }
 
+    setIsStartedUpload(true)
     axios.post(props.isUpdate ? "/api/secret/park/update_content" : "/api/secret/park/add_content", file, {headers: {'content-type': 'multipart/form-data',}, onUploadProgress}).then(res => {
       console.log(res.data.result)
       if (res.data.result == "success") {
@@ -126,7 +130,9 @@ const EditContentForm = (props: Props) => {
   }
 
   const onUploadProgress = (progressEvent: any) => {
-    console.log(progressEvent)
+    //console.log(progressEvent)
+    console.log(Math.round((progressEvent.loaded / progressEvent.total) * 100))
+    setUploadProgress(Math.round((progressEvent.loaded / progressEvent.total) * 100))
   }
 
   const onStopVideo = () => {
@@ -164,6 +170,17 @@ const EditContentForm = (props: Props) => {
     return <TagItem id={value.id} name={value.name} key={value.id}/>
   })
 
+  const UploadProgressBar = () => {
+    if (!isStartedUpload) return null;
+
+    return(
+      <div>
+        <p>{uploadProgress}%</p>
+        <progress value={uploadProgress} max="100"/>
+      </div>
+    )
+  }
+
   return (
     <>
       <form className={css.form} onSubmit={handleSubmit}>
@@ -197,8 +214,9 @@ const EditContentForm = (props: Props) => {
           <img src={imgSrc}></img>
         </div>
         <div>
-          <input type="submit" disabled={!isEnableSubmit}></input>
+          <input type="submit" disabled={!isEnableSubmit || isStartedUpload}></input>
         </div>
+        <UploadProgressBar/>
       </form>
       <TagModal isShow={isOpenedTagModal} closeCallback={() => SetIsOpenedTagModal(false)} selectTagCallback={addTag} tagList={props.tags} excludeTagIDList={selectedTags.map(value => value.id)}/>
       <PopupWindowMessage isShow={!!isShowCompletePopup} message={props.isUpdate ? "更新しました" : "追加しました"} buttonText="戻る" buttonCallback={() => Router.push(`/secret/park/contents/${isShowCompletePopup}`)}/>
