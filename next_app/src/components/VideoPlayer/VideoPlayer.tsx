@@ -14,7 +14,6 @@ const VideoPlayer = (props: Props) => {
   const videoRef = useRef<HTMLVideoElement>(null)
 
   useEffect(() => {
-    console.log(isSupportBrowser)
     if (!isSupportBrowser) {
       return;
     }
@@ -22,7 +21,6 @@ const VideoPlayer = (props: Props) => {
     var hls = new Hls()
     hls.attachMedia(videoRef.current!)
     hls.on(Hls.Events.MEDIA_ATTACHED, () => {
-      console.log("load")
       hls.loadSource(props.src)
     });
 
