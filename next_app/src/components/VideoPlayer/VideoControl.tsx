@@ -40,6 +40,23 @@ const VideoControl = (props: Props) => {
     props.videoRef.current?.addEventListener("loadedmetadata", () => {
       controlVolumeSliderRef.current!.value = (props.videoRef.current!.volume * 100).toString()
     })
+
+    // load volume from LocalStorage
+    if (localStorage.getItem("volume")) {
+      setVolume(Number(localStorage.getItem("volume")))
+      controlVolumeSliderRef.current!.value = localStorage.getItem("volume") ?? "100"
+      props.videoRef.current!.volume = Number(localStorage.getItem("volume")) / 100
+    }
+
+    // load mute status from LocalStrage
+    if (localStorage.getItem("mute")) {
+      if (localStorage.getItem("mute") == "true") {
+        setIsMute(true)
+        controlVolumeSliderRef.current!.value = "0"
+        props.videoRef.current!.volume = 0
+      }
+    }
+
   }, [])
 
   useEffect(() => {
@@ -160,10 +177,12 @@ const VideoControl = (props: Props) => {
     if (!volume) return;
     if (isMute) {
       setIsMute(false)
+      localStorage.setItem("mute", "false")
       controlVolumeSliderRef.current!.value = volume.toString()
       props.videoRef.current!.volume = volume / 100
     } else{
       setIsMute(true)
+      localStorage.setItem("mute", "true")
       controlVolumeSliderRef.current!.value = "0"
       props.videoRef.current!.volume = 0
     }
@@ -172,8 +191,10 @@ const VideoControl = (props: Props) => {
   const onChangeVolume = (e: any) => {
     if (e.target.value !== 0) {
       setIsMute(false)
+      localStorage.setItem("mute", "false")
     }
     setVolume(e.target.value)
+    localStorage.setItem("volume", e.target.value)
     props.videoRef.current!.volume = e.target.value / 100
   }
 
