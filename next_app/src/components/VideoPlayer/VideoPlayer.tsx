@@ -35,7 +35,7 @@ const VideoPlayer = (props: Props) => {
   if (browserName(window.navigator.userAgent) == "ios") {
     return (
       <div className={css.video_container}  ref={videoContainerRef}>
-        <div className={`${css.video_wrapper}`}>
+        <div className={css.video_wrapper}>
           <video className={css.video} src={props.src} poster={props.src.replace("m3u8", "webp")} controls playsInline></video>
         </div>
       </div>
@@ -44,7 +44,7 @@ const VideoPlayer = (props: Props) => {
 
   return (
     <div className={css.video_container}  ref={videoContainerRef}>
-      <div className={`${css.video_wrapper}`}>
+      <div className={css.video_wrapper}>
         <video className={css.video} ref={videoRef}></video>
         <VideoControl videoRef={videoRef} videoContainerRef={videoContainerRef}></VideoControl>
       </div>
