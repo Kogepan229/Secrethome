@@ -2,6 +2,7 @@ import type { NextPage } from 'next'
 import axios from "axios"
 import React, { useState } from 'react'
 import { useRouter } from 'next/router'
+import css from "styles/pages/index.module.scss"
 
 const Home: NextPage = () => {
   const router = useRouter()
@@ -10,8 +11,11 @@ const Home: NextPage = () => {
   const handleSubmit = (event: any) => {
     event.preventDefault()
     axios.post("/api/secret/secretkey", {key: key}).then(res => {
-      console.log(res.data)
-      router.push(res.data.url)
+      if (res.data.url) {
+        router.push(res.data.url)
+      } else {
+        setKey("")
+      }
     })
   }
 
@@ -22,8 +26,8 @@ const Home: NextPage = () => {
 
   return (
     <div>
-      <form onSubmit={handleSubmit}>
-        <input spellCheck="false" autoComplete="off" type={"text"} name={"key"} value={key} onChange={handleChangeKey}></input>
+      <form className={css.key_form} onSubmit={handleSubmit}>
+        <input className={css.key_input} spellCheck="false" autoComplete="off" type={"text"} name={"key"} value={key} onChange={handleChangeKey}></input>
       </form>
     </div>
   )

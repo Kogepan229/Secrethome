@@ -1,11 +1,6 @@
 // Next.js API route support: https://nextjs.org/docs/api-routes/introduction
 import type { NextApiRequest, NextApiResponse } from 'next'
 
-import { DB } from 'util/sql'
-
-
-
-
 const handler = async (req: NextApiRequest, res: NextApiResponse) => {
   if (req.method === "POST") {
     if (req.body.key === "256489") {
@@ -13,7 +8,7 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
       return
     }
   }
-  res.status(200).json({url: "/"})
+  res.status(200).end()
 }
 
 export default handler
