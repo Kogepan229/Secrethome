@@ -1,8 +1,6 @@
 "use client"
 import css from './ContentPost.module.scss';
 import Link from 'next/link'
-import SLink from "components/secret/SLink"
-import { useRef } from 'react';
 import { TagData } from 'util/secret/park/tags';
 import SimpleButton from 'components/SimpleButton';
 import { useRouter } from 'next/navigation';

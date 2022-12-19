@@ -1,13 +1,10 @@
-
-import { DB } from 'util/sql';
-import SecretRoomLayout from 'components/layout/SecretRoomLayout';
-import css from "./content.module.scss"
-
-//import VideoPlayer from 'components/VideoPlayer/VideoPlayer';
-import Link from 'next/link';
-import { getContentTagsData, TagData } from 'util/secret/park/tags';
 import { Suspense } from 'react';
 import dynamic from 'next/dynamic';
+import { DB } from 'util/sql';
+import Link from 'next/link';
+import { getContentTagsData, TagData } from 'util/secret/park/tags';
+import SecretRoomLayout from 'components/layout/SecretRoomLayout';
+import css from "./content.module.scss"
 
 const VideoPlayer = dynamic(() => import('components/VideoPlayer/VideoPlayer'), { ssr: false, suspense: true})
 

@@ -4,7 +4,6 @@ import ContentsList from 'features/contents/components/ContentsList';
 import { Suspense } from 'react';
 import SecretRoomLayout from 'components/layout/SecretRoomLayout';
 
-
 const ContentsPage = ({ searchParams }: {searchParams?: SearchParams}) => {
   return(
     /* @ts-expect-error Server Component */

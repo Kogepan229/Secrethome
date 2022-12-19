@@ -1,12 +1,10 @@
 "use client"
 import axios from "axios";
 import PopupWindowMessage from "components/PopupWindowMessage";
-//import { useRouter } from "next/router";
 import { useEffect, useRef, useState } from "react";
 import { TagData } from "util/secret/park/tags"
-//import css from "styles/pages/secret/park/admin/add_content.module.scss"
 import css from "./EditContentForm.module.scss"
-import TagModal from "components/secret/park/TagModal";
+import TagModal from "features/admin/components/TagModal";
 import { useRouter } from "next/navigation";
 
 type Props = {

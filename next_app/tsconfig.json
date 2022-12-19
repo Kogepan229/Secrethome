@@ -29,7 +29,6 @@
     "next-env.d.ts",
     "**/*.ts",
     "**/*.tsx",
-    "src/util/test.js",
     ".next/types/**/*.ts"
   ],
   "exclude": [

@@ -2,7 +2,6 @@
 import "client-only"
 import axios from 'axios';
 import { useState } from 'react';
-import Router from 'next/router';
 import css from "./ContentDeleteButton.module.scss"
 
 import PopupWindowMessage from 'components/PopupWindowMessage';

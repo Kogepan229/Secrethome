@@ -1,5 +1,4 @@
 import { DB } from 'util/sql';
-//import SecretRoomLayout from 'components/layout/secretPageBase';
 import EditContentForm from 'features/admin/components/EditContentForm';
 import { getContentTagsData, TagData } from 'util/secret/park/tags';
 

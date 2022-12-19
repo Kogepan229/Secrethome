@@ -1,11 +1,10 @@
 "use client"
-import type { NextPage } from 'next'
 import axios from "axios"
 import React, { useState } from 'react'
 import { useRouter } from 'next/navigation'
 import css from "./index.module.scss"
 
-const Home: NextPage = () => {
+const Home= () => {
   const router = useRouter()
   const [key, setKey] = useState("")
 

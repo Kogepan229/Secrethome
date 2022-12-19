@@ -3,7 +3,7 @@ import { SearchParams } from "types/SearchParams"
 import { getContentTagsData, getSidebarTagsData, SidebarTagsData, TagData } from 'util/secret/park/tags';
 import { CONTENTS_NUM_PER_PAGE } from 'features/contents/const';
 import { ContentsData } from "features/contents/types";
-import ContentPost from "components/secret/park/ContentPost";
+import ContentPost from "features/contents/components/ContentPost";
 
 const getContentsData = async (searchParams?: SearchParams) => {
   let contentsData: ContentsData = {pageNum :0, contents: [], sidebarTags: []}
@@ -12,7 +12,6 @@ const getContentsData = async (searchParams?: SearchParams) => {
   contentsData.pageNum = Number.isNaN(contentsData.pageNum) ? 0: contentsData.pageNum;
 
   // Get contents data from DB
-  console.log("access")
   let SQLResult = await DB.query<any[]>(`select id, title, description, updated_at from park_contents limit ${contentsData.pageNum * 20}, ${CONTENTS_NUM_PER_PAGE}`);
   const data = JSON.parse(JSON.stringify(SQLResult));
   for (let i=0;i<data.length;i++) {
