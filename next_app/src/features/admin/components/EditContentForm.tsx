@@ -1,11 +1,13 @@
+"use client"
 import axios from "axios";
 import PopupWindowMessage from "components/PopupWindowMessage";
-import Router from "next/router";
+//import { useRouter } from "next/router";
 import { useEffect, useRef, useState } from "react";
 import { TagData } from "util/secret/park/tags"
 //import css from "styles/pages/secret/park/admin/add_content.module.scss"
 import css from "./EditContentForm.module.scss"
-import TagModal from "./TagModal";
+import TagModal from "components/secret/park/TagModal";
+import { useRouter } from "next/navigation";
 
 type Props = {
   isUpdate?: boolean;
@@ -17,6 +19,7 @@ type Props = {
 }
 
 const EditContentForm = (props: Props) => {
+  const router = useRouter()
   const [title, setTitle] = useState(props.title ?? "")
   const [description, setDescription] = useState(props.description ?? "")
   const [movie, setMovie] = useState<File | null>(null)
@@ -219,7 +222,7 @@ const EditContentForm = (props: Props) => {
         <UploadProgressBar/>
       </form>
       <TagModal isShow={isOpenedTagModal} closeCallback={() => SetIsOpenedTagModal(false)} selectTagCallback={addTag} tagList={props.tags} excludeTagIDList={selectedTags.map(value => value.id)}/>
-      <PopupWindowMessage isShow={!!isShowCompletePopup} message={props.isUpdate ? "更新しました" : "追加しました"} buttonText="戻る" buttonCallback={() => Router.push(`/secret/park/contents/${isShowCompletePopup}`)}/>
+      <PopupWindowMessage isShow={!!isShowCompletePopup} message={props.isUpdate ? "更新しました" : "追加しました"} buttonText="戻る" buttonCallback={() => router.push(`/park/contents/${isShowCompletePopup}`)}/>
     </>
   )
 }

@@ -1,8 +1,9 @@
+"use client"
 import type { NextPage } from 'next'
 import axios from "axios"
 import React, { useState } from 'react'
-import { useRouter } from 'next/router'
-import css from "styles/pages/index.module.scss"
+import { useRouter } from 'next/navigation'
+import css from "./index.module.scss"
 
 const Home: NextPage = () => {
   const router = useRouter()
@@ -11,6 +12,7 @@ const Home: NextPage = () => {
   const handleSubmit = (event: any) => {
     event.preventDefault()
     axios.post("/api/secret/secretkey", {key: key}).then(res => {
+      console.log(res.data)
       if (res.data.url) {
         router.push(res.data.url)
       } else {
