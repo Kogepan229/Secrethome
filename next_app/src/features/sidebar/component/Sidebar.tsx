@@ -1,7 +1,6 @@
 import Link from "next/link"
 import { TagData } from "util/secret/park/tags"
-import { DB } from "util/sql"
-import css from "./SideBar.module.scss"
+import css from "./Sidebar.module.scss"
 
 type Props = {
   tags: {tag: TagData, count: number}[]

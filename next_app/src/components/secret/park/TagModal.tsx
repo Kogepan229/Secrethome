@@ -1,13 +1,13 @@
 import css from "./TagModal.module.scss"
-import { Tag } from "util/secret/park/tags"
+import { TagData } from "util/secret/park/tags"
 import { useEffect, useReducer, useState } from "react";
 import axios from "axios";
 
 type Props = {
   isShow: boolean;
   closeCallback: () => void;
-  selectTagCallback: (tag: Tag) => void;
-  tagList: Tag[];
+  selectTagCallback: (tag: TagData) => void;
+  tagList: TagData[];
   excludeTagIDList?: string[];
 }
 
@@ -27,7 +27,7 @@ const TagModal = (props: Props) => {
   }, [props.isShow])
 
   type TagProps = {
-    tag: Tag;
+    tag: TagData;
   }
 
   const TagItem = (tagProps: TagProps) => {

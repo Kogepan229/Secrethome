@@ -4,11 +4,11 @@ import dynamic from 'next/dynamic';
 import Header from "components/secret/park/Header";
 import SideBar from "components/secret/park/SideBar";
 import css from "./SecretHomeLayout.module.scss"
-import { Tag } from "util/secret/park/tags";
+import { TagData } from "util/secret/park/tags";
 
 const SecretPageBase = dynamic(() => import("./secretPageBase"), {ssr: false})
 
-const SecretHomeLayout = ({children, sidebar_tags}: {children: ReactNode, sidebar_tags: {tag: Tag, count: number}[]}) => {
+const SecretHomeLayout = ({children, sidebar_tags}: {children: ReactNode, sidebar_tags: {tag: TagData, count: number}[]}) => {
   const [isHideMobileSidebar, setIsHideMobileSidebar] = useState(true)
 
   const showSidebar = () => {

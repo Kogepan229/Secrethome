@@ -1,17 +1,17 @@
 import { DB } from "util/sql";
 
-export type Tag = {
+export type TagData = {
   id: string;
   name: string;
 }
 
-export type SidebarTags = {tag: Tag, count: number}[]
+export type SidebarTagsData = {tag: TagData, count: number}[]
 
-export const getContentTags = async (contentID: string) => {
+export const getContentTagsData = async (contentID: string) => {
   let result1 = await DB.query<{tag_id: string, priority: number}[]>(`select tag_id, priority from park_tags_of_contents where content_id='${contentID}'`);
 
 
-  type ContentTag = Tag & {
+  type ContentTag = TagData & {
     priority: number;
   }
   let _tags: ContentTag[] = []
@@ -26,15 +26,15 @@ export const getContentTags = async (contentID: string) => {
   })
 
   let tags = _tags.map(value => {
-    return {id: value.id, name: value.name} as Tag
+    return {id: value.id, name: value.name} as TagData
   })
 
   return tags
 }
 
-export const getSidebarTags = async () => {
-  let resultTag1 = await DB.query<Tag[]>(`select id, name from park_tags`);
-  const dataTag = JSON.parse(JSON.stringify(resultTag1)) as Tag[];
+export const getSidebarTagsData = async () => {
+  let resultTag1 = await DB.query<TagData[]>(`select id, name from park_tags`);
+  const dataTag = JSON.parse(JSON.stringify(resultTag1)) as TagData[];
   if (resultTag1.length == 0) {
     return [];
   } else {
@@ -42,7 +42,7 @@ export const getSidebarTags = async () => {
       let resultTag2 = await DB.query<any[]>(`select count(*) from park_tags_of_contents where tag_id='${value.id}'`);
       return {tag: value, count: resultTag2[0]['count(*)']}
     }))
-    tags.sort((a: {tag: Tag, count: number}, b: {tag: Tag, count: number}) => {
+    tags.sort((a: {tag: TagData, count: number}, b: {tag: TagData, count: number}) => {
       return b.count - a.count
     })
     return tags

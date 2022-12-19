@@ -1,3 +1,4 @@
+"use client"
 import React, { useMemo } from "react";
 import { ReactEventHandler, ReactNode, RefObject, useCallback, useEffect, useRef, useState } from "react";
 import css from "./VideoControl.module.scss"

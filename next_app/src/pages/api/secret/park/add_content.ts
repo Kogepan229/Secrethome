@@ -17,7 +17,7 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
   //console.log(req.socket.remoteAddress);
 
   if (req.method === 'POST') {
-    let form = new formidable.Formidable({ encoding: 'utf-8', uploadDir: './tmp', maxFileSize: 1024 * 1024 * 1024 * 4 });
+    let form = new formidable.Formidable({ encoding: 'utf-8', uploadDir: './tmp', maxFileSize: 1024 * 1024 * 1024 * 10 });
 
     let title: string;
     let description: string;

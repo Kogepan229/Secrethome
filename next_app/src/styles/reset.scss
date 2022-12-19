@@ -1,5 +1,13 @@
+@import url('https://fonts.googleapis.com/css2?family=Roboto&display=swap');
+
 *{
   margin: 0;
+}
+
+html,body {
+  width: 100%;
+  //min-height: 100%;
+  height: max-content;
 }
 
 button{
@@ -8,4 +16,9 @@ button{
   outline: none;
   padding: 0;
   appearance: none;
+}
+
+a{
+  color:inherit;
+  text-decoration: none;
 }
