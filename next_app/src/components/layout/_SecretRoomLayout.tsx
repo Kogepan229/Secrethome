@@ -1,10 +1,8 @@
 "use client"
 import { ReactNode, useState } from "react";
-import dynamic from 'next/dynamic';
-//import SecretPageBase from "./secretPageBase";
-import Header from "components/secret/park/Header";
+import Header from "features/header/Header";
 import SideBar from "features/sidebar/component/Sidebar";
-import css from "./SecretHomeLayout.module.scss"
+import css from "./SecretRoomLayout.module.scss"
 import { SidebarTagsData } from "util/secret/park/tags";
 
 const SecretRoomLayout = ({children, sidebarTags}: {children: ReactNode, sidebarTags: SidebarTagsData}) => {
