@@ -1,0 +1,29 @@
+@import "styles/variables";
+
+$button_height: 45px;
+$button_width: 50px;
+
+.page_selector{
+  display: flex;
+  width: 100%;
+  height: $button_height;
+  justify-content: center;
+
+  a+ a {
+    margin-left: 5px;
+  }
+}
+
+.page_num_button{
+  width: $button_width;
+  height: $button_height;
+  background-color: $color-primary-2;
+  line-height: $button_height;
+  text-align: center;
+  color: $color-white-text;
+  border-radius: 5px;
+
+  &[data-current="true"]{
+    background-color: $color-primary-1;
+  }
+}
