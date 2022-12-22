@@ -1,3 +1,4 @@
+@import "styles/variables";
 $sidebar_width: 200px;
 $sidebar_item_height: 40px;
 
@@ -21,8 +22,8 @@ $sidebar_item_height: 40px;
   //padding-right: 1px;
   text-align:center;
   //letter-spacing: 3px;
-  background-color: #0192a8;
-  color: #f0f0f0;
+  background-color: $color-primary-1;
+  color: $color-white-text;
 }
 
 

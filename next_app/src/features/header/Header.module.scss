@@ -1,5 +1,6 @@
 
 @import url('https://fonts.googleapis.com/css?family=Oswald:700');
+@import "styles/variables";
 $header_height: 50px;
 
 .header{
@@ -7,11 +8,11 @@ $header_height: 50px;
   justify-content: center;
   width: 100%;
   height: $header_height;
-  background-color: #0192a8;
+  background-color: $color-primary-1;
 }
 
 .header_logo{
-  color: #f0f0f0;
+  color: $color-white-text;
   line-height: $header_height;
   font-weight: bold;
   font-size: 25px;
