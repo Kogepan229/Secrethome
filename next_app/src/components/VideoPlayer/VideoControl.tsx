@@ -33,8 +33,18 @@ const VideoControl = (props: Props) => {
     observer.observe(resizeable)
   }
 
+  const onKeyUp = (e: any) => {
+    //console.log(e.key)
+    if (e.key === "ArrowRight" || e.key === "l") {
+      onClickForward()
+    } else if (e.key === "ArrowLeft" || e.key === "j") {
+      onClickBack()
+    }
+  }
+
   useEffect(() => {
     onVideoResize()
+    window.addEventListener("keyup", onKeyUp)
 
     props.videoRef.current?.addEventListener("timeupdate", onVideoTimeUpdate)
     props.videoRef.current?.addEventListener("loadedmetadata", onVideoTimeUpdate)
@@ -58,6 +68,9 @@ const VideoControl = (props: Props) => {
       }
     }
 
+    return () => {
+      window.removeEventListener("keyup", onKeyUp)
+    }
   }, [])
 
   useEffect(() => {
