@@ -4,6 +4,8 @@ import Header from "features/header/Header";
 import SideBar from "features/sidebar/component/Sidebar";
 import css from "./SecretRoomLayout.module.scss"
 import { SidebarTagsData } from "util/secret/park/tags";
+import { useModalScrollLock } from "util/useModalScrollLock";
+import { SIDEBAR_DIV_ID } from "features/sidebar/const";
 
 const SecretRoomLayout = ({children, sidebarTags}: {children: ReactNode, sidebarTags: SidebarTagsData}) => {
   const [isHideMobileSidebar, setIsHideMobileSidebar] = useState(true)
@@ -14,6 +16,8 @@ const SecretRoomLayout = ({children, sidebarTags}: {children: ReactNode, sidebar
   const onClickOverlay = () => {
     setIsHideMobileSidebar(true)
   }
+
+  useModalScrollLock(!isHideMobileSidebar, SIDEBAR_DIV_ID)
 
   return (
     <div className={css.body_container}>
