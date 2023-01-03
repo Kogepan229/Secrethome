@@ -12,6 +12,7 @@ services:
       MYSQL_ROOT_PASSWORD: root
       MYSQL_DATABASE: secrethome
     command: mysqld --default-authentication-plugin=mysql_native_password
+    restart: always
 
   nginx:
     volumes:
@@ -22,6 +23,7 @@ services:
     build:
       context: .
       dockerfile: ./docker/nginx/Dockerfile
+    restart: always
 
   web:
     volumes:
