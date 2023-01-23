@@ -60,7 +60,8 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
 
 
     }).then(() => {
-      exec(`sh ${process.env.FILE_DIRECTORY_PATH}/contents/convert.sh ${process.env.FILE_DIRECTORY_PATH}/contents/${id}/${id}`, err => {
+      // maxBuffer Default 1024 * 1024
+      exec(`sh ${process.env.FILE_DIRECTORY_PATH}/contents/convert.sh ${process.env.FILE_DIRECTORY_PATH}/contents/${id}/${id}`, {maxBuffer: 1024 * 1024 * 10}, err => {
         if (err) {
           console.log('id:', id);
           console.error(err);
