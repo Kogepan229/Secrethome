@@ -9,9 +9,10 @@ const getContentsData = async (searchParams?: SearchParams) => {
   let contentsData: ContentsData = {pageNum :0, contents: [], sidebarTags: []}
   contentsData.pageNum = Number(searchParams?.page)
   contentsData.pageNum = Number.isNaN(contentsData.pageNum) || contentsData.pageNum <= 0 ? 0 : contentsData.pageNum - 1;
+  console.log(`pageNum: ${contentsData.pageNum}`)
 
   // Get contents data from DB
-  let SQLResult = await DB.query<any[]>(`select id, title, description, updated_at from park_contents limit ${contentsData.pageNum * 20}, ${CONTENTS_NUM_PER_PAGE}`);
+  let SQLResult = await DB.query<any[]>(`select id, title, description, updated_at from park_contents limit ${contentsData.pageNum * CONTENTS_NUM_PER_PAGE}, ${CONTENTS_NUM_PER_PAGE}`);
   const data = JSON.parse(JSON.stringify(SQLResult));
   for (let i=0;i<data.length;i++) {
     let tags = await getContentTagsData(data[i].id)
