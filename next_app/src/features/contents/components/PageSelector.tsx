@@ -1,5 +1,6 @@
 import 'server-only'
 import { DB } from 'util/sql'
+import { SearchParams } from 'types/SearchParams'
 import { CONTENTS_NUM_PER_PAGE } from 'features/contents/const'
 import css from './PageSelector.module.scss'
 
@@ -19,11 +20,12 @@ const PageNumButton = ({ num, isCurrent }: { num: number; isCurrent: boolean }) 
   )
 }
 
-const PageSelector = async ({ pageNum }: { pageNum: any }) => {
+const PageSelector = async ({ searchParams }: { searchParams?: SearchParams }) => {
   const totalPageNum = await getTotalContentsPageNum()
   let pageNums = []
 
-  let currentPageNum = isNaN(Number(pageNum)) || Number(pageNum) <= 0 ? 1 : Number(pageNum)
+  let currentPageNum = Number(searchParams?.page)
+  currentPageNum = Number.isNaN(currentPageNum) || currentPageNum <= 0 ? 1 : currentPageNum
 
   if (totalPageNum <= 5) {
     for (let i = 1; i <= totalPageNum; i++) {

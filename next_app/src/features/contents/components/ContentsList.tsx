@@ -1,23 +1,22 @@
 import { DB } from 'util/sql'
 import { SearchParams } from 'types/SearchParams'
-import { getContentTagsData, getSidebarTagsData } from 'util/secret/park/tags'
+import { getContentTagsData } from 'util/secret/park/tags'
 import { CONTENTS_NUM_PER_PAGE } from 'features/contents/const'
-import { ContentsData } from 'features/contents/types'
+import { ContentsPageData } from 'features/contents/types'
 import ContentPost from 'features/contents/components/ContentPost'
 
 const getContentsData = async (searchParams?: SearchParams) => {
-  let contentsData: ContentsData = { pageNum: 0, contents: [], sidebarTags: [] }
+  let contentsData: ContentsPageData = { pageNum: 0, contents: [] }
   contentsData.pageNum = Number(searchParams?.page)
   contentsData.pageNum = Number.isNaN(contentsData.pageNum) || contentsData.pageNum <= 0 ? 0 : contentsData.pageNum - 1
-  console.log(`pageNum: ${contentsData.pageNum}`)
 
   // Get contents data from DB
-  let SQLResult = await DB.query<any[]>(
+  let sqlResult = await DB.query<any[]>(
     `select id, title, description, updated_at from park_contents limit ${
       contentsData.pageNum * CONTENTS_NUM_PER_PAGE
     }, ${CONTENTS_NUM_PER_PAGE}`
   )
-  const data = JSON.parse(JSON.stringify(SQLResult))
+  const data = JSON.parse(JSON.stringify(sqlResult))
   for (let i = 0; i < data.length; i++) {
     let tags = await getContentTagsData(data[i].id)
     contentsData.contents[i] = {
@@ -29,17 +28,13 @@ const getContentsData = async (searchParams?: SearchParams) => {
     }
   }
 
-  contentsData.sidebarTags = await getSidebarTagsData()
-
   return contentsData
 }
 
 const ContentsList = async ({ searchParams }: { searchParams?: SearchParams }) => {
   const contentsData = await getContentsData(searchParams)
   const Contents = contentsData.contents.map(content => {
-    return (
-      <ContentPost id={content.id} title={content.title} tags={content.tags} updated_at={content.updated_at} key={content.id}></ContentPost>
-    )
+    return <ContentPost contentData={content} key={content.id}></ContentPost>
   })
   return <>{Contents}</>
 }

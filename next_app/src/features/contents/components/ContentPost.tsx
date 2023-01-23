@@ -4,6 +4,7 @@ import Link from 'next/link'
 import { TagData } from 'util/secret/park/tags'
 import SimpleButton from 'components/SimpleButton'
 import { useRouter } from 'next/navigation'
+import { ContentData } from '../types'
 
 type Props = {
   id: string
@@ -12,7 +13,7 @@ type Props = {
   updated_at: string
 }
 
-const ContentPost = (props: Props) => {
+const ContentPost = ({ contentData }: { contentData: ContentData }) => {
   const router = useRouter()
 
   const onErrorImage = (e: any) => {
@@ -20,10 +21,10 @@ const ContentPost = (props: Props) => {
   }
 
   const onClickPost = () => {
-    router.push(`/park/contents/${props.id}`)
+    router.push(`/park/contents/${contentData.id}`)
   }
 
-  const Tags = props.tags.map(value => {
+  const Tags = contentData.tags.map(value => {
     return (
       <Link href={`/park/tags/${value.id}`} key={value.id}>
         <SimpleButton className={css.content_tag} onClick={e => e.stopPropagation()}>
@@ -36,10 +37,10 @@ const ContentPost = (props: Props) => {
   return (
     <div className={css.content_post} onClick={onClickPost}>
       <div className={css.content_post_inside}>
-        <Link href={`/park/contents/${props.id}`}>
+        <Link href={`/park/contents/${contentData.id}`}>
           <img
             className={css.content_img}
-            src={`${process.env.NEXT_PUBLIC_FILESERVER_URL}/contents/${props.id}/${props.id}.webp?${props.updated_at}`}
+            src={`${process.env.NEXT_PUBLIC_FILESERVER_URL}/contents/${contentData.id}/${contentData.id}.webp?${contentData.updated_at}`}
             onError={onErrorImage}
             onClick={e => e.stopPropagation()}
           ></img>
@@ -48,7 +49,7 @@ const ContentPost = (props: Props) => {
           <div>
             <div className={css.content_tags_container}>{Tags}</div>
           </div>
-          <p className={css.content_title}>{props.title}</p>
+          <p className={css.content_title}>{contentData.title}</p>
         </div>
       </div>
     </div>

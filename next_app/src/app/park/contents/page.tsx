@@ -11,13 +11,13 @@ const ContentsPage = ({ searchParams }: { searchParams?: SearchParams }) => {
     <SecretRoomLayout>
       <div className={css.contents_main}>
         {/* @ts-expect-error Server Component */}
-        <PageSelector pageNum={searchParams?.page} />
+        <PageSelector searchParams={searchParams} />
         <Suspense fallback={null}>
           {/* @ts-expect-error Server Component */}
           <ContentsList searchParams={searchParams}></ContentsList>
         </Suspense>
         {/* @ts-expect-error Server Component */}
-        <PageSelector pageNum={searchParams?.page} />
+        <PageSelector searchParams={searchParams} />
       </div>
     </SecretRoomLayout>
   )
