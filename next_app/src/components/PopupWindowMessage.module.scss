@@ -1,7 +1,6 @@
 //@import url('http://fonts.googleapis.com/css2?family=Roboto&display=swap');
 
-
-.container{
+.container {
   z-index: 150;
   position: fixed;
   top: calc(50% - 300px / 2);
@@ -14,7 +13,7 @@
   //box-shadow: 0 0 10px 0 rgba(0, 0, 0, 0.4);
 }
 
-.overlay{
+.overlay {
   z-index: 100;
   position: fixed;
   top: 0;
@@ -25,12 +24,12 @@
   background: rgba(0, 0, 0, 0.6);
 }
 
-.message_aria{
+.message_aria {
   display: flex;
   height: 200px;
 }
 
-.message{
+.message {
   //display: inline-block;
   margin: auto;
   //margin-top: 80px;
@@ -44,7 +43,7 @@
   color: rgb(70, 70, 70);
 }
 
-.button{
+.button {
   display: block;
   margin: auto;
   margin-top: 20px;
@@ -53,20 +52,19 @@
   background-color: #fff;
   border: 1px solid #d5d9d9;
   border-radius: 8px;
-  box-shadow: rgba(213, 217, 217, .5) 0 2px 5px 0;
+  box-shadow: rgba(213, 217, 217, 0.5) 0 2px 5px 0;
   box-sizing: border-box;
   color: #0f1111;
   cursor: pointer;
   font-size: 16px;
 
-  &:hover{
+  &:hover {
     background-color: #f7fafa;
   }
 
-  &:focus{
+  &:focus {
     border-color: #008296;
-    box-shadow: rgba(213, 217, 217, .5) 0 2px 5px 0;
+    box-shadow: rgba(213, 217, 217, 0.5) 0 2px 5px 0;
     outline: 0;
   }
-
 }

@@ -1,24 +1,24 @@
-"use client"
-import "client-only"
-import axios from 'axios';
-import { useState } from 'react';
-import css from "./ContentDeleteButton.module.scss"
+'use client'
+import 'client-only'
+import axios from 'axios'
+import { useState } from 'react'
+import css from './ContentDeleteButton.module.scss'
 
-import PopupWindowMessage from 'components/PopupWindowMessage';
-import { useRouter } from "next/navigation";
+import PopupWindowMessage from 'components/PopupWindowMessage'
+import { useRouter } from 'next/navigation'
 
-const ContentDeleteButton = ({contentID}: {contentID: string}) => {
+const ContentDeleteButton = ({ contentID }: { contentID: string }) => {
   const router = useRouter()
   const [isShowPopup, setIsShowPopup] = useState(false)
 
   const onClickDelete = () => {
-    let result = window.confirm("削除しますか")
+    let result = window.confirm('削除しますか')
     if (result) {
-      axios.delete("/api/secret/park/delete_content", {data: {id: contentID}}).then(res => {
-        if (res.data.result == "success") {
+      axios.delete('/api/secret/park/delete_content', { data: { id: contentID } }).then(res => {
+        if (res.data.result == 'success') {
           setIsShowPopup(true)
         } else {
-          console.error("res:", res.data.result)
+          console.error('res:', res.data.result)
         }
       })
     }
@@ -26,8 +26,15 @@ const ContentDeleteButton = ({contentID}: {contentID: string}) => {
 
   return (
     <>
-      <button className={css.delete_button} onClick={onClickDelete}>削除</button>
-      <PopupWindowMessage isShow={isShowPopup} message="削除しました" buttonText='戻る' buttonCallback={() => router.push("/park/contents/")}/>
+      <button className={css.delete_button} onClick={onClickDelete}>
+        削除
+      </button>
+      <PopupWindowMessage
+        isShow={isShowPopup}
+        message="削除しました"
+        buttonText="戻る"
+        buttonCallback={() => router.push('/park/contents/')}
+      />
     </>
   )
 }

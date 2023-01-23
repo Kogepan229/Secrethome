@@ -2,9 +2,9 @@
 import type { NextApiRequest, NextApiResponse } from 'next'
 
 const handler = async (req: NextApiRequest, res: NextApiResponse) => {
-  if (req.method === "POST") {
-    if (req.body.key === "256489") {
-      res.status(200).json({url: "/park/contents/"})
+  if (req.method === 'POST') {
+    if (req.body.key === '256489') {
+      res.status(200).json({ url: '/park/contents/' })
       return
     }
   }

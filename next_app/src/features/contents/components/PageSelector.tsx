@@ -1,15 +1,15 @@
-import "server-only"
-import { DB } from "util/sql";
-import { CONTENTS_NUM_PER_PAGE } from "features/contents/const";
-import css from "./PageSelector.module.scss"
+import 'server-only'
+import { DB } from 'util/sql'
+import { CONTENTS_NUM_PER_PAGE } from 'features/contents/const'
+import css from './PageSelector.module.scss'
 
 const getTotalContentsPageNum = async () => {
-  let result = await DB.query<any[]>(`select count(*) from park_contents`);
+  let result = await DB.query<any[]>(`select count(*) from park_contents`)
   let totalNum = Math.ceil((result[0]['count(*)'] as number) / CONTENTS_NUM_PER_PAGE)
   return totalNum
 }
 
-const PageNumButton = ({num, isCurrent}: {num: number, isCurrent: boolean}) => {
+const PageNumButton = ({ num, isCurrent }: { num: number; isCurrent: boolean }) => {
   return (
     <a href={num == 1 ? `/park/contents` : `/park/contents?page=${num}`}>
       <div className={css.page_num_button} data-current={isCurrent}>
@@ -19,17 +19,17 @@ const PageNumButton = ({num, isCurrent}: {num: number, isCurrent: boolean}) => {
   )
 }
 
-const PageSelector = async ({pageNum}: {pageNum: any}) => {
+const PageSelector = async ({ pageNum }: { pageNum: any }) => {
   const totalPageNum = await getTotalContentsPageNum()
   let pageNums = []
 
   let currentPageNum = isNaN(Number(pageNum)) || Number(pageNum) <= 0 ? 1 : Number(pageNum)
 
   if (totalPageNum <= 5) {
-    for (let i=1; i <= totalPageNum; i++) {
+    for (let i = 1; i <= totalPageNum; i++) {
       pageNums.push(i)
     }
-  } else if (currentPageNum <= 2 ) {
+  } else if (currentPageNum <= 2) {
     pageNums = [1, 2, 3, totalPageNum - 1, totalPageNum]
   } else if (currentPageNum >= totalPageNum - 1) {
     pageNums = [1, 2, totalPageNum - 2, totalPageNum - 1, totalPageNum]
@@ -38,14 +38,10 @@ const PageSelector = async ({pageNum}: {pageNum: any}) => {
   }
 
   const buttons = pageNums.map(num => {
-    return <PageNumButton num={num} isCurrent={num == currentPageNum} key={num}/>
+    return <PageNumButton num={num} isCurrent={num == currentPageNum} key={num} />
   })
 
-  return (
-    <div className={css.page_selector}>
-      {buttons}
-    </div>
-  )
+  return <div className={css.page_selector}>{buttons}</div>
 }
 
 export default PageSelector

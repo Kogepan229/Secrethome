@@ -1,20 +1,20 @@
-@import "styles/variables";
+@import 'styles/variables';
 
 $button_height: 45px;
 $button_width: 50px;
 
-.page_selector{
+.page_selector {
   display: flex;
   width: 100%;
   height: $button_height;
   justify-content: center;
 
-  a+ a {
+  a + a {
     margin-left: 5px;
   }
 }
 
-.page_num_button{
+.page_num_button {
   width: $button_width;
   height: $button_height;
   background-color: $color-primary-2;
@@ -23,7 +23,7 @@ $button_width: 50px;
   color: $color-white-text;
   border-radius: 5px;
 
-  &[data-current="true"]{
+  &[data-current='true'] {
     background-color: $color-primary-1;
   }
 }

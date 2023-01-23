@@ -1,12 +1,12 @@
-import Link from "next/link"
-import { TagData } from "util/secret/park/tags"
-import { SIDEBAR_DIV_ID } from "../const"
-import css from "./Sidebar.module.scss"
+import Link from 'next/link'
+import { TagData } from 'util/secret/park/tags'
+import { SIDEBAR_DIV_ID } from '../const'
+import css from './Sidebar.module.scss'
 
 type Props = {
-  tags: {tag: TagData, count: number}[]
-  className?: string;
-  isHide?: boolean;
+  tags: { tag: TagData; count: number }[]
+  className?: string
+  isHide?: boolean
 }
 
 const SideBar = (props: Props) => {
@@ -24,7 +24,7 @@ const SideBar = (props: Props) => {
   })
 
   return (
-    <div className={`${css.sidebar} ${props.className ?? ""}`} data-is-hide={props.isHide ?? false} id={SIDEBAR_DIV_ID}>
+    <div className={`${css.sidebar} ${props.className ?? ''}`} data-is-hide={props.isHide ?? false} id={SIDEBAR_DIV_ID}>
       <div className={css.sidebat_title}>タグ一覧</div>
       {Tags}
     </div>

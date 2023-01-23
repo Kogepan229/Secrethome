@@ -1,14 +1,14 @@
-"use client"
-import "client-only"
-import { useEffect, useMemo, useRef, useState } from "react";
-import { browserName, detectOS, Browser} from 'detect-browser';
-import Hls from "hls.js";
-import css from "./VideoPlayer.module.scss"
-import VideoControl from "./VideoControl"
+'use client'
+import 'client-only'
+import { useEffect, useMemo, useRef, useState } from 'react'
+import { browserName, detectOS, Browser } from 'detect-browser'
+import Hls from 'hls.js'
+import css from './VideoPlayer.module.scss'
+import VideoControl from './VideoControl'
 
 type Props = {
-  src: string;
-};
+  src: string
+}
 
 const VideoPlayer = (props: Props) => {
   //const isSupportBrowser = useMemo(() => Hls.isSupported(), [])
@@ -22,13 +22,13 @@ const VideoPlayer = (props: Props) => {
       return;
     }
     */
-    setIsIOS(typeof window !== "undefined" && browserName(window.navigator.userAgent) == "ios")
+    setIsIOS(typeof window !== 'undefined' && browserName(window.navigator.userAgent) == 'ios')
 
     var hls = new Hls({ enableWorker: false })
     hls.attachMedia(videoRef.current!)
     hls.on(Hls.Events.MEDIA_ATTACHED, () => {
       hls.loadSource(props.src)
-    });
+    })
 
     return () => {
       hls.removeAllListeners()
@@ -37,11 +37,10 @@ const VideoPlayer = (props: Props) => {
   }, [])
 
   return (
-    <div className={css.video_container}  ref={videoContainerRef}>
+    <div className={css.video_container} ref={videoContainerRef}>
       <div className={css.video_wrapper}>
-
         {(() => {
-          if (typeof window !== "undefined" && browserName(window.navigator.userAgent) !== "ios") {
+          if (typeof window !== 'undefined' && browserName(window.navigator.userAgent) !== 'ios') {
             return (
               <>
                 <video className={css.video} ref={videoRef}></video>
@@ -49,9 +48,7 @@ const VideoPlayer = (props: Props) => {
               </>
             )
           } else {
-            return(
-              <video className={css.video} src={props.src} poster={props.src.replace("m3u8", "webp")} controls playsInline></video>
-            )
+            return <video className={css.video} src={props.src} poster={props.src.replace('m3u8', 'webp')} controls playsInline></video>
           }
         })()}
       </div>

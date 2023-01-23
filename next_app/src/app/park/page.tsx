@@ -1,7 +1,7 @@
-import { redirect } from "next/navigation"
+import { redirect } from 'next/navigation'
 
 const ParkPage = () => {
-  redirect("/park/contents")
+  redirect('/park/contents')
 }
 
 export default ParkPage

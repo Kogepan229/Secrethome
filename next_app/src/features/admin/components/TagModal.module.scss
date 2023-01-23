@@ -2,7 +2,7 @@ $modal_width: 300px;
 $modal_height: 400px;
 $modal_header_height: 38px;
 
-.modal_container{
+.modal_container {
   position: fixed;
   top: calc(50% - #{$modal_height} / 2);
   left: calc(50% - #{$modal_width} / 2);
@@ -10,10 +10,10 @@ $modal_header_height: 38px;
   height: $modal_height;
   background-color: white;
   border: solid 2px rgba($color: #030303, $alpha: 0.5);
-  box-shadow: 0 0 10px 0 rgba(0, 0, 0, 0.4);;
+  box-shadow: 0 0 10px 0 rgba(0, 0, 0, 0.4);
 }
 
-.modal_header{
+.modal_header {
   display: flex;
   width: 100%;
   height: $modal_header_height;
@@ -21,13 +21,13 @@ $modal_header_height: 38px;
   //box-sizing: border-box;
 }
 
-.search{
+.search {
   width: calc(100% - #{$modal_header_height});
   height: $modal_header_height;
   box-sizing: border-box;
 }
 
-.close_button{
+.close_button {
   width: $modal_header_height;
   height: $modal_header_height;
   border: solid 2px red;
@@ -35,7 +35,7 @@ $modal_header_height: 38px;
   cursor: pointer;
 }
 
-.tags_container{
+.tags_container {
   width: 100%;
   height: calc(100% - #{$modal_header_height} - 2px);
   //box-sizing: border-box;
@@ -43,7 +43,7 @@ $modal_header_height: 38px;
   overflow-y: auto;
 }
 
-.create_tag{
+.create_tag {
   display: flex;
   width: 100%;
   height: 30px;
@@ -51,7 +51,7 @@ $modal_header_height: 38px;
   background-color: #f6f6f6;
 }
 
-.create_tag_input{
+.create_tag_input {
   width: calc(100% - 37px);
   height: 100%;
   margin-left: 3px;
@@ -60,12 +60,12 @@ $modal_header_height: 38px;
   cursor: text;
   background-color: #f6f6f6;
 
-  &:focus{
+  &:focus {
     outline: 0;
   }
 }
 
-.create_tag_button{
+.create_tag_button {
   width: 36px;
   height: calc(100% - 4px);
   margin: 2px;
@@ -78,17 +78,16 @@ $modal_header_height: 38px;
   font-size: 12px;
   //text-align: center;
   //line-height: 24px;
-  &:hover{
+  &:hover {
     background-color: #c7c7c7;
   }
 
-  &:disabled{
+  &:disabled {
     background-color: #8f8f8f;
-
   }
 }
 
-.tag{
+.tag {
   width: 100%;
   height: 30px;
   padding-left: 3px;
@@ -98,7 +97,7 @@ $modal_header_height: 38px;
   line-height: 30px;
   background-color: white;
 
-  &:hover{
+  &:hover {
     background-color: #ebebeb;
   }
 }

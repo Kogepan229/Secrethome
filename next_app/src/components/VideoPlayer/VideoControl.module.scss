@@ -1,21 +1,21 @@
 $seekbar_height: 16px;
 $controls_height: 48px;
 
-.control_container{
+.control_container {
   position: absolute;
   top: 0;
   left: 0;
 }
 
-.video_main_aria{
-  height: calc( 100% - #{$seekbar_height} - #{$controls_height} );
+.video_main_aria {
+  height: calc(100% - #{$seekbar_height} - #{$controls_height});
 }
 
-.video_bottom_control_aria{
-  height: calc( #{$seekbar_height} + #{$controls_height} );
+.video_bottom_control_aria {
+  height: calc(#{$seekbar_height} + #{$controls_height});
 }
 
-.video_seekbar{
+.video_seekbar {
   pointer-events: all;
   position: absolute;
   bottom: 48px;
@@ -24,7 +24,7 @@ $controls_height: 48px;
   width: calc(100% - 24px);
   height: 16px;
 
-  div{
+  div {
     user-select: none;
     pointer-events: none;
     position: absolute;
@@ -32,8 +32,8 @@ $controls_height: 48px;
     height: 3px;
   }
 
-  &:hover{
-    div{
+  &:hover {
+    div {
       display: block;
       height: 5px;
       bottom: -1px;
@@ -41,7 +41,7 @@ $controls_height: 48px;
   }
 }
 
-.video_seekbar_slider{
+.video_seekbar_slider {
   -webkit-appearance: none;
   appearance: none;
   cursor: pointer;
@@ -52,7 +52,7 @@ $controls_height: 48px;
   outline: none;
   border: none;
 
-  &::-webkit-slider-thumb{
+  &::-webkit-slider-thumb {
     -webkit-appearance: none;
     appearance: none;
     width: 12px;
@@ -61,21 +61,21 @@ $controls_height: 48px;
   }
 }
 
-.video_seekbar_base{
+.video_seekbar_base {
   width: 100%;
   background-color: rgba($color: #ffffff, $alpha: 0.2);
 }
 
-.video_seekbar_played{
+.video_seekbar_played {
   background-color: red;
 }
 
-.video_seekbar_thumb_container{
+.video_seekbar_thumb_container {
   display: none;
   bottom: 0 !important;
 }
 
-.video_seekbar_thumb{
+.video_seekbar_thumb {
   right: -6px;
   width: 13px !important;
   height: 13px !important;
@@ -84,7 +84,7 @@ $controls_height: 48px;
   border-radius: 50%;
 }
 
-.video_controls{
+.video_controls {
   display: flex;
   position: absolute;
   bottom: 0px;
@@ -97,18 +97,18 @@ $controls_height: 48px;
   }
 }
 
-.video_left_controls{
+.video_left_controls {
   display: flex;
   float: left;
   flex: 1;
 }
 
-.video_right_controls{
+.video_right_controls {
   display: flex;
   float: right;
 }
 
-.video_control_button{
+.video_control_button {
   position: relative;
   width: 48px;
   height: 48px;
@@ -118,7 +118,7 @@ $controls_height: 48px;
   pointer-events: all;
   cursor: pointer;
 
-  > div{
+  > div {
     position: absolute;
     left: 6px;
     top: 6px;
@@ -126,7 +126,7 @@ $controls_height: 48px;
     height: 36px;
     padding: 0;
 
-    svg{
+    svg {
       fill: white;
       width: 36px;
       height: 36px;
@@ -134,43 +134,43 @@ $controls_height: 48px;
   }
 }
 
-.video_control_skip{
-  > div{
+.video_control_skip {
+  > div {
     left: 10px;
     top: 10px;
     width: 28px;
     height: 28px;
-    svg{
+    svg {
       width: 28px;
       height: 28px;
     }
   }
 }
 
-.video_volume_controller{
+.video_volume_controller {
   display: flex;
 
-  &:hover{
-    > div{
+  &:hover {
+    > div {
       display: block;
     }
   }
 }
 
-.video_control_mute{
-  > div{
+.video_control_mute {
+  > div {
     left: 10px;
     top: 10px;
     width: 28px;
     height: 28px;
-    svg{
+    svg {
       width: 28px;
       height: 28px;
     }
   }
 }
 
-.video_control_volume{
+.video_control_volume {
   display: none;
   position: relative;
   height: 100%;
@@ -178,7 +178,7 @@ $controls_height: 48px;
   margin-right: 8px;
 }
 
-.video_control_volume_slider{
+.video_control_volume_slider {
   width: 50px;
   height: 100%;
   pointer-events: all;
@@ -191,7 +191,7 @@ $controls_height: 48px;
   outline: none;
   border: none;
 
-  &::-webkit-slider-thumb{
+  &::-webkit-slider-thumb {
     -webkit-appearance: none;
     appearance: none;
     width: 12px;
@@ -202,7 +202,7 @@ $controls_height: 48px;
   }
 }
 
-.video_control_volume_base{
+.video_control_volume_base {
   position: absolute;
   width: 100%;
   height: 3px;
@@ -210,7 +210,7 @@ $controls_height: 48px;
   background-color: rgba($color: #ffffff, $alpha: 0.2);
 }
 
-.video_control_volume_now{
+.video_control_volume_now {
   position: absolute;
   //width: 100%;
   height: 3px;
@@ -218,8 +218,8 @@ $controls_height: 48px;
   background-color: white;
 }
 
-.video_time_display{
-  user-select: none ;
+.video_time_display {
+  user-select: none;
   height: 48px;
   padding: 0 5px;
 
@@ -229,10 +229,10 @@ $controls_height: 48px;
   font-size: 13px;
 }
 
-.hide{
+.hide {
   display: none;
 }
 
-.cursor_hide{
+.cursor_hide {
   cursor: none;
 }

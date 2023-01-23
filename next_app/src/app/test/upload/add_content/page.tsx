@@ -1,9 +1,9 @@
-import EditContentForm from './EditContentForm';
-import { DB } from 'util/sql';
-import { TagData } from "util/secret/park/tags"
+import EditContentForm from './EditContentForm'
+import { DB } from 'util/sql'
+import { TagData } from 'util/secret/park/tags'
 
 const getTagsData = async (): Promise<TagData[]> => {
-  let result = await DB.query<TagData[]>(`select id, name from park_tags`);
+  let result = await DB.query<TagData[]>(`select id, name from park_tags`)
   if (result.length == 0) {
     return []
   } else {

@@ -1,5 +1,5 @@
-import Link from "next/link"
-import css from "./Header.module.scss"
+import Link from 'next/link'
+import css from './Header.module.scss'
 
 const Header = () => {
   return (
@@ -7,7 +7,9 @@ const Header = () => {
       <Link href="/park/contents">
         <div className={css.header_logo}>Secret Home</div>
       </Link>
-      <Link href="/park/admin/add_content"><button>追加</button></Link>
+      <Link href="/park/admin/add_content">
+        <button>追加</button>
+      </Link>
     </div>
   )
 }
