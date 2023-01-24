@@ -1,17 +1,9 @@
 'use client'
 import css from './ContentPost.module.scss'
 import Link from 'next/link'
-import { TagData } from 'util/secret/park/tags'
 import SimpleButton from 'components/SimpleButton'
 import { useRouter } from 'next/navigation'
 import { ContentData } from '../types'
-
-type Props = {
-  id: string
-  title: string
-  tags: TagData[]
-  updated_at: string
-}
 
 const ContentPost = ({ contentData }: { contentData: ContentData }) => {
   const router = useRouter()
@@ -26,7 +18,7 @@ const ContentPost = ({ contentData }: { contentData: ContentData }) => {
 
   const Tags = contentData.tags.map(value => {
     return (
-      <Link href={`/park/tags/${value.id}`} key={value.id}>
+      <Link href={`/park/contents/tags/?tags=${value.id}`} key={value.id}>
         <SimpleButton className={css.content_tag} onClick={e => e.stopPropagation()}>
           {value.name}
         </SimpleButton>

@@ -20,23 +20,23 @@ const PageNumButton = ({ num, isCurrent }: { num: number; isCurrent: boolean }) 
   )
 }
 
-const PageSelector = async ({ searchParams }: { searchParams?: SearchParams }) => {
-  const totalPageNum = await getTotalContentsPageNum()
+const PageSelector = async ({ searchParams, totalPageNum }: { searchParams?: SearchParams; totalPageNum?: number }) => {
+  const _totalPageNum = totalPageNum ?? (await getTotalContentsPageNum())
   let pageNums = []
 
   let currentPageNum = Number(searchParams?.page)
   currentPageNum = Number.isNaN(currentPageNum) || currentPageNum <= 0 ? 1 : currentPageNum
 
-  if (totalPageNum <= 5) {
-    for (let i = 1; i <= totalPageNum; i++) {
+  if (_totalPageNum <= 5) {
+    for (let i = 1; i <= _totalPageNum; i++) {
       pageNums.push(i)
     }
   } else if (currentPageNum <= 2) {
-    pageNums = [1, 2, 3, totalPageNum - 1, totalPageNum]
-  } else if (currentPageNum >= totalPageNum - 1) {
-    pageNums = [1, 2, totalPageNum - 2, totalPageNum - 1, totalPageNum]
+    pageNums = [1, 2, 3, _totalPageNum - 1, _totalPageNum]
+  } else if (currentPageNum >= _totalPageNum - 1) {
+    pageNums = [1, 2, _totalPageNum - 2, _totalPageNum - 1, _totalPageNum]
   } else {
-    pageNums = [1, currentPageNum - 1, currentPageNum, currentPageNum + 1, totalPageNum]
+    pageNums = [1, currentPageNum - 1, currentPageNum, currentPageNum + 1, _totalPageNum]
   }
 
   const buttons = pageNums.map(num => {
