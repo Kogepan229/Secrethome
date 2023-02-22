@@ -1,6 +1,6 @@
 {
   "name": "Secrethome",
-  "dockerComposeFile": "./docker-compose.dev.yml",
+  "dockerComposeFile": "../docker-compose.dev.yml",
   "service": "web",
   "workspaceFolder": "/next_app",
   "extensions": [
