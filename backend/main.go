@@ -8,6 +8,9 @@ import (
 	v1 "secrethome-back/gen/secrethome/v1"
 	"secrethome-back/gen/secrethome/v1/secrethomev1connect"
 
+	"golang.org/x/net/http2"
+	"golang.org/x/net/http2/h2c"
+
 	"github.com/bufbuild/connect-go"
 )
 
@@ -26,22 +29,20 @@ func (s *SecrethomeServer) Greet(
 	return res, nil
 }
 
-func (s *SecrethomeServer) Test(
-	ctx context.Context,
-	req *connect.Request[v1.TestRequest],
-) (*connect.Response[v1.TestResponse], error) {
-	log.Println("Request headers: ", req.Header())
-	res := connect.NewResponse(&v1.TestResponse{
-		Greeting: fmt.Sprintf("Hello, %s!", req.Msg.Name),
-	})
-	res.Header().Set("Greet-Version", "v1")
-	return res, nil
-}
-
 func main() {
+	err := ConnectDB()
+	if err != nil {
+		panic(err)
+	}
+	defer DB.Close()
+
 	shserver := &SecrethomeServer{}
 	mux := http.NewServeMux()
 	// path, handler := secrethomev1connect.N
 	mux.Handle(secrethomev1connect.NewGreetServiceHandler(shserver))
-	mux.Handle(secrethomev1connect.NewTagServiceHandler(shserver))
+	mux.HandleFunc("api/upload", UploadHundler)
+	http.ListenAndServe(
+		"localhost:8080",
+		h2c.NewHandler(mux, &http2.Server{}),
+	)
 }
