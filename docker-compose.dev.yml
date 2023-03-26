@@ -27,13 +27,14 @@ services:
     volumes:
       - ./data_files:/data_files
       - ./next_app:/next_app
+      - ./backend/proto:/next_app/proto
       - /next_app/node_modules
     tty: true
     ports:
       - '60131:3000'
     build:
-      context: ./next_app
-      dockerfile: Dockerfile
+      context: ./
+      dockerfile: ./next_app/Dockerfile
     working_dir: /next_app
     #entrypoint: "npm run dev"
     depends_on:
