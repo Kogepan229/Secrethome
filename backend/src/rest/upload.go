@@ -1,41 +1,45 @@
-package main
+package rest
 
 import (
 	"encoding/json"
 	"fmt"
+	"log"
 	"net/http"
 	"os"
-	"secrethome-back/utils"
+
+	"secrethome-back/features"
 
 	"github.com/oklog/ulid/v2"
 )
 
-type TagIDs struct {
-	IDs []string
-}
-
 func UploadHundler(w http.ResponseWriter, r *http.Request) {
 	id := ulid.Make().String()
-	createdAt := utils.GetCurrentTime()
+	createdAt := features.GetCurrentTime()
+
+	log.Println("Upload content id: " + id)
 
 	// values
 	title := r.FormValue("title")
 	description := r.FormValue("description")
 	if title == "" || description == "" {
+		features.PrintErr(fmt.Errorf("title or description is empty"))
 		http.Error(w, "title or description is empty", http.StatusBadRequest)
 		return
 	}
 
 	tagsJson := r.FormValue("tagIDs")
-	var tagIDs TagIDs
+	var tagIDs []string
 	err := json.Unmarshal([]byte(tagsJson), &tagIDs)
 	if err != nil {
+		features.PrintErr(err)
 		http.Error(w, err.Error(), http.StatusBadRequest)
+		return
 	}
 
 	// video file
 	videoFile, _, err := r.FormFile("video")
 	if err != nil {
+		features.PrintErr(err)
 		http.Error(w, err.Error(), http.StatusBadRequest)
 		return
 	}
@@ -44,25 +48,28 @@ func UploadHundler(w http.ResponseWriter, r *http.Request) {
 	// image file
 	imageFile, _, err := r.FormFile("image")
 	if err != nil {
+		features.PrintErr(err)
 		http.Error(w, err.Error(), http.StatusBadRequest)
 		return
 	}
 	defer imageFile.Close()
 
 	// content path
-	contentPath := fmt.Sprintf("data_files/contents/%s", id)
+	contentPath := fmt.Sprintf("/data_files/contents/%s", id)
 
 	// create content dir
 	err = os.MkdirAll(contentPath, os.ModePerm)
 	if err != nil {
+		features.PrintErr(err)
 		http.Error(w, err.Error(), http.StatusInternalServerError)
 		return
 	}
 
 	// save video file
 	videoName := fmt.Sprintf("%s.mp4", id)
-	err = SaveFile(videoFile, contentPath, videoName)
+	err = features.SaveFile(videoFile, contentPath, videoName)
 	if err != nil {
+		features.PrintErr(err)
 		os.RemoveAll(contentPath)
 		http.Error(w, err.Error(), http.StatusInternalServerError)
 		return
@@ -70,16 +77,18 @@ func UploadHundler(w http.ResponseWriter, r *http.Request) {
 
 	// save image file
 	imageName := fmt.Sprintf("%s.webp", id)
-	err = SaveFile(imageFile, contentPath, imageName)
+	err = features.SaveFile(imageFile, contentPath, imageName)
 	if err != nil {
+		features.PrintErr(err)
 		os.RemoveAll(contentPath)
 		http.Error(w, err.Error(), http.StatusInternalServerError)
 		return
 	}
 
-	tx, err := DB.Begin()
+	tx, err := features.DB.Begin()
 
 	if err != nil {
+		features.PrintErr(err)
 		os.RemoveAll(contentPath)
 		http.Error(w, err.Error(), http.StatusInternalServerError)
 		return
@@ -87,6 +96,7 @@ func UploadHundler(w http.ResponseWriter, r *http.Request) {
 
 	_, err = tx.Exec(`insert into park_contents values (?, ?, ?, ?, ?)`, id, title, description, createdAt, createdAt)
 	if err != nil {
+		features.PrintErr(err)
 		tx.Rollback()
 		os.RemoveAll(contentPath)
 		http.Error(w, err.Error(), http.StatusInternalServerError)
@@ -95,15 +105,17 @@ func UploadHundler(w http.ResponseWriter, r *http.Request) {
 
 	stmt, err := tx.Prepare(`insert into park_tags_of_contents values (?, ?, ?)`)
 	if err != nil {
+		features.PrintErr(err)
 		tx.Rollback()
 		os.RemoveAll(contentPath)
 		http.Error(w, err.Error(), http.StatusInternalServerError)
 		return
 	}
 
-	for i := 0; i < len(tagIDs.IDs); i++ {
-		_, err = stmt.Exec(id, tagIDs.IDs[i], i)
+	for i := 0; i < len(tagIDs); i++ {
+		_, err = stmt.Exec(id, tagIDs[i], i)
 		if err != nil {
+			features.PrintErr(err)
 			tx.Rollback()
 			os.RemoveAll(contentPath)
 			http.Error(w, err.Error(), http.StatusInternalServerError)
@@ -118,5 +130,5 @@ func UploadHundler(w http.ResponseWriter, r *http.Request) {
 	// TODO
 	// 変換開始
 
-	return
+	log.Println("Upload proccess done! id: " + id)
 }

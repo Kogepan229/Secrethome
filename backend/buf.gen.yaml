@@ -5,8 +5,8 @@ managed:
     default: secrethome-back/gen/
 plugins:
   - name: go
-    out: gen
+    out: src/gen
     opt: paths=source_relative
   - name: connect-go
-    out: gen
+    out: src/gen
     opt: paths=source_relative
