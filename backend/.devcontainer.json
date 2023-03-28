@@ -1,0 +1,16 @@
+{
+  "name": "Secrethome",
+  "dockerComposeFile": "../docker-compose.dev.yml",
+  "service": "backend",
+  "workspaceFolder": "/backend",
+  "customizations": {
+    "vscode": {
+      "extensions": [
+        "oderwat.indent-rainbow",
+        "golang.go",
+        "zxh404.vscode-proto3"
+      ]
+    }
+  },
+  "shutdownAction": "stopCompose"
+}

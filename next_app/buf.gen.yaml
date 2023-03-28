@@ -3,8 +3,8 @@ managed:
   enabled: true
 plugins:
   - name: es
-    out: gen
+    out: src/gen
     opt: target=ts
   - name: connect-es
-    out: gen
+    out: src/gen
     opt: target=ts

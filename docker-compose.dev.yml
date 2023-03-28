@@ -26,6 +26,22 @@ services:
     environment:
       TZ: Asia/Tokyo
 
+  backend:
+    volumes:
+      - ./data_files:/data_files
+      - ./backend:/backend
+    tty: true
+    ports:
+      - '60133:60133'
+    build:
+      context: ./
+      dockerfile: ./backend/Dockerfile
+    working_dir: /backend
+    environment:
+      TZ: Asia/Tokyo
+    depends_on:
+      - mysql
+
   web:
     volumes:
       - ./data_files:/data_files
@@ -45,3 +61,4 @@ services:
     depends_on:
       - mysql
       - nginx
+      - backend
