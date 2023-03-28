@@ -102,7 +102,7 @@ func main() {
 		AllowedOrigins:   []string{"*"},
 		AllowCredentials: true,
 		AllowedMethods:   []string{"GET", "POST", "PUT", "DELETE", "OPTIONS"},
-		Debug:            true,
+		Debug:            false,
 	})
 
 	shserver := &SecrethomeServer{}
