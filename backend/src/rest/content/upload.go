@@ -1,4 +1,4 @@
-package rest
+package content
 
 import (
 	"encoding/json"
@@ -12,7 +12,7 @@ import (
 	"github.com/oklog/ulid/v2"
 )
 
-func UploadHundler(w http.ResponseWriter, r *http.Request) {
+func uploadContent(w http.ResponseWriter, r *http.Request) {
 	id := ulid.Make().String()
 	createdAt := features.GetCurrentTime()
 

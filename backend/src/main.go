@@ -8,7 +8,7 @@ import (
 	"secrethome-back/features"
 	v1 "secrethome-back/gen/secrethome/v1"
 	"secrethome-back/gen/secrethome/v1/secrethomev1connect"
-	"secrethome-back/rest"
+	"secrethome-back/rest/content"
 	"time"
 
 	"golang.org/x/net/http2"
@@ -108,7 +108,7 @@ func main() {
 	shserver := &SecrethomeServer{}
 	mux := http.NewServeMux()
 	mux.Handle(secrethomev1connect.NewSecretHomeServiceHandler(shserver))
-	mux.HandleFunc("/api/upload", rest.UploadHundler)
+	mux.HandleFunc("/api/upload", content.ContentHundler)
 	err = http.ListenAndServe(
 		":60133",
 		c.Handler(h2c.NewHandler(mux, &http2.Server{})),
