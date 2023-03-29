@@ -133,8 +133,28 @@ const EditContentForm = (props: Props) => {
     */
 
     setIsStartedUpload(true)
+    if (props.isUpdate) {
+      axios
+      .put(process.env.NEXT_PUBLIC_BACKEND_URL + '/api/content' , file, {
+        headers: { 'content-type': 'multipart/form-data' },
+        onUploadProgress,
+      })
+      .then(res => {
+        console.log(res.data.result)
+        if (res.data.result == 'success') {
+          setIsShowCompletePopup(res.data.id)
+          //props.id = res.data.id;
+          //Router.push(`/secret/park/contents/${res.data.id}`)
+        } else {
+          console.error('res:', res.data.result)
+        }
+      })
+      return
+    }
+
+
     axios
-      .post(props.isUpdate ? '/api/secret/park/update_content' : process.env.NEXT_PUBLIC_BACKEND_URL + '/api/upload', file, {
+      .post(process.env.NEXT_PUBLIC_BACKEND_URL + '/api/content', file, {
         headers: { 'content-type': 'multipart/form-data' },
         onUploadProgress,
       })

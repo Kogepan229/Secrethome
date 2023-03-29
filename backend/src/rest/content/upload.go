@@ -55,7 +55,7 @@ func uploadContent(w http.ResponseWriter, r *http.Request) {
 	defer imageFile.Close()
 
 	// content path
-	contentPath := fmt.Sprintf("/data_files/contents/%s", id)
+	contentPath := fmt.Sprintf("data_files/contents/%s", id)
 
 	// create content dir
 	err = os.MkdirAll(contentPath, os.ModePerm)
@@ -86,7 +86,6 @@ func uploadContent(w http.ResponseWriter, r *http.Request) {
 	}
 
 	tx, err := features.DB.Begin()
-
 	if err != nil {
 		features.PrintErr(err)
 		os.RemoveAll(contentPath)

@@ -7,6 +7,11 @@ import (
 	"os"
 )
 
+func ExistsFile(name string) bool {
+	_, err := os.Stat(name)
+	return !os.IsNotExist(err)
+}
+
 func SaveFile(file multipart.File, path string, name string) error {
 	dst, err := os.Create(fmt.Sprintf("%s/%s", path, name))
 	if err != nil {

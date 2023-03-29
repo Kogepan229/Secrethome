@@ -5,6 +5,8 @@ import (
 	"fmt"
 	"log"
 	"net/http"
+	"os"
+	"path/filepath"
 	"secrethome-back/features"
 	v1 "secrethome-back/gen/secrethome/v1"
 	"secrethome-back/gen/secrethome/v1/secrethomev1connect"
@@ -84,8 +86,30 @@ func ConvertProc() {
 	}
 }
 
+func changeCurrentDir() {
+	// change current directory to executable path
+	exePath, err := os.Executable()
+	if err != nil {
+		panic(err)
+	}
+	exeDirPath := filepath.Dir(exePath)
+	err = os.Chdir(exeDirPath)
+	if err != nil {
+		panic(err)
+	}
+}
+
 func main() {
 	log.Println("Start secrethome backend")
+
+	changeCurrentDir()
+
+	log.Println(filepath.Abs("."))
+
+	if !features.ExistsFile("data_files") {
+		log.Fatalln("Not found data_files")
+	}
+
 	err := features.ConnectDB()
 	if err != nil {
 		panic(err)
@@ -108,7 +132,7 @@ func main() {
 	shserver := &SecrethomeServer{}
 	mux := http.NewServeMux()
 	mux.Handle(secrethomev1connect.NewSecretHomeServiceHandler(shserver))
-	mux.HandleFunc("/api/upload", content.ContentHundler)
+	mux.HandleFunc("/api/content", content.ContentHundler)
 	err = http.ListenAndServe(
 		":60133",
 		c.Handler(h2c.NewHandler(mux, &http2.Server{})),

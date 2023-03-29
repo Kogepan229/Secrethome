@@ -28,8 +28,8 @@ services:
 
   backend:
     volumes:
-      - ./data_files:/data_files
       - ./backend:/backend
+      - ./data_files:/backend/data_files
     tty: true
     ports:
       - '60133:60133'
