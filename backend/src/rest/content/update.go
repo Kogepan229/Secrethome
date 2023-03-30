@@ -179,8 +179,26 @@ func updateContent(w http.ResponseWriter, r *http.Request) {
 	stmt.Close()
 	//// insert tags info ////
 
+	// create json to write response
+	b, err := json.Marshal(map[string]string{"id": id})
+	if err != nil {
+		features.PrintErr(err)
+		tx.Rollback()
+		http.Error(w, err.Error(), http.StatusInternalServerError)
+		return
+	}
+
+	// write response
+	_, err = w.Write(b)
+	if err != nil {
+		features.PrintErr(err)
+		tx.Rollback()
+		http.Error(w, err.Error(), http.StatusInternalServerError)
+		return
+	}
+
 	tx.Commit()
-	w.WriteHeader(http.StatusOK)
+	//w.WriteHeader(http.StatusOK)
 
 	if videoFile != nil {
 		// 変換開始

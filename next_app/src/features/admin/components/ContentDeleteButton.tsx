@@ -14,12 +14,12 @@ const ContentDeleteButton = ({ contentID }: { contentID: string }) => {
   const onClickDelete = () => {
     let result = window.confirm('削除しますか')
     if (result) {
-      axios.delete('/api/secret/park/delete_content', { data: { id: contentID } }).then(res => {
-        if (res.data.result == 'success') {
-          setIsShowPopup(true)
-        } else {
-          console.error('res:', res.data.result)
-        }
+      let data = new FormData()
+      data.append("id", contentID)
+      axios.delete(process.env.NEXT_PUBLIC_BACKEND_URL + '/api/content', { data: data }).then(res => {
+        setIsShowPopup(true)
+      }).catch(err => {
+        console.error(err)
       })
     }
   }

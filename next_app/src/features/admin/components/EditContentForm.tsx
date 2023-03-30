@@ -3,9 +3,10 @@ import axios from 'axios'
 import PopupWindowMessage from 'components/PopupWindowMessage'
 import { useEffect, useRef, useState } from 'react'
 import { TagData } from 'util/secret/park/tags'
-import css from './EditContentForm.module.scss'
+import css from "features/admin/components/EditContentForm.module.scss"
 import TagModal from 'features/admin/components/TagModal'
 import { useRouter } from 'next/navigation'
+import { env } from 'process'
 
 type Props = {
   isUpdate?: boolean
@@ -21,6 +22,7 @@ const EditContentForm = (props: Props) => {
   const [title, setTitle] = useState(props.title ?? '')
   const [description, setDescription] = useState(props.description ?? '')
   const [movie, setMovie] = useState<File | null>(null)
+  const [image, setImage] = useState<File | null>(null)
   const [imageBlob, setImageBlob] = useState('')
   const [isEnableSubmit, setIsEnableSubmit] = useState<boolean>(false)
 
@@ -96,6 +98,9 @@ const EditContentForm = (props: Props) => {
         canvas.height = _img.naturalHeight
         canvas.getContext('2d')!.drawImage(_img, 0, 0, _img.naturalWidth, _img.naturalHeight)
         setImageBlob(canvas.toDataURL('image/webp'))
+        const _imageBlob = Buffer.from(canvas.toDataURL('image/webp').split(',')[1], 'base64')
+        const _image = new File([_imageBlob], "image.webp", {type: "image/webp"})
+        setImage(_image)
       }
       _img.src = URL.createObjectURL(event.target.files[0])
     }
@@ -110,29 +115,42 @@ const EditContentForm = (props: Props) => {
     }
     file.append('title', title)
     file.append('description', description)
-    file.append('tags', JSON.stringify(selectedTags.map(value => value.id)))
+    file.append('tagIDs', JSON.stringify(selectedTags.map(value => value.id)))
     if (props.isUpdate != true || updatedMovie) {
-      file.append('movie', movie!)
+      file.append('video', movie!)
     }
     if (props.isUpdate != true || updatedImage) {
-      file.append('image', imageBlob)
+      file.append('image', image!)
+      if (image == null) {
+        console.log("image is null")
+      }
     }
 
     setIsStartedUpload(true)
-    axios
-      .post(props.isUpdate ? '/api/secret/park/update_content' : '/api/secret/park/add_content', file, {
+    if (props.isUpdate) {
+      axios
+      .put(process.env.NEXT_PUBLIC_BACKEND_URL + '/api/content' , file, {
         headers: { 'content-type': 'multipart/form-data' },
         onUploadProgress,
       })
       .then(res => {
-        console.log(res.data.result)
-        if (res.data.result == 'success') {
-          setIsShowCompletePopup(res.data.id)
-          //props.id = res.data.id;
-          //Router.push(`/secret/park/contents/${res.data.id}`)
-        } else {
-          console.error('res:', res.data.result)
-        }
+        setIsShowCompletePopup(res.data.id)
+      }).catch(err => {
+        console.error(err)
+      })
+      return
+    }
+
+
+    axios
+      .post(process.env.NEXT_PUBLIC_BACKEND_URL + '/api/content', file, {
+        headers: { 'content-type': 'multipart/form-data' },
+        onUploadProgress,
+      })
+      .then(res => {
+        setIsShowCompletePopup(res.data.id)
+      }).catch(err => {
+        console.error(err)
       })
   }
 
@@ -161,6 +179,9 @@ const EditContentForm = (props: Props) => {
     console.log(videoRef.current.width)
 
     setImageBlob(canvas.toDataURL('image/webp'))
+    const _imageBlob = Buffer.from(canvas.toDataURL('image/webp').split(',')[1], 'base64')
+    const _image = new File([_imageBlob], "image.webp", {type: "image/webp"})
+    setImage(_image)
   }
 
   const TagItem = (tagProps: { id: string; name: string }) => {
