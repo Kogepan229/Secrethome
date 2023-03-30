@@ -104,8 +104,6 @@ func main() {
 
 	changeCurrentDir()
 
-	log.Println(filepath.Abs("."))
-
 	if !features.ExistsFile("data_files") {
 		log.Fatalln("Not found data_files")
 	}
