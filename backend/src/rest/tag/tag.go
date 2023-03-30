@@ -4,7 +4,7 @@ import (
 	"net/http"
 )
 
-func TagHundler(w http.ResponseWriter, r *http.Request) {
+func TagHandler(w http.ResponseWriter, r *http.Request) {
 	if r.Method == http.MethodPost {
 		addTag(w, r)
 		return

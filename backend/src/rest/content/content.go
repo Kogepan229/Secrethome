@@ -9,7 +9,7 @@ import (
 	"github.com/oklog/ulid/v2"
 )
 
-func ContentHundler(w http.ResponseWriter, r *http.Request) {
+func ContentHandler(w http.ResponseWriter, r *http.Request) {
 	if r.Method == http.MethodPost {
 		uploadContent(w, r)
 		return

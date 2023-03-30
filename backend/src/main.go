@@ -88,9 +88,9 @@ func main() {
 	shserver := &SecrethomeServer{}
 	mux := http.NewServeMux()
 	mux.Handle(secrethomev1connect.NewSecretHomeServiceHandler(shserver))
-	mux.HandleFunc("/api/secretkey", secretkey.SecretkeyHundler)
-	mux.HandleFunc("/api/content", content.ContentHundler)
-	mux.HandleFunc("/api/tag", tag.TagHundler)
+	mux.HandleFunc("/api/secretkey", secretkey.SecretkeyHandler)
+	mux.HandleFunc("/api/content", content.ContentHandler)
+	mux.HandleFunc("/api/tag", tag.TagHandler)
 	err = http.ListenAndServe(
 		":60133",
 		c.Handler(h2c.NewHandler(mux, &http2.Server{})),

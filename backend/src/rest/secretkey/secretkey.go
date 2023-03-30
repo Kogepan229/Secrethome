@@ -7,7 +7,7 @@ import (
 	"secrethome-back/features"
 )
 
-func SecretkeyHundler(w http.ResponseWriter, r *http.Request) {
+func SecretkeyHandler(w http.ResponseWriter, r *http.Request) {
 	if r.Method == http.MethodPost {
 		key := r.FormValue("key")
 		fmt.Println("key: " + key)
