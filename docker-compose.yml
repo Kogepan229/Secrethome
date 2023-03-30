@@ -40,6 +40,7 @@ services:
     working_dir: /backend
     environment:
       TZ: Asia/Tokyo
+    command: /backend/secrethome-back
     depends_on:
       - mysql
 
