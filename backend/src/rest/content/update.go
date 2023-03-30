@@ -6,6 +6,7 @@ import (
 	"log"
 	"net/http"
 	"os"
+	"secrethome-back/convert"
 	"secrethome-back/features"
 )
 
@@ -182,8 +183,8 @@ func updateContent(w http.ResponseWriter, r *http.Request) {
 	w.WriteHeader(http.StatusOK)
 
 	if videoFile != nil {
-		// TODO
 		// 変換開始
+		convert.ConversionQueue.Push(id)
 	}
 
 	log.Printf("[%s] Finished content update process", id)

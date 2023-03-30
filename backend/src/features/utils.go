@@ -3,6 +3,8 @@ package features
 import (
 	"fmt"
 	"log"
+	"os"
+	"path/filepath"
 	"runtime"
 	"time"
 )
@@ -11,6 +13,14 @@ func GetCurrentTime() string {
 	t := time.Now()
 
 	return t.Local().Format("2006-01-02T15:04:05")
+}
+
+func GetExeDirPath() string {
+	exePath, err := os.Executable()
+	if err != nil {
+		panic(err)
+	}
+	return filepath.Dir(exePath)
 }
 
 func PrintErr(err error) {

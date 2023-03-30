@@ -7,6 +7,7 @@ import (
 	"net/http"
 	"os"
 
+	"secrethome-back/convert"
 	"secrethome-back/features"
 
 	"github.com/oklog/ulid/v2"
@@ -126,8 +127,8 @@ func uploadContent(w http.ResponseWriter, r *http.Request) {
 	tx.Commit()
 	w.WriteHeader(http.StatusOK)
 
-	// TODO
 	// 変換開始
+	convert.ConversionQueue.Push(id)
 
 	log.Printf("[%s] Finished content upload process", id)
 }

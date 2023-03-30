@@ -6,14 +6,12 @@ import (
 	"log"
 	"net/http"
 	"os"
-	"path/filepath"
+	"secrethome-back/convert"
 	"secrethome-back/features"
 	v1 "secrethome-back/gen/secrethome/v1"
 	"secrethome-back/gen/secrethome/v1/secrethomev1connect"
 	"secrethome-back/rest/content"
 	"secrethome-back/rest/tag"
-	"sync"
-	"time"
 
 	"golang.org/x/net/http2"
 	"golang.org/x/net/http2/h2c"
@@ -22,42 +20,7 @@ import (
 	"github.com/rs/cors"
 )
 
-type ConversionQueue struct {
-	contentIDs []string
-	mu         sync.Mutex
-}
-
-type ConversionInfo struct {
-	finished bool
-	logs     []string
-}
-
 type SecrethomeServer struct {
-}
-
-var conversionQueue ConversionQueue = ConversionQueue{contentIDs: []string{}}
-
-// key: contentID, value: info
-var conversionInfoMap map[string]ConversionInfo = map[string]ConversionInfo{}
-
-func (c *ConversionQueue) Push(
-	id string,
-) error {
-	c.mu.Lock()
-	c.contentIDs = append(c.contentIDs, id)
-	c.mu.Unlock()
-	return nil
-}
-
-func (c *ConversionQueue) Pop() string {
-	c.mu.Lock()
-	if len(c.contentIDs) == 0 {
-		return ""
-	}
-	id := c.contentIDs[0]
-	c.contentIDs = c.contentIDs[1:]
-	c.mu.Unlock()
-	return id
 }
 
 func (s *SecrethomeServer) Greet(
@@ -82,25 +45,10 @@ func (s *SecrethomeServer) GetConvertLogs(
 	return nil
 }
 
-func ConvertProc() {
-	for {
-		c := conversionQueue.Pop()
-		if c == "" {
-			// 5秒間隔でポーリング
-			time.Sleep(5 * time.Second)
-			continue
-		}
-	}
-}
-
 func changeCurrentDir() {
 	// change current directory to executable path
-	exePath, err := os.Executable()
-	if err != nil {
-		panic(err)
-	}
-	exeDirPath := filepath.Dir(exePath)
-	err = os.Chdir(exeDirPath)
+	exeDirPath := features.GetExeDirPath()
+	err := os.Chdir(exeDirPath)
 	if err != nil {
 		panic(err)
 	}
@@ -115,7 +63,7 @@ func main() {
 		log.Fatalln("Not found data_files")
 	}
 
-	go ConvertProc()
+	go convert.ConvertProc()
 
 	err := features.ConnectDB()
 	if err != nil {
