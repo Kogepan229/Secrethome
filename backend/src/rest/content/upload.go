@@ -16,13 +16,13 @@ func uploadContent(w http.ResponseWriter, r *http.Request) {
 	id := ulid.Make().String()
 	createdAt := features.GetCurrentTime()
 
-	log.Println("Upload content id: " + id)
+	log.Printf("[%s] Start content upload process", id)
 
 	// values
 	title := r.FormValue("title")
 	description := r.FormValue("description")
 	if title == "" || description == "" {
-		features.PrintErr(fmt.Errorf("title or description is empty"))
+		features.PrintErr(fmt.Errorf("[%s] title or description is empty", id))
 		http.Error(w, "title or description is empty", http.StatusBadRequest)
 		return
 	}
@@ -129,5 +129,5 @@ func uploadContent(w http.ResponseWriter, r *http.Request) {
 	// TODO
 	// 変換開始
 
-	log.Println("Upload proccess done! id: " + id)
+	log.Printf("[%s] Finished content upload process", id)
 }

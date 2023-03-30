@@ -41,7 +41,6 @@ func addTag(w http.ResponseWriter, r *http.Request) {
 	row.Scan(&count)
 	if count != 0 {
 		errStr := "requested tag already exists"
-		//features.PrintErr(err)
 		log.Printf("[%s] %s", id, errStr)
 		tx.Rollback()
 		http.Error(w, errStr, http.StatusBadRequest)
@@ -56,7 +55,7 @@ func addTag(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	// write response
+	// create json to write response
 	b, err := json.Marshal(map[string]string{"id": id})
 	if err != nil {
 		features.PrintErr(err)
@@ -65,6 +64,7 @@ func addTag(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
+	// write response
 	_, err = w.Write(b)
 	if err != nil {
 		features.PrintErr(err)

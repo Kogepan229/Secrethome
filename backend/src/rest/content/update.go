@@ -22,7 +22,7 @@ func updateContent(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	log.Printf("[%s] start update", id)
+	log.Printf("[%s] Start content update process", id)
 
 	tagsJson := r.FormValue("tagIDs")
 	var tagIDs []string
@@ -177,6 +177,7 @@ func updateContent(w http.ResponseWriter, r *http.Request) {
 	}
 	stmt.Close()
 	//// insert tags info ////
+
 	tx.Commit()
 	w.WriteHeader(http.StatusOK)
 
@@ -185,5 +186,5 @@ func updateContent(w http.ResponseWriter, r *http.Request) {
 		// 変換開始
 	}
 
-	log.Printf("[%s] upload proccess done!", id)
+	log.Printf("[%s] Finished content update process", id)
 }
