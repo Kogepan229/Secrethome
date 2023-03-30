@@ -11,6 +11,7 @@ import (
 	v1 "secrethome-back/gen/secrethome/v1"
 	"secrethome-back/gen/secrethome/v1/secrethomev1connect"
 	"secrethome-back/rest/content"
+	"secrethome-back/rest/secretkey"
 	"secrethome-back/rest/tag"
 
 	"golang.org/x/net/http2"
@@ -87,6 +88,7 @@ func main() {
 	shserver := &SecrethomeServer{}
 	mux := http.NewServeMux()
 	mux.Handle(secrethomev1connect.NewSecretHomeServiceHandler(shserver))
+	mux.HandleFunc("/api/secretkey", secretkey.SecretkeyHundler)
 	mux.HandleFunc("/api/content", content.ContentHundler)
 	mux.HandleFunc("/api/tag", tag.TagHundler)
 	err = http.ListenAndServe(
