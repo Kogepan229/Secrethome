@@ -126,12 +126,6 @@ const EditContentForm = (props: Props) => {
       }
     }
 
-    /*
-    if (props.isUpdate != true || updatedImage) {
-      file.append('image', imageBlob)
-    }
-    */
-
     setIsStartedUpload(true)
     if (props.isUpdate) {
       axios
@@ -140,14 +134,9 @@ const EditContentForm = (props: Props) => {
         onUploadProgress,
       })
       .then(res => {
-        console.log(res.data.result)
-        if (res.data.result == 'success') {
-          setIsShowCompletePopup(res.data.id)
-          //props.id = res.data.id;
-          //Router.push(`/secret/park/contents/${res.data.id}`)
-        } else {
-          console.error('res:', res.data.result)
-        }
+        setIsShowCompletePopup(res.data.id)
+      }).catch(err => {
+        console.error(err)
       })
       return
     }
@@ -159,14 +148,9 @@ const EditContentForm = (props: Props) => {
         onUploadProgress,
       })
       .then(res => {
-        console.log(res.data.result)
-        if (res.data.result == 'success') {
-          setIsShowCompletePopup(res.data.id)
-          //props.id = res.data.id;
-          //Router.push(`/secret/park/contents/${res.data.id}`)
-        } else {
-          console.error('res:', res.data.result)
-        }
+        setIsShowCompletePopup(res.data.id)
+      }).catch(err => {
+        console.error(err)
       })
   }
 
