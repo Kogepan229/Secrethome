@@ -30,14 +30,13 @@ services:
 
   backend:
     volumes:
-      - ./backend:/backend
       - ./data_files:/backend/data_files
     tty: true
     ports:
       - '61133:60133'
     build:
       context: ./
-      dockerfile: ./backend/Dockerfile
+      dockerfile: ./docker/backend/product/Dockerfile
     working_dir: /backend
     environment:
       TZ: Asia/Tokyo
