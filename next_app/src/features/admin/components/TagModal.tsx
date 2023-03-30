@@ -68,16 +68,15 @@ const TagModal = (props: Props) => {
         })
       ) {
         console.log('ok')
-        axios.post('/api/secret/park/tag', { name: createTagValue.trim() }).then(res => {
-          if (res.data.result === 'success') {
-            console.log('success')
-            props.tagList.unshift({ id: res.data.id, name: createTagValue.trim() })
-            setCreatetagValue('')
-            forceUpdate()
-            //TagItems.fi
-          } else {
-            console.error(res.data.result)
-          }
+        let data = new FormData
+        data.append("name", createTagValue.trim())
+        axios.post(process.env.NEXT_PUBLIC_BACKEND_URL + "/api/tag", data).then(res => {
+          console.log('success')
+          props.tagList.unshift({ id: res.data.id, name: createTagValue.trim() })
+          setCreatetagValue('')
+          forceUpdate()
+        }).catch(err => {
+          console.error(err)
         })
       }
     }

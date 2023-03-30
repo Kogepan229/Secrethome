@@ -10,7 +10,9 @@ const Home = () => {
 
   const handleSubmit = (event: any) => {
     event.preventDefault()
-    axios.post('/api/secret/secretkey', { key: key }).then(res => {
+    const data = new FormData()
+    data.append("key", key)
+    axios.post(process.env.NEXT_PUBLIC_BACKEND_URL + '/api/secretkey', data).then(res => {
       console.log(res.data)
       if (res.data.url) {
         router.push(res.data.url)

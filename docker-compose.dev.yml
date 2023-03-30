@@ -11,6 +11,7 @@ services:
     environment:
       MYSQL_ROOT_PASSWORD: root
       MYSQL_DATABASE: secrethome
+      TZ: Asia/Tokyo
     command: mysqld --default-authentication-plugin=mysql_native_password
 
   nginx:
@@ -22,20 +23,42 @@ services:
     build:
       context: .
       dockerfile: ./docker/nginx/Dockerfile
+    environment:
+      TZ: Asia/Tokyo
+
+  backend:
+    volumes:
+      - ./backend:/backend
+      - ./data_files:/backend/data_files
+    tty: true
+    ports:
+      - '60133:60133'
+    build:
+      context: ./
+      dockerfile: ./docker/backend/dev/Dockerfile
+    working_dir: /backend
+    environment:
+      TZ: Asia/Tokyo
+    depends_on:
+      - mysql
 
   web:
     volumes:
       - ./data_files:/data_files
       - ./next_app:/next_app
+      - ./backend/proto:/next_app/proto
       - /next_app/node_modules
     tty: true
     ports:
       - '60131:3000'
     build:
-      context: ./next_app
-      dockerfile: Dockerfile
+      context: ./
+      dockerfile: ./next_app/Dockerfile
     working_dir: /next_app
+    environment:
+      TZ: Asia/Tokyo
     #entrypoint: "npm run dev"
     depends_on:
       - mysql
       - nginx
+      - backend
