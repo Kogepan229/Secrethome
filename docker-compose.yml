@@ -28,6 +28,22 @@ services:
       TZ: Asia/Tokyo
     restart: always
 
+  backend:
+    volumes:
+      - ./backend:/backend
+      - ./data_files:/backend/data_files
+    tty: true
+    ports:
+      - '61133:60133'
+    build:
+      context: ./
+      dockerfile: ./backend/Dockerfile
+    working_dir: /backend
+    environment:
+      TZ: Asia/Tokyo
+    depends_on:
+      - mysql
+
   web:
     volumes:
       - ./data_files:/data_files

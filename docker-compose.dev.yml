@@ -35,7 +35,7 @@ services:
       - '60133:60133'
     build:
       context: ./
-      dockerfile: ./backend/Dockerfile
+      dockerfile: ./docker/backend/dev/Dockerfile
     working_dir: /backend
     environment:
       TZ: Asia/Tokyo
