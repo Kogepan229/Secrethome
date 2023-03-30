@@ -17,7 +17,7 @@ func updateContent(w http.ResponseWriter, r *http.Request) {
 	updatedAt := features.GetCurrentTime()
 
 	if id == "" || title == "" || description == "" {
-		features.PrintErr(fmt.Errorf("title or description is empty"))
+		features.PrintErr(fmt.Errorf("is, title or description is empty"))
 		http.Error(w, "id, title or description is empty", http.StatusBadRequest)
 		return
 	}
