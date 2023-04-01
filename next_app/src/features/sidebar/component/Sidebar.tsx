@@ -12,7 +12,7 @@ type Props = {
 const SideBar = (props: Props) => {
   const Tags = props.tags.map(value => {
     return (
-      <Link href={`/park/tag/${value.tag.id}`} key={value.tag.id}>
+      <Link href={`park/contents/tags?tags=${value.tag.id}`} key={value.tag.id}>
         <div className={css.sidebar_item_tag}>
           <p className={css.sidebar_item_tag_name}>{value.tag.name}</p>
           <div className={css.sidebar_item_tag_count}>
