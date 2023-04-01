@@ -45,21 +45,16 @@ services:
       - mysql
 
   web:
-    volumes:
-      - ./data_files:/data_files
-      - ./next_app:/next_app
-      - ./backend/proto:/next_app/proto
-      - /next_app/node_modules
     tty: true
     ports:
       - '61131:3000'
     build:
       context: ./
-      dockerfile: ./next_app/Dockerfile
+      dockerfile: ./docker/next_app/product/Dockerfile
     working_dir: /next_app
     environment:
       TZ: Asia/Tokyo
-    entrypoint: sh -c "npm run build && npm run start"
+    entrypoint: /nodejs/bin/node server.js
     depends_on:
       - mysql
       - nginx

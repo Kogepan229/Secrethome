@@ -44,7 +44,6 @@ services:
 
   web:
     volumes:
-      - ./data_files:/data_files
       - ./next_app:/next_app
       - ./backend/proto:/next_app/proto
       - /next_app/node_modules
@@ -53,7 +52,7 @@ services:
       - '60131:3000'
     build:
       context: ./
-      dockerfile: ./next_app/Dockerfile
+      dockerfile: ./docker/next_app/dev/Dockerfile
     working_dir: /next_app
     environment:
       TZ: Asia/Tokyo
