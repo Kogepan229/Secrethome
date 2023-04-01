@@ -3,7 +3,7 @@ import axios from 'axios'
 import PopupWindowMessage from 'components/PopupWindowMessage'
 import { useEffect, useRef, useState } from 'react'
 import { TagData } from 'util/secret/park/tags'
-import css from "features/admin/components/EditContentForm.module.scss"
+import css from 'features/admin/components/EditContentForm.module.scss'
 import TagModal from 'features/admin/components/TagModal'
 import { useRouter } from 'next/navigation'
 import { env } from 'process'
@@ -15,7 +15,6 @@ type Props = {
   description?: string
   updatedAt?: string
   selectedTags?: TagData[]
-  tags: TagData[]
 }
 
 const EditContentForm = (props: Props) => {
@@ -48,7 +47,6 @@ const EditContentForm = (props: Props) => {
   const [uploadProgress, setUploadProgress] = useState(0)
 
   const addTag = (tag: TagData) => {
-    //setSelectedTags([...selectedTags, tag].sort((a: Tag, b: Tag) => {return a.priority - b.priority}))
     setSelectedTags([...selectedTags, tag])
     SetIsOpenedTagModal(false)
   }
@@ -100,7 +98,7 @@ const EditContentForm = (props: Props) => {
         canvas.getContext('2d')!.drawImage(_img, 0, 0, _img.naturalWidth, _img.naturalHeight)
         setImageBlob(canvas.toDataURL('image/webp'))
         const _imageBlob = Buffer.from(canvas.toDataURL('image/webp').split(',')[1], 'base64')
-        const _image = new File([_imageBlob], "image.webp", {type: "image/webp"})
+        const _image = new File([_imageBlob], 'image.webp', { type: 'image/webp' })
         setImage(_image)
       }
       _img.src = URL.createObjectURL(event.target.files[0])
@@ -123,25 +121,25 @@ const EditContentForm = (props: Props) => {
     if (props.isUpdate != true || updatedImage) {
       file.append('image', image!)
       if (image == null) {
-        console.log("image is null")
+        console.log('image is null')
       }
     }
 
     setIsStartedUpload(true)
     if (props.isUpdate) {
       axios
-      .put(process.env.NEXT_PUBLIC_BACKEND_URL + '/api/content' , file, {
-        headers: { 'content-type': 'multipart/form-data' },
-        onUploadProgress,
-      })
-      .then(res => {
-        setIsShowCompletePopup(res.data.id)
-      }).catch(err => {
-        console.error(err)
-      })
+        .put(process.env.NEXT_PUBLIC_BACKEND_URL + '/api/content', file, {
+          headers: { 'content-type': 'multipart/form-data' },
+          onUploadProgress,
+        })
+        .then(res => {
+          setIsShowCompletePopup(res.data.id)
+        })
+        .catch(err => {
+          console.error(err)
+        })
       return
     }
-
 
     axios
       .post(process.env.NEXT_PUBLIC_BACKEND_URL + '/api/content', file, {
@@ -150,7 +148,8 @@ const EditContentForm = (props: Props) => {
       })
       .then(res => {
         setIsShowCompletePopup(res.data.id)
-      }).catch(err => {
+      })
+      .catch(err => {
         console.error(err)
       })
   }
@@ -181,7 +180,7 @@ const EditContentForm = (props: Props) => {
 
     setImageBlob(canvas.toDataURL('image/webp'))
     const _imageBlob = Buffer.from(canvas.toDataURL('image/webp').split(',')[1], 'base64')
-    const _image = new File([_imageBlob], "image.webp", {type: "image/webp"})
+    const _image = new File([_imageBlob], 'image.webp', { type: 'image/webp' })
     setImage(_image)
   }
 
@@ -280,7 +279,6 @@ const EditContentForm = (props: Props) => {
         isShow={isOpenedTagModal}
         closeCallback={() => SetIsOpenedTagModal(false)}
         selectTagCallback={addTag}
-        tagList={props.tags}
         excludeTagIDList={selectedTags.map(value => value.id)}
       />
       <PopupWindowMessage

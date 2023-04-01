@@ -1,84 +1,83 @@
-"use client"
+'use client'
 import css from './TagModal.module.scss'
 import { TagData } from 'util/secret/park/tags'
-import { useEffect, useReducer, useState } from 'react'
-import axios from 'axios'
+import { use, useEffect, useMemo, useReducer, useState } from 'react'
+import useSWR from 'swr'
+import axios, { AxiosError, AxiosResponse } from 'axios'
 
 type Props = {
   isShow: boolean
   closeCallback: () => void
   selectTagCallback: (tag: TagData) => void
-  tagList: TagData[]
   excludeTagIDList?: string[]
 }
 
+type FetchedTags = {
+  tags: TagData[]
+}
+
+const fetcher = async (url: string) => {
+  return await axios.get(url)
+}
+
 const TagModal = (props: Props) => {
-  const [any, forceUpdate] = useReducer(num => num + 1, 0)
+  const [forceAny, forceUpdate] = useState(false)
   const [createTagValue, setCreatetagValue] = useState('')
 
-  useEffect(() => {
-    if (props.isShow) {
-      /*
-      props.tagList.sort((a: Tag, b: Tag) => {
-        return a.priority - b.priority
-      })
-      forceUpdate()
-      */
-    }
-  }, [props.isShow])
+  const { data, error } = useSWR<AxiosResponse<FetchedTags>, AxiosError>(process.env.NEXT_PUBLIC_BACKEND_URL + '/api/all_tags', fetcher)
+  let tags: TagData[] = data?.data.tags ?? []
 
-  type TagProps = {
-    tag: TagData
-  }
-
-  const TagItem = (tagProps: TagProps) => {
+  const TagItem = ({ tag }: { tag: TagData }) => {
     const onClickTagItem = () => {
-      props.selectTagCallback(tagProps.tag)
+      props.selectTagCallback(tag)
     }
     return (
       <div className={css.tag} onClick={onClickTagItem}>
-        {tagProps.tag.name}
+        {tag.name}
       </div>
     )
   }
 
-  const TagItems = props.tagList
-    .filter(value => {
-      if (props.excludeTagIDList) {
-        return !props.excludeTagIDList.some(_value => {
-          if (value.id === _value) {
-            return true
-          } else {
-            return false
-          }
-        })
-      } else {
-        return true
-      }
-    })
-    .map((item, index) => {
-      return <TagItem tag={item} key={index} />
-    })
+  const TagItems = useMemo(() => {
+    return tags
+      .filter(value => {
+        if (props.excludeTagIDList) {
+          return !props.excludeTagIDList.some(_value => {
+            if (value.id === _value) {
+              return true
+            } else {
+              return false
+            }
+          })
+        } else {
+          return true
+        }
+      })
+      .map((item, index) => {
+        return <TagItem tag={item} key={index} />
+      })
+  }, [tags, props.excludeTagIDList, forceAny])
 
   const createTag = () => {
-    //console.log(createTagValue)
     if (createTagValue.trim()) {
       if (
-        !props.tagList.some(value => {
+        !tags.some(value => {
           return value.name === createTagValue.trim()
         })
       ) {
-        console.log('ok')
-        let data = new FormData
-        data.append("name", createTagValue.trim())
-        axios.post(process.env.NEXT_PUBLIC_BACKEND_URL + "/api/tag", data).then(res => {
-          console.log('success')
-          props.tagList.unshift({ id: res.data.id, name: createTagValue.trim() })
-          setCreatetagValue('')
-          forceUpdate()
-        }).catch(err => {
-          console.error(err)
-        })
+        let data = new FormData()
+        data.append('name', createTagValue.trim())
+        axios
+          .post(process.env.NEXT_PUBLIC_BACKEND_URL + '/api/tag', data)
+          .then(res => {
+            console.log('success')
+            tags.unshift({ id: res.data.id, name: createTagValue.trim() })
+            setCreatetagValue('')
+            forceUpdate(!forceAny)
+          })
+          .catch(err => {
+            console.error(err)
+          })
       }
     }
   }
@@ -107,22 +106,6 @@ const TagModal = (props: Props) => {
           </button>
         </div>
         {TagItems}
-        <div className={css.tag}></div>
-        <div className={css.tag}></div>
-        <div className={css.tag}></div>
-        <div className={css.tag}></div>
-        <div className={css.tag}></div>
-        <div className={css.tag}></div>
-        <div className={css.tag}></div>
-        <div className={css.tag}></div>
-        <div className={css.tag}></div>
-        <div className={css.tag}></div>
-        <div className={css.tag}></div>
-        <div className={css.tag}></div>
-        <div className={css.tag}></div>
-        <div className={css.tag}></div>
-        <div className={css.tag}></div>
-        <div className={css.tag}></div>
       </div>
     </div>
   )
