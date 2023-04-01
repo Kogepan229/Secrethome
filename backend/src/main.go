@@ -72,7 +72,7 @@ func main() {
 	}
 	defer features.DB.Close()
 
-	err = features.DB.Ping()
+	err = features.PingRecursive()
 	if err != nil {
 		panic(err)
 	}
