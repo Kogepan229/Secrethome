@@ -33,15 +33,6 @@ const VideoControl = (props: Props) => {
     observer.observe(resizeable)
   }
 
-  const onKeyUp = (e: any) => {
-    //console.log(e.key)
-    if (e.key === 'ArrowRight' || e.key === 'l') {
-      onClickForward()
-    } else if (e.key === 'ArrowLeft' || e.key === 'j') {
-      onClickBack()
-    }
-  }
-
   useEffect(() => {
     onVideoResize()
     window.addEventListener('keyup', onKeyUp)
@@ -129,7 +120,7 @@ const VideoControl = (props: Props) => {
   const onMouseUpSeekbar = () => {
     if (isPlaying) {
       props.videoRef.current?.play().catch(error => {
-        console.log('e:', error)
+        console.error('e:', error)
       })
     }
   }
@@ -186,6 +177,17 @@ const VideoControl = (props: Props) => {
     }
     onVideoTimeUpdate()
   }, [onVideoTimeUpdate])
+
+  const onKeyUp = useCallback(
+    (e: any) => {
+      if (e.key === 'ArrowRight' || e.key === 'l') {
+        onClickForward()
+      } else if (e.key === 'ArrowLeft' || e.key === 'j') {
+        onClickBack()
+      }
+    },
+    [onClickBack, onClickBack]
+  )
 
   const onClickMute = useCallback(() => {
     if (!volume) return
@@ -348,6 +350,7 @@ const VideoControl = (props: Props) => {
             type="range"
             max={getVideoMaxTime()}
             onChange={onChangeSlider}
+            onKeyDown={e => e.preventDefault()}
             onMouseDown={onMouseDownSeekbar}
             onMouseUp={onMouseUpSeekbar}
           ></input>
@@ -369,6 +372,7 @@ const VideoControl = (props: Props) => {
                   className={css.video_control_volume_slider}
                   ref={controlVolumeSliderRef}
                   onChange={onChangeVolume}
+                  onKeyDown={e => e.preventDefault()}
                   type="range"
                   max="100"
                 ></input>
