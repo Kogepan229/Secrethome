@@ -13,6 +13,7 @@ type Props = {
   id?: string
   title?: string
   description?: string
+  updatedAt?: string
   selectedTags?: TagData[]
   tags: TagData[]
 }
@@ -33,7 +34,7 @@ const EditContentForm = (props: Props) => {
     props.isUpdate ? `${process.env.NEXT_PUBLIC_FILESERVER_URL}/contents/${props.id}/${props.id}.mp4` : ''
   )
   const [imgSrc, setImgSrc] = useState(
-    props.isUpdate ? `${process.env.NEXT_PUBLIC_FILESERVER_URL}/contents/${props.id}/${props.id}.webp` : ''
+    props.isUpdate ? `${process.env.NEXT_PUBLIC_FILESERVER_URL}/contents/${props.id}/${props.id}.webp?${props.updatedAt}` : ''
   )
   const [updatedMovie, setUpdatedMovie] = useState(false)
   const [updatedImage, setUpdatedImage] = useState(false)

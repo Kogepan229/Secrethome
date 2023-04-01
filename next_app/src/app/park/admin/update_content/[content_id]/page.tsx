@@ -8,12 +8,13 @@ type ContentData = {
   id?: string
   title?: string
   description?: string
+  updatedAt?: string
   selectedTags: TagData[]
   tags: TagData[]
 }
 
 const getContentData = async (contentID: any): Promise<ContentData> => {
-  let result = await DB.query<any[]>(`select title, description from park_contents where id='${contentID}'`)
+  let result = await DB.query<any[]>(`select title, description, updated_at from park_contents where id='${contentID}'`)
   let resultTag = await DB.query<TagData[]>(`select id, name from park_tags`)
   if (result.length == 0) {
     return { tags: [], selectedTags: [] }
@@ -22,6 +23,7 @@ const getContentData = async (contentID: any): Promise<ContentData> => {
       id: contentID as string | undefined,
       title: result[0].title,
       description: result[0].description,
+      updatedAt: result[0].updated_at,
       tags: JSON.parse(JSON.stringify(resultTag)),
       selectedTags: await getContentTagsData(contentID as string),
     }
@@ -41,6 +43,7 @@ const UpdateContent = async ({ params }: { params: any }) => {
         id={contentData.id}
         title={contentData.title}
         description={contentData.description}
+        updatedAt={contentData.updatedAt}
         tags={contentData.tags}
         selectedTags={contentData.selectedTags}
       ></EditContentForm>
