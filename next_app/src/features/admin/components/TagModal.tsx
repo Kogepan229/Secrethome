@@ -1,3 +1,4 @@
+"use client"
 import css from './TagModal.module.scss'
 import { TagData } from 'util/secret/park/tags'
 import { useEffect, useReducer, useState } from 'react'

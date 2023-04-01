@@ -91,6 +91,7 @@ func main() {
 	mux.HandleFunc("/api/secretkey", secretkey.SecretkeyHandler)
 	mux.HandleFunc("/api/content", content.ContentHandler)
 	mux.HandleFunc("/api/tag", tag.TagHandler)
+	mux.HandleFunc("/api/alltags", tag.GetAllTagsHandler)
 	err = http.ListenAndServe(
 		":60133",
 		c.Handler(h2c.NewHandler(mux, &http2.Server{})),
