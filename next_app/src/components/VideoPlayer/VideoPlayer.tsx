@@ -11,19 +11,10 @@ type Props = {
 }
 
 const VideoPlayer = (props: Props) => {
-  //const isSupportBrowser = useMemo(() => Hls.isSupported(), [])
   const videoContainerRef = useRef<HTMLDivElement>(null)
   const videoRef = useRef<HTMLVideoElement>(null)
-  const [isIOS, setIsIOS] = useState(false)
 
   useEffect(() => {
-    /*
-    if (!isSupportBrowser) {
-      return;
-    }
-    */
-    setIsIOS(typeof window !== 'undefined' && browserName(window.navigator.userAgent) == 'ios')
-
     var hls = new Hls({ enableWorker: false })
     hls.attachMedia(videoRef.current!)
     hls.on(Hls.Events.MEDIA_ATTACHED, () => {
@@ -54,36 +45,6 @@ const VideoPlayer = (props: Props) => {
       </div>
     </div>
   )
-  /*
-  if (isIOS) {
-    // ios
-    return (
-      <div className={css.video_container}  ref={videoContainerRef}>
-        <div className={css.video_wrapper}>
-          <video className={css.video} src={props.src} poster={props.src.replace("m3u8", "webp")} controls playsInline></video>
-        </div>
-      </div>
-    )
-  } else {
-    // other
-    return (
-      <div className={css.video_container}  ref={videoContainerRef}>
-        <div className={css.video_wrapper}>
-        <video className={css.video} ref={videoRef}></video>
-          {(() => {
-            if (typeof window !== "undefined" && browserName(window.navigator.userAgent) !== "ios") {
-              return (
-                <>
-                  <VideoControl videoRef={videoRef} videoContainerRef={videoContainerRef}></VideoControl>
-                </>
-              )
-            }
-          })()}
-        </div>
-      </div>
-    )
-  }
-  */
 }
 
 export default VideoPlayer

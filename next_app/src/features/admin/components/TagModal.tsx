@@ -1,7 +1,7 @@
 'use client'
 import css from './TagModal.module.scss'
 import { TagData } from 'util/secret/park/tags'
-import { use, useEffect, useMemo, useReducer, useState } from 'react'
+import { useMemo, useState } from 'react'
 import useSWR from 'swr'
 import axios, { AxiosError, AxiosResponse } from 'axios'
 

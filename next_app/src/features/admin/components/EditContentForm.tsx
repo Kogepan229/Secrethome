@@ -6,7 +6,6 @@ import { TagData } from 'util/secret/park/tags'
 import css from 'features/admin/components/EditContentForm.module.scss'
 import TagModal from 'features/admin/components/TagModal'
 import { useRouter } from 'next/navigation'
-import { env } from 'process'
 
 type Props = {
   isUpdate?: boolean

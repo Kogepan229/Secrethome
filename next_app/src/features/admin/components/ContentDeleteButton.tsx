@@ -15,12 +15,15 @@ const ContentDeleteButton = ({ contentID }: { contentID: string }) => {
     let result = window.confirm('削除しますか')
     if (result) {
       let data = new FormData()
-      data.append("id", contentID)
-      axios.delete(process.env.NEXT_PUBLIC_BACKEND_URL + '/api/content', { data: data }).then(res => {
-        setIsShowPopup(true)
-      }).catch(err => {
-        console.error(err)
-      })
+      data.append('id', contentID)
+      axios
+        .delete(process.env.NEXT_PUBLIC_BACKEND_URL + '/api/content', { data: data })
+        .then(res => {
+          setIsShowPopup(true)
+        })
+        .catch(err => {
+          console.error(err)
+        })
     }
   }
 
