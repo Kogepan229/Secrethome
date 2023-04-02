@@ -7,9 +7,6 @@ const Header = () => {
       <Link href="/park/contents">
         <div className={css.header_logo}>Secret Home</div>
       </Link>
-      <Link href="/park/admin/add_content">
-        <button>追加</button>
-      </Link>
     </div>
   )
 }
