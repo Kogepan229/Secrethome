@@ -3,19 +3,45 @@ $sidebar_width: 200px;
 $sidebar_item_height: 40px;
 
 .sidebar {
-  width: $sidebar_width;
-  //height: 800px;
-  border: solid 1px #e3e3e3;
-  //box-sizing: border-box;
+}
 
+.admin_link {
+  display: block;
+  width: calc(#{$sidebar_width} - 20px);
+  height: $sidebar_item_height;
+  margin: 10px;
+  margin-top: 0;
+
+  line-height: $sidebar_item_height;
+  font-family: 'Roboto', sans-serif;
+
+  text-align: center;
+  letter-spacing: 12px;
+
+  background-color: $color-primary-1;
+  color: $color-white-text;
+  border-radius: 5px;
+
+  &:hover {
+    background-color: $color-primary-3;
+  }
+
+  @media screen and (max-width: $mobile-width-max) {
+    display: none;
+  }
+}
+
+.tag_list {
+  width: $sidebar_width;
   background-color: white;
+  border: solid 1px $color-border-gray;
   div + div {
-    border-top: solid 1px #e3e3e3;
+    border-top: solid 1px $color-border-gray;
     //border-left: 1px solid #333;
   }
 }
 
-.sidebat_title {
+.sidebar_title {
   width: $sidebar_width;
   height: $sidebar_item_height;
   line-height: $sidebar_item_height;

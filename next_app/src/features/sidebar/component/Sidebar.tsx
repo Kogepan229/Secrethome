@@ -25,8 +25,13 @@ const SideBar = (props: Props) => {
 
   return (
     <div className={`${css.sidebar} ${props.className ?? ''}`} data-is-hide={props.isHide ?? false} id={SIDEBAR_DIV_ID}>
-      <div className={css.sidebat_title}>タグ一覧</div>
-      {Tags}
+      <Link href="/park/admin" className={css.admin_link}>
+        <p>管理</p>
+      </Link>
+      <div className={css.tag_list}>
+        <div className={css.sidebar_title}>タグ一覧</div>
+        {Tags}
+      </div>
     </div>
   )
 }
