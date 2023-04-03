@@ -14,6 +14,7 @@ import { useProgressBar } from './ProgressBar'
 import PopupWindowMessage from 'components/PopupWindowMessage'
 import SimpleButton from 'components/SimpleButton'
 import ContentDeleteButton from './ContentDeleteButton'
+import Header from 'features/header/Header'
 
 type Props = {
   id: string
@@ -82,6 +83,7 @@ const UpdateContentForm = (props: Props) => {
 
   return (
     <>
+      <Header />
       <div className={css.form}>
         <h2 className={css.form_header}>アップデート</h2>
         {EditTitle}

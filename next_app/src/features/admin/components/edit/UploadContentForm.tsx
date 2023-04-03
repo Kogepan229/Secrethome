@@ -12,6 +12,7 @@ import { useEditVideo } from './EditVideo'
 import { useProgressBar } from './ProgressBar'
 import PopupWindowMessage from 'components/PopupWindowMessage'
 import SimpleButton from 'components/SimpleButton'
+import Header from 'features/header/Header'
 
 const UploadContentForm = () => {
   const router = useRouter()
@@ -61,6 +62,7 @@ const UploadContentForm = () => {
 
   return (
     <>
+      <Header />
       <div className={css.form}>
         <h2 className={css.form_header}>アップロード</h2>
         {EditTitle}
