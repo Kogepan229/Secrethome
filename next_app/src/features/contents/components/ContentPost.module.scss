@@ -72,13 +72,10 @@
 }
 
 .content_title {
-  display: -webkit-box;
   width: 100%;
   font-weight: bold;
   font-size: 1em;
   color: #335;
-  -webkit-line-clamp: 3;
-  -webkit-box-orient: vertical;
-  text-overflow: ellipsis;
+  overflow-wrap: break-word;
   overflow: hidden;
 }
