@@ -1,11 +1,11 @@
 'use client'
-import { useMemo, useState } from 'react'
+import { useEffect, useMemo, useState } from 'react'
 import css from './EditContentForm.module.scss'
 import { AxiosProgressEvent } from 'axios'
 
 const ProgressBar = ({ progress }: { progress: number }) => {
   return (
-    <div>
+    <div id="progress_bar">
       <p>{progress}%</p>
       <progress value={progress} max="100" />
     </div>
@@ -14,6 +14,12 @@ const ProgressBar = ({ progress }: { progress: number }) => {
 
 export const useProgressBar = ({ enabled }: { enabled: boolean }) => {
   const [progress, setProgress] = useState(0)
+
+  useEffect(() => {
+    if (enabled) {
+      window.location.hash = 'progress_bar'
+    }
+  }, [enabled])
 
   const onProgress = (progressEvent: AxiosProgressEvent) => {
     if (!progressEvent.total) return
