@@ -5,6 +5,7 @@ import Link from 'next/link'
 import { getContentTagsData, TagData } from 'util/secret/park/tags'
 import SecretRoomLayout from 'components/layout/SecretRoomLayout'
 import css from './content.module.scss'
+import reactStringReplace from 'react-string-replace'
 
 const VideoPlayer = dynamic(() => import('components/VideoPlayer/VideoPlayer'), { ssr: false, suspense: true })
 
@@ -33,6 +34,11 @@ const ContentPage = async ({ params }: { params: any }) => {
   if (contentData.id == undefined) {
     return <p>No content</p>
   }
+  const description = reactStringReplace(contentData.description, /(https?:\/\/[\w!?/+\-_~;.,*&@#$%()'[\]]+)/g, (match, i) => (
+    <a key={i} href={match}>
+      {match}
+    </a>
+  ))
 
   return (
     /* @ts-expect-error Server Component */
@@ -44,7 +50,7 @@ const ContentPage = async ({ params }: { params: any }) => {
           </Suspense>
         </div>
         <p className={css.title}>{contentData.title}</p>
-        <p className={css.description}>{contentData.description}</p>
+        <p className={css.description}>{description}</p>
         <Link href={`/park/admin/update/${contentData.id}`}>更新</Link>
       </div>
     </SecretRoomLayout>
