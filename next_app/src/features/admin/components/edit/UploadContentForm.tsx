@@ -1,19 +1,18 @@
 'use client'
 import { useEffect, useState } from 'react'
-import css from './EditContentForm.module.scss'
+import { useRouter } from 'next/navigation'
+import axios from 'axios'
 
+import css from './EditContentForm.module.scss'
 import { useEditDescription } from './EditDescription'
 import { useEditImage } from './EditImage'
 import { useEditTags } from './EditTags'
 import { useEditTitle } from './EditTitle'
 import { useEditVideo } from './EditVideo'
 import { useProgressBar } from './ProgressBar'
-import axios from 'axios'
 import PopupWindowMessage from 'components/PopupWindowMessage'
-import { useRouter } from 'next/navigation'
 
 const UploadContentForm = () => {
-  console.log('UploadContentForm')
   const router = useRouter()
 
   const [isEnableSubmit, setIsEnableSubmit] = useState(false)

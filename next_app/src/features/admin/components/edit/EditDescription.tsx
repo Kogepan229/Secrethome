@@ -9,7 +9,6 @@ const EditDescription = ({
   description: string
   setDescription: React.Dispatch<React.SetStateAction<string>>
 }) => {
-  console.log('EditDescription')
   const handleChangeDescription = (event: any) => {
     setDescription(event.target.value)
   }

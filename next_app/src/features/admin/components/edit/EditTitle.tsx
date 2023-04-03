@@ -3,7 +3,6 @@ import { useCallback, useMemo, useState } from 'react'
 import css from './EditContentForm.module.scss'
 
 const EditTitle = ({ title, setTitle }: { title: string; setTitle: React.Dispatch<React.SetStateAction<string>> }) => {
-  console.log('EditTitle')
   const handleChangeTitle = useCallback((event: any) => {
     setTitle(event.target.value)
   }, [])

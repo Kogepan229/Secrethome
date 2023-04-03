@@ -17,7 +17,6 @@ export const useProgressBar = ({ enabled }: { enabled: boolean }) => {
 
   const onProgress = (progressEvent: AxiosProgressEvent) => {
     if (!progressEvent.total) return
-    console.log(Math.round((progressEvent.loaded / progressEvent.total) * 100))
     setProgress(Math.round((progressEvent.loaded / progressEvent.total) * 100))
   }
 

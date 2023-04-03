@@ -1,17 +1,17 @@
 'use client'
 import { useEffect, useState } from 'react'
-import axios from 'axios'
 import { useRouter } from 'next/navigation'
-import css from './EditContentForm.module.scss'
+import axios from 'axios'
 
+import css from './EditContentForm.module.scss'
 import { useEditDescription } from './EditDescription'
 import { useEditImage } from './EditImage'
 import { useEditTags } from './EditTags'
 import { useEditTitle } from './EditTitle'
 import { useEditVideo } from './EditVideo'
 import { TagData } from 'util/secret/park/tags'
-import PopupWindowMessage from 'components/PopupWindowMessage'
 import { useProgressBar } from './ProgressBar'
+import PopupWindowMessage from 'components/PopupWindowMessage'
 
 type Props = {
   id: string
@@ -22,7 +22,6 @@ type Props = {
 }
 
 const UpdateContentForm = (props: Props) => {
-  console.log('UpdateContentForm')
   const router = useRouter()
 
   const [isEnableSubmit, setIsEnableSubmit] = useState(false)

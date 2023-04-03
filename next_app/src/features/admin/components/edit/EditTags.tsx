@@ -11,12 +11,10 @@ const EditTags = ({
   selectedTagList: TagData[]
   setSelectedTagList: React.Dispatch<React.SetStateAction<TagData[]>>
 }) => {
-  console.log('EditTags')
   const [isOpenedTagModal, setIsOpenedTagModal] = useState(false)
 
   const addTag = (tag: TagData) => {
     setSelectedTagList(prev => [...prev, tag])
-    //SetIsOpenedTagModal(false)
   }
 
   const TagItem = (tagProps: { id: string; name: string }) => {

@@ -5,23 +5,16 @@ import React, { useCallback, useMemo, useRef, useState } from 'react'
 const EditVideo = ({
   videoRef,
   videoSrc,
-  //videoName,
   setVideo,
-  //updated,
   setUpdated,
-  //isStopped,
   setIsStopped,
 }: {
   videoRef: React.RefObject<HTMLVideoElement>
   videoSrc?: string
-  //videoName: string | null
   setVideo: React.Dispatch<React.SetStateAction<File | null>>
-  //updated: boolean
   setUpdated: React.Dispatch<React.SetStateAction<boolean>>
-  //isStopped: boolean
   setIsStopped: React.Dispatch<React.SetStateAction<boolean>>
 }) => {
-  console.log('EditVideo')
   const [_videoSrc, setVideoSrc] = useState(videoSrc)
   const [videoName, setVideoName] = useState('未選択')
 
@@ -45,7 +38,6 @@ const EditVideo = ({
   const handleDrop = (e: React.DragEvent<HTMLVideoElement>) => {
     e.preventDefault()
     if (e.dataTransfer.files[0].type === 'video/mp4') {
-      // console.log(e.dataTransfer.files[0])
       setVideo(e.dataTransfer.files[0])
       setVideoSrc(URL.createObjectURL(e.dataTransfer.files[0]))
       setVideoName(e.dataTransfer.files[0].name)
@@ -84,7 +76,6 @@ const EditVideo = ({
 }
 
 export const useEditVideo = ({ videoSrc }: { videoSrc?: string }) => {
-  console.log('useEditVideo')
   const [video, setVideo] = useState<File | null>(null)
   const [updated, setUpdated] = useState(false)
   const [isStopped, setIsStopped] = useState(true)
@@ -92,8 +83,6 @@ export const useEditVideo = ({ videoSrc }: { videoSrc?: string }) => {
   const videoRef = useRef<HTMLVideoElement>(null)
 
   const getVideoImage = () => {
-    console.log('getVideoImage')
-
     return new Promise<File | null>(resolve => {
       if (!videoRef.current) {
         resolve(null)

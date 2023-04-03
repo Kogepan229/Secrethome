@@ -1,6 +1,6 @@
 'use client'
 import css from './EditContentForm.module.scss'
-import React, { useCallback, useMemo, useRef, useState } from 'react'
+import React, { useMemo, useState } from 'react'
 
 const EditImage = ({
   imageSrc,
