@@ -16,15 +16,14 @@ const EditDescription = ({
   return (
     <div>
       <p>概要</p>
-      <input
+      <textarea
         spellCheck="false"
         autoComplete="off"
-        type={'text'}
         name={'description'}
         value={description}
         className={css.input_description}
         onChange={handleChangeDescription}
-      ></input>
+      />
     </div>
   )
 }
