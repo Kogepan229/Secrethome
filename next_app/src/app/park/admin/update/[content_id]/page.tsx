@@ -1,7 +1,6 @@
 import { DB } from 'util/sql'
 import { getContentTagsData, TagData } from 'util/secret/park/tags'
 
-import ContentDeleteButton from 'features/admin/components/edit/ContentDeleteButton'
 import UpdateContentForm from 'features/admin/components/edit/UpdateContentForm'
 
 type ContentData = {
@@ -41,8 +40,7 @@ const UpdateContent = async ({ params }: { params: any }) => {
         description={contentData.description ?? ''}
         updatedAt={contentData.updatedAt ?? ''}
         selectedTagList={contentData.selectedTags ?? []}
-      ></UpdateContentForm>
-      <ContentDeleteButton contentID={contentData.id} />
+      />
     </div>
   )
 }

@@ -13,6 +13,7 @@ import { TagData } from 'util/secret/park/tags'
 import { useProgressBar } from './ProgressBar'
 import PopupWindowMessage from 'components/PopupWindowMessage'
 import SimpleButton from 'components/SimpleButton'
+import ContentDeleteButton from './ContentDeleteButton'
 
 type Props = {
   id: string
@@ -87,10 +88,11 @@ const UpdateContentForm = (props: Props) => {
         {EditTags}
         {EditVideo}
         {EditImage}
-        <div>
+        <div className={css.exec_button_container}>
           <SimpleButton className={css.button_submit} onClick={handleSubmit} disabled={!isEnableSubmit}>
             更新
           </SimpleButton>
+          <ContentDeleteButton contentID={props.id} />
         </div>
         {ProgressBar}
       </div>
