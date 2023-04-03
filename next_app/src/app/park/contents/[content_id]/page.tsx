@@ -6,6 +6,7 @@ import { getContentTagsData, TagData } from 'util/secret/park/tags'
 import SecretRoomLayout from 'components/layout/SecretRoomLayout'
 import css from './content.module.scss'
 import reactStringReplace from 'react-string-replace'
+import SimpleButton from 'components/SimpleButton'
 
 const VideoPlayer = dynamic(() => import('components/VideoPlayer/VideoPlayer'), { ssr: false, suspense: true })
 
@@ -49,9 +50,13 @@ const ContentPage = async ({ params }: { params: any }) => {
             <VideoPlayer src={process.env.NEXT_PUBLIC_FILESERVER_URL + '/contents/' + contentData.id + '/' + contentData.id + '.m3u8'} />
           </Suspense>
         </div>
-        <p className={css.title}>{contentData.title}</p>
+        <div className={css.under_video}>
+          <p className={css.title}>{contentData.title}</p>
+          <SimpleButton className={css.button_update}>
+            <Link href={`/park/admin/update/${contentData.id}`}>更新</Link>
+          </SimpleButton>
+        </div>
         <p className={css.description}>{description}</p>
-        <Link href={`/park/admin/update/${contentData.id}`}>更新</Link>
       </div>
     </SecretRoomLayout>
   )
