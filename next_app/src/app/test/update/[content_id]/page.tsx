@@ -1,8 +1,8 @@
 import { DB } from 'util/sql'
-import EditContentForm from 'features/admin/components/EditContentForm'
 import { getContentTagsData, TagData } from 'util/secret/park/tags'
 
-import ContentDeleteButton from 'features/admin/components/ContentDeleteButton'
+import ContentDeleteButton from 'features/admin/components/edit/ContentDeleteButton'
+import UpdateContentForm from 'features/admin/components/edit/UpdateContentForm'
 
 type ContentData = {
   id?: string
@@ -18,7 +18,7 @@ const getContentData = async (contentID: any): Promise<ContentData> => {
     return { selectedTags: [] }
   } else {
     return {
-      id: contentID as string | undefined,
+      id: contentID as string,
       title: result[0].title,
       description: result[0].description,
       updatedAt: result[0].updated_at,
@@ -35,14 +35,13 @@ const UpdateContent = async ({ params }: { params: any }) => {
 
   return (
     <div>
-      <EditContentForm
-        isUpdate={true}
+      <UpdateContentForm
         id={contentData.id}
-        title={contentData.title}
-        description={contentData.description}
-        updatedAt={contentData.updatedAt}
-        selectedTags={contentData.selectedTags}
-      ></EditContentForm>
+        title={contentData.title ?? ''}
+        description={contentData.description ?? ''}
+        updatedAt={contentData.updatedAt ?? ''}
+        selectedTagList={contentData.selectedTags ?? []}
+      ></UpdateContentForm>
       <ContentDeleteButton contentID={contentData.id} />
     </div>
   )

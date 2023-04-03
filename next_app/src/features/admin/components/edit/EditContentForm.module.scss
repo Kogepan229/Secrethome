@@ -1,3 +1,5 @@
+@import 'styles/variables';
+
 .form {
   // display: flex;
   // flex-direction: column;
@@ -53,8 +55,40 @@
   }
 }
 
+.input_file_container {
+  display: flex;
+}
+
 .input_file {
-  margin-bottom: 10px;
+  display: inline-block;
+  background-color: $color-primary-1;
+  color: $color-white-text;
+  padding: 5px;
+  padding-top: 4px;
+  padding-bottom: 3px;
+  margin-top: 3px;
+  margin-bottom: 3px;
+  border-radius: 5px;
+  font-size: 15px;
+  white-space: nowrap;
+
+  input {
+    display: none;
+  }
+
+  &:hover {
+    cursor: pointer;
+    background-color: $color-primary-3;
+  }
+}
+
+.input_file_name {
+  height: 30px;
+  line-height: 30px;
+  margin: 3px;
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
 }
 
 .video_div {
