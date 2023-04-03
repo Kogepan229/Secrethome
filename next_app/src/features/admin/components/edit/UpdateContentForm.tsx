@@ -11,6 +11,7 @@ import { useEditTitle } from './EditTitle'
 import { useEditVideo } from './EditVideo'
 import { TagData } from 'util/secret/park/tags'
 import PopupWindowMessage from 'components/PopupWindowMessage'
+import { useProgressBar } from './ProgressBar'
 
 type Props = {
   id: string
@@ -23,6 +24,11 @@ type Props = {
 const UpdateContentForm = (props: Props) => {
   console.log('UpdateContentForm')
   const router = useRouter()
+
+  const [isEnableSubmit, setIsEnableSubmit] = useState(false)
+  const [isStartedUpload, setIsStartedUpload] = useState(false)
+  const [isShowCompletePopup, setIsShowCompletePopup] = useState('')
+
   const { EditTitle, title } = useEditTitle({ title: props.title })
   const { EditDescription, description } = useEditDescription({ description: props.description })
   const { EditTags, selectedTagList } = useEditTags({ selectedTagList: props.selectedTagList })
@@ -34,12 +40,7 @@ const UpdateContentForm = (props: Props) => {
     getVideoImage: getVideoImage,
     imageSrc: `${process.env.NEXT_PUBLIC_FILESERVER_URL}/contents/${props.id}/${props.id}.webp?${props.updatedAt}`,
   })
-
-  const [isEnableSubmit, setIsEnableSubmit] = useState(false)
-  const [isStartedUpload, setIsStartedUpload] = useState(false)
-  const [uploadProgress, setUploadProgress] = useState(0)
-
-  const [isShowCompletePopup, setIsShowCompletePopup] = useState('')
+  const { ProgressBar, onProgress } = useProgressBar({ enabled: isStartedUpload })
 
   useEffect(() => {
     if (title && description) {
@@ -48,11 +49,6 @@ const UpdateContentForm = (props: Props) => {
       setIsEnableSubmit(false)
     }
   }, [title, description, video, image])
-
-  const onUploadProgress = (progressEvent: any) => {
-    console.log(Math.round((progressEvent.loaded / progressEvent.total) * 100))
-    setUploadProgress(Math.round((progressEvent.loaded / progressEvent.total) * 100))
-  }
 
   const handleSubmit = (e: any) => {
     e.preventDefault()
@@ -73,7 +69,7 @@ const UpdateContentForm = (props: Props) => {
     axios
       .put(process.env.NEXT_PUBLIC_BACKEND_URL + '/api/content', file, {
         headers: { 'content-type': 'multipart/form-data' },
-        onUploadProgress,
+        onUploadProgress: onProgress,
       })
       .then(res => {
         setIsShowCompletePopup(res.data.id)
@@ -81,17 +77,6 @@ const UpdateContentForm = (props: Props) => {
       .catch(err => {
         console.error(err)
       })
-  }
-
-  const UploadProgressBar = () => {
-    if (!isStartedUpload) return null
-
-    return (
-      <div>
-        <p>{uploadProgress}%</p>
-        <progress value={uploadProgress} max="100" />
-      </div>
-    )
   }
 
   return (
@@ -105,7 +90,7 @@ const UpdateContentForm = (props: Props) => {
         <div>
           <input type="button" onClick={handleSubmit} value={'更新'} disabled={!isEnableSubmit}></input>
         </div>
-        <UploadProgressBar />
+        {ProgressBar}
       </div>
       <PopupWindowMessage
         isShow={!!isShowCompletePopup}

@@ -2,7 +2,7 @@
 import { useMemo, useState } from 'react'
 import css from './EditContentForm.module.scss'
 import { TagData } from 'util/secret/park/tags'
-import TagModal from '../TagModal'
+import TagModal from './TagModal'
 
 const EditTags = ({
   selectedTagList,
