@@ -17,7 +17,7 @@ const EditImage = ({
   getVideoImage: () => Promise<File | null>
 }) => {
   const [_imageSrc, setImageSrc] = useState(imageSrc)
-  const [imageName, setImageName] = useState('')
+  const [imageName, setImageName] = useState('未選択')
 
   const handleChangeImage = (e: React.ChangeEvent<HTMLInputElement>) => {
     if (e.target.files && e.target.files[0]) {
@@ -50,7 +50,7 @@ const EditImage = ({
       if (imageFile) {
         setImage(imageFile)
         setImageSrc(URL.createObjectURL(imageFile))
-        setImageName(imageFile.name)
+        setImageName('画像: 動画から取得')
         setUpdated(true)
       }
     })
