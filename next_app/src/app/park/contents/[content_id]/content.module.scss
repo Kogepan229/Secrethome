@@ -25,9 +25,28 @@
   //margin: auto;
 }
 
+.under_video {
+  display: flex;
+  width: 100%;
+  //justify-content: flex-end;
+}
+
+.button_update {
+  @media screen and (max-width: $mobile-width-max) {
+    display: none !important;
+  }
+  height: 30px;
+  padding-top: 2px !important;
+  padding-bottom: 2px !important;
+  margin: 3px 0px;
+  margin-left: auto;
+}
+
 .title {
+  width: calc(100% - 44px - 5px); // button size is 44px
   font-size: 24px;
   font-weight: bold;
+  overflow-wrap: break-word;
 
   @media screen and (max-width: $mobile-width-max) {
     font-size: 20px;
@@ -35,9 +54,14 @@
 }
 
 .description {
+  padding: 5px;
   margin-top: 10px;
   font-size: 16px;
+  border-radius: 5px;
   white-space: pre-wrap;
+  overflow-wrap: break-word;
+  background-color: #f1f1f1;
+
   a {
     color: #0000ee;
   }
