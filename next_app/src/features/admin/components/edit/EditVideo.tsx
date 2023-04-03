@@ -48,7 +48,7 @@ const EditVideo = ({
   return (
     <div>
       <div>
-        <p>動画ファイル(mp4)</p>
+        <h4 className={css.item_header}>動画ファイル(mp4)</h4>
         <div className={css.input_file_container}>
           <label className={css.input_file}>
             <input type="file" accept=".mp4" onChange={handleChangeMovie}></input>

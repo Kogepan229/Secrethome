@@ -9,7 +9,7 @@ const EditTitle = ({ title, setTitle }: { title: string; setTitle: React.Dispatc
 
   return (
     <div>
-      <p>タイトル</p>
+      <h4 className={css.item_header}>タイトル</h4>
       <input
         spellCheck="false"
         autoComplete="off"

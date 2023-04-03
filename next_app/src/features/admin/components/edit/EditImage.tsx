@@ -59,7 +59,7 @@ const EditImage = ({
   return (
     <>
       <div>
-        <p>サムネイル</p>
+        <h4 className={css.item_header}>サムネイル</h4>
         <div className={css.input_file_container}>
           <label className={css.input_file}>
             <input type="file" accept="image/*" onChange={handleChangeImage}></input>

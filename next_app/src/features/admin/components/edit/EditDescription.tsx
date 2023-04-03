@@ -15,7 +15,7 @@ const EditDescription = ({
 
   return (
     <div>
-      <p>概要</p>
+      <h4 className={css.item_header}>概要</h4>
       <textarea
         spellCheck="false"
         autoComplete="off"
