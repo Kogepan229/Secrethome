@@ -9,6 +9,17 @@
   margin-bottom: 50px;
 }
 
+.form_header {
+  width: 100%;
+  //height: 36px;
+  margin-top: 50px;
+  padding-top: 3px;
+  padding-left: 8px;
+  //line-height: 36px;
+  background-color: $color-primary-3;
+  color: $color-white-text;
+}
+
 .item_header {
   margin-top: 15px;
   padding: 3px 0px;

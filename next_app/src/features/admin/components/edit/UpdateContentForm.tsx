@@ -83,6 +83,7 @@ const UpdateContentForm = (props: Props) => {
   return (
     <>
       <div className={css.form}>
+        <h2 className={css.form_header}>アップデート</h2>
         {EditTitle}
         {EditDescription}
         {EditTags}

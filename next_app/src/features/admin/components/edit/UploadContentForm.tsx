@@ -62,6 +62,7 @@ const UploadContentForm = () => {
   return (
     <>
       <div className={css.form}>
+        <h2 className={css.form_header}>アップロード</h2>
         {EditTitle}
         {EditDescription}
         {EditTags}
