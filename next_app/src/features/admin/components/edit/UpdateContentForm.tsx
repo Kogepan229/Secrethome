@@ -12,6 +12,7 @@ import { useEditVideo } from './EditVideo'
 import { TagData } from 'util/secret/park/tags'
 import { useProgressBar } from './ProgressBar'
 import PopupWindowMessage from 'components/PopupWindowMessage'
+import SimpleButton from 'components/SimpleButton'
 
 type Props = {
   id: string
@@ -87,7 +88,9 @@ const UpdateContentForm = (props: Props) => {
         {EditVideo}
         {EditImage}
         <div>
-          <input type="button" onClick={handleSubmit} value={'更新'} disabled={!isEnableSubmit}></input>
+          <SimpleButton className={css.button_submit} onClick={handleSubmit} disabled={!isEnableSubmit}>
+            更新
+          </SimpleButton>
         </div>
         {ProgressBar}
       </div>

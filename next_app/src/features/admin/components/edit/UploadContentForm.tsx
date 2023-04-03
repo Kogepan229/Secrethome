@@ -11,6 +11,7 @@ import { useEditTitle } from './EditTitle'
 import { useEditVideo } from './EditVideo'
 import { useProgressBar } from './ProgressBar'
 import PopupWindowMessage from 'components/PopupWindowMessage'
+import SimpleButton from 'components/SimpleButton'
 
 const UploadContentForm = () => {
   const router = useRouter()
@@ -67,7 +68,9 @@ const UploadContentForm = () => {
         {EditVideo}
         {EditImage}
         <div>
-          <input type="button" onClick={handleSubmit} value={'追加'} disabled={!isEnableSubmit}></input>
+          <SimpleButton className={css.button_submit} onClick={handleSubmit} disabled={!isEnableSubmit}>
+            追加
+          </SimpleButton>
         </div>
         {ProgressBar}
       </div>

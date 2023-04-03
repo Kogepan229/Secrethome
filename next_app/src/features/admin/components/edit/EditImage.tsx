@@ -1,4 +1,5 @@
 'use client'
+import SimpleButton from 'components/SimpleButton'
 import css from './EditContentForm.module.scss'
 import React, { useMemo, useState } from 'react'
 
@@ -64,9 +65,9 @@ const EditImage = ({
             <input type="file" accept="image/*" onChange={handleChangeImage}></input>
             ファイルを選択
           </label>
-          <button type="button" disabled={!isEnableSaveImage} onClick={saveImageFromVideo}>
+          <SimpleButton type="button" className={css.button_save} disabled={!isEnableSaveImage} onClick={saveImageFromVideo}>
             動画からセーブ
-          </button>
+          </SimpleButton>
           <p className={css.input_file_name}>{imageName}</p>
         </div>
       </div>

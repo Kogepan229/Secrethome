@@ -3,6 +3,7 @@ import { useMemo, useState } from 'react'
 import css from './EditContentForm.module.scss'
 import { TagData } from 'util/secret/park/tags'
 import TagModal from './TagModal'
+import SimpleButton from 'components/SimpleButton'
 
 const EditTags = ({
   selectedTagList,
@@ -36,9 +37,9 @@ const EditTags = ({
   return (
     <div>
       <p>タグ</p>
-      <button type="button" onClick={() => setIsOpenedTagModal(true)}>
+      <SimpleButton type="button" className={css.string_button} onClick={() => setIsOpenedTagModal(true)}>
         タグを追加
-      </button>
+      </SimpleButton>
       <div className={css.tags_container}>{TagItems}</div>
       <TagModal
         isShow={isOpenedTagModal}
