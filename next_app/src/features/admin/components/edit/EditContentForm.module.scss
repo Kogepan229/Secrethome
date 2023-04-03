@@ -85,6 +85,7 @@
 .string_button {
   margin-top: 3px;
   margin-bottom: 3px;
+  white-space: nowrap;
 
   &:not(:active):not(:disabled) {
     border-color: #bebebe;
