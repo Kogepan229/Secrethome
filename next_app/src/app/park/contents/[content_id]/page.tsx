@@ -45,7 +45,7 @@ const ContentPage = async ({ params }: { params: any }) => {
         </div>
         <p className={css.title}>{contentData.title}</p>
         <p className={css.description}>{contentData.description}</p>
-        <Link href={`/park/admin/update_content/${contentData.id}`}>更新</Link>
+        <Link href={`/park/admin/update/${contentData.id}`}>更新</Link>
       </div>
     </SecretRoomLayout>
   )

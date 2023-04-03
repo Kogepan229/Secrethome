@@ -70,7 +70,6 @@ const TagModal = (props: Props) => {
         axios
           .post(process.env.NEXT_PUBLIC_BACKEND_URL + '/api/tag', data)
           .then(res => {
-            console.log('success')
             tags.unshift({ id: res.data.id, name: createTagValue.trim() })
             setCreatetagValue('')
             forceUpdate(!forceAny)

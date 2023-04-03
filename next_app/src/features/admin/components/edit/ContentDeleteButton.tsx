@@ -2,10 +2,12 @@
 import 'client-only'
 import axios from 'axios'
 import { useState } from 'react'
-import css from './ContentDeleteButton.module.scss'
+//import css from './ContentDeleteButton.module.scss'
+import css from './EditContentForm.module.scss'
 
 import PopupWindowMessage from 'components/PopupWindowMessage'
 import { useRouter } from 'next/navigation'
+import SimpleButton from 'components/SimpleButton'
 
 const ContentDeleteButton = ({ contentID }: { contentID: string }) => {
   const router = useRouter()
@@ -29,9 +31,9 @@ const ContentDeleteButton = ({ contentID }: { contentID: string }) => {
 
   return (
     <>
-      <button className={css.delete_button} onClick={onClickDelete}>
+      <SimpleButton className={css.button_delete} onClick={onClickDelete}>
         削除
-      </button>
+      </SimpleButton>
       <PopupWindowMessage
         isShow={isShowPopup}
         message="削除しました"

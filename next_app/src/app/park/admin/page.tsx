@@ -19,7 +19,7 @@ const AdminPage = async () => {
           <p>管理</p>
         </div>
         <div className={css.link_item_container}>
-          <LinkItem url="/park/admin/add_content" text="コンテンツ追加" />
+          <LinkItem url="/park/admin/upload" text="コンテンツ追加" />
           <LinkItem url="/park/admin/" text="コンテンツ管理" />
           <LinkItem url="/park/admin/" text="タグ管理" />
         </div>

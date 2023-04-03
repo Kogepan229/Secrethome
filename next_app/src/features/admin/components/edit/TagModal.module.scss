@@ -11,6 +11,7 @@ $modal_header_height: 38px;
   background-color: white;
   border: solid 2px rgba($color: #030303, $alpha: 0.5);
   box-shadow: 0 0 10px 0 rgba(0, 0, 0, 0.4);
+  z-index: 100;
 }
 
 .modal_header {
