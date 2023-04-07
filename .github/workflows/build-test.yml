@@ -23,12 +23,15 @@ jobs:
         uses: actions/cache@v3
         id: node_modules_cache_id
         with:
-          path: node_modules
+          path: ./node_modules
           key: ${{ runner.os }}-build-front-cache-node-modules-${{ hashFiles('./package-lock.json') }}
 
       - name: Run npm ci
         if: ${{ steps.node_modules_cache_id.outputs.cache-hit != 'true' }}
         run: npm ci
+
+      - name: test ls
+        run: ll
 
       - name: Build frontend
         run: npm run build
