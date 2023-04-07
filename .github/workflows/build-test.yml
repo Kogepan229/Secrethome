@@ -23,7 +23,7 @@ jobs:
         uses: actions/cache@v3
         id: node_modules_cache_id
         with:
-          path: ./node_modules
+          path: node_modules
           key: ${{ runner.os }}-build-front-cache-node-modules-${{ hashFiles('./package-lock.json') }}
 
       - name: Run npm ci
