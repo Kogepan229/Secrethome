@@ -31,7 +31,7 @@ jobs:
         run: npm ci
 
       - name: test ls
-        run: ll
+        run: ls -la
 
       - name: Build frontend
         run: npm run build
