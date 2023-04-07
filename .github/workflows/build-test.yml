@@ -49,6 +49,9 @@ jobs:
 
       - name: Setup Golang
         uses: actions/setup-go@v4
+        with:
+          go-version-file: /backend/src/go.mod
+          cache-dependency-path: ./backend/src/go.sum
 
       - name: Run go mod download
         run: go mod download
