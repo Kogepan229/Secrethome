@@ -23,8 +23,8 @@ jobs:
         uses: actions/cache@v3
         id: node_modules_cache_id
         with:
-          path: ${{ github.workspace }}/node_modules
-          key: ${{ runner.os }}-build-front-cache-node-modules-${{ hashFiles('package-lock.json') }}
+          path: ./next_app/node_modules
+          key: ${{ runner.os }}-build-front-cache-node-modules-${{ hashFiles('./next_app/package-lock.json') }}
 
       - name: Run npm ci
         if: ${{ steps.node_modules_cache_id.outputs.cache-hit != 'true' }}
