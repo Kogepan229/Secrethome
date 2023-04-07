@@ -8,7 +8,7 @@ jobs:
 
     defaults:
       run:
-        working-directory: ./next_app
+        working-directory: next_app
 
     steps:
       - name: Checkout
