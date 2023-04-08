@@ -36,7 +36,7 @@ const ContentPage = async ({ params }: { params: any }) => {
     return <p>No content</p>
   }
   const description = reactStringReplace(contentData.description, /(https?:\/\/[\w!?/+\-_~;.,*&@#$%()'[\]]+)/g, (match, i) => (
-    <a key={i} href={match}>
+    <a key={i} href={match} target="_blank" rel="noopener noreferrer">
       {match}
     </a>
   ))
