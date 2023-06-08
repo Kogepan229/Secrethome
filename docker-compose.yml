@@ -43,6 +43,7 @@ services:
     command: /backend/secrethome-back
     depends_on:
       - mysql
+    restart: always
 
   web:
     tty: true
