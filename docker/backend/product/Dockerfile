@@ -11,7 +11,7 @@ RUN go mod download
 RUN CGO_ENABLED=0 go build -o ../
 
 
-FROM debian:bullseye-slim
+FROM debian:12
 
 COPY --from=build /backend/secrethome-back /backend/
 
