@@ -42,7 +42,6 @@ const ContentPage = async ({ params }: { params: any }) => {
   ))
 
   return (
-    /* @ts-expect-error Server Component */
     <SecretRoomLayout>
       <div className={css.content_container}>
         <div className={css.video_container}>

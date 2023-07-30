@@ -22,13 +22,10 @@ const TagsPage = async ({ searchParams }: { searchParams?: SearchParams }) => {
   })
 
   return (
-    /* @ts-expect-error Server Component */
     <SecretRoomLayout>
       <div className={css.contents_main}>
-        {/* @ts-expect-error Server Component */}
         <PageSelector searchParams={searchParams} totalPageNum={Math.ceil(contentsData.length / CONTENTS_NUM_PER_PAGE)} />
         {Contents}
-        {/* @ts-expect-error Server Component */}
         <PageSelector searchParams={searchParams} totalPageNum={Math.ceil(contentsData.length / CONTENTS_NUM_PER_PAGE)} />
       </div>
     </SecretRoomLayout>
