@@ -8,7 +8,7 @@ WORKDIR /backend/src
 
 RUN go mod download
 
-RUN go build -o ../
+RUN CGO_ENABLED=0 go build -o ../
 
 
 FROM debian:bullseye-slim
