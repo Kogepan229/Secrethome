@@ -1,4 +1,4 @@
-FROM node:18-alpine as builder
+FROM node:20-alpine as builder
 
 RUN apk add --no-cache libc6-compat
 WORKDIR /next_app
@@ -12,7 +12,7 @@ RUN \
 RUN npm run build
 
 
-FROM gcr.io/distroless/nodejs:18 as runner
+FROM gcr.io/distroless/nodejs20-debian11 as runner
 ENV NODE_ENV=production
 WORKDIR /next_app
 
