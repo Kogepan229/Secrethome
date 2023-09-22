@@ -18,16 +18,17 @@ type ContentData = {
 }
 
 const getContentData = async (contentID: any) => {
-  let data: ContentData = { tags: [] }
+  let contentData: ContentData = { tags: [] }
 
-  let result = await DB.query<any[]>(`select title, description from park_contents where id='${contentID}'`)
-  if (result.length > 0) {
-    data.id = contentID as string
-    data.title = result[0].title
-    data.description = result[0].description
-    data.tags = await getContentTagsData(contentID as string)
+  let [rows, _] = await DB.query(`select title, description from park_contents where id=?`, [contentID])
+  const data = JSON.parse(JSON.stringify(rows)) as any[]
+  if (data.length > 0) {
+    contentData.id = contentID as string
+    contentData.title = data[0].title
+    contentData.description = data[0].description
+    contentData.tags = await getContentTagsData(contentID as string)
   }
-  return data
+  return contentData
 }
 
 const ContentPage = async ({ params }: { params: any }) => {
