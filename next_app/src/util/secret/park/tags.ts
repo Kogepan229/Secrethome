@@ -1,4 +1,4 @@
-import { DB } from 'util/sql'
+import { getDBConnection } from 'util/sql'
 
 export type TagData = {
   id: string
@@ -8,7 +8,8 @@ export type TagData = {
 export type SidebarTagsData = { tag: TagData; count: number }[]
 
 export const getContentTagsData = async (contentID: string) => {
-  let [rows, _] = await DB.query(`select tag_id, priority from park_tags_of_contents where content_id=?`, [contentID])
+  const con = await getDBConnection()
+  const [rows, _] = await con.query(`select tag_id, priority from park_tags_of_contents where content_id=?`, [contentID])
   const data1: { tag_id: string; priority: number }[] = JSON.parse(JSON.stringify(rows))
 
   type ContentTag = TagData & {
@@ -17,7 +18,7 @@ export const getContentTagsData = async (contentID: string) => {
   let _tags: ContentTag[] = []
 
   for (let value of data1) {
-    let [rows2, _] = await DB.query(`select id, name from park_tags where id=?`, [value.tag_id])
+    let [rows2, _] = await con.query(`select id, name from park_tags where id=?`, [value.tag_id])
     let data2: ContentTag[] = JSON.parse(JSON.stringify(rows2))
     _tags.push({ id: data2[0].id, name: data2[0].name, priority: value.priority })
   }
@@ -34,14 +35,15 @@ export const getContentTagsData = async (contentID: string) => {
 }
 
 export const getSidebarTagsData = async () => {
-  let [rows1, _] = await DB.query(`select id, name from park_tags`)
+  const con = await getDBConnection()
+  let [rows1, _] = await con.query(`select id, name from park_tags`)
   const data1 = JSON.parse(JSON.stringify(rows1)) as TagData[]
   if (data1.length == 0) {
     return []
   } else {
     let tags = await Promise.all(
       data1.map(async value => {
-        let [rows2, _] = await DB.query<any[]>(`select count(*) from park_tags_of_contents where tag_id=?`, [value.id])
+        let [rows2, _] = await con.query<any[]>(`select count(*) from park_tags_of_contents where tag_id=?`, [value.id])
         const data2 = JSON.parse(JSON.stringify(rows2)) as any[]
         return { tag: value, count: data2[0]['count(*)'] }
       })

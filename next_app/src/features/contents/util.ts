@@ -1,5 +1,5 @@
 import { getContentTagsData } from 'util/secret/park/tags'
-import { DB } from 'util/sql'
+import { getDBConnection } from 'util/sql'
 import { ContentData } from './types'
 
 export const getContentsDataWithTags = async (tagIDs: string[] | undefined) => {
@@ -8,7 +8,8 @@ export const getContentsDataWithTags = async (tagIDs: string[] | undefined) => {
     return contentsData
   }
 
-  let [rows, _] = await DB.query(
+  const con = await getDBConnection()
+  const [rows, _] = await con.query(
     `select * from park_contents where id = any (select content_id from park_tags_of_contents where tag_id=?)`,
     [tagIDs[0]]
   )

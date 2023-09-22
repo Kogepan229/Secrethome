@@ -1,4 +1,4 @@
-import { DB } from 'util/sql'
+import { getDBConnection } from 'util/sql'
 import { SearchParams } from 'types/SearchParams'
 import { getContentTagsData } from 'util/secret/park/tags'
 import { CONTENTS_NUM_PER_PAGE } from 'features/contents/const'
@@ -11,7 +11,8 @@ const getContentsData = async (searchParams?: SearchParams) => {
   contentsData.pageNum = Number.isNaN(contentsData.pageNum) || contentsData.pageNum <= 0 ? 0 : contentsData.pageNum - 1
 
   // Get contents data from DB
-  let [rows, _] = await DB.query(`select id, title, description, updated_at from park_contents limit ?, ?`, [
+  const con = await getDBConnection()
+  const [rows, _] = await con.query(`select id, title, description, updated_at from park_contents limit ?, ?`, [
     contentsData.pageNum * CONTENTS_NUM_PER_PAGE,
     CONTENTS_NUM_PER_PAGE,
   ])

@@ -1,4 +1,4 @@
-import { DB } from 'util/sql'
+import { getDBConnection } from 'util/sql'
 import { getContentTagsData, TagData } from 'util/secret/park/tags'
 
 import UpdateContentForm from 'features/admin/components/edit/UpdateContentForm'
@@ -12,7 +12,8 @@ type ContentData = {
 }
 
 const getContentData = async (contentID: string): Promise<ContentData> => {
-  let [rows, _] = await DB.query<any[]>(`select title, description, updated_at from park_contents where id=?`, [contentID])
+  const con = await getDBConnection()
+  const [rows, _] = await con.query<any[]>(`select title, description, updated_at from park_contents where id=?`, [contentID])
   const data = JSON.parse(JSON.stringify(rows))
   if (data.length == 0) {
     return { selectedTags: [] }
