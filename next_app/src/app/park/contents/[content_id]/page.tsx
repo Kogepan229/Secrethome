@@ -1,6 +1,6 @@
 import { Suspense } from 'react'
 import dynamic from 'next/dynamic'
-import { DB } from 'util/sql'
+import { getDBConnection } from 'util/sql'
 import Link from 'next/link'
 import { getContentTagsData, TagData } from 'util/secret/park/tags'
 import SecretRoomLayout from 'components/layout/SecretRoomLayout'
@@ -18,16 +18,18 @@ type ContentData = {
 }
 
 const getContentData = async (contentID: any) => {
-  let data: ContentData = { tags: [] }
+  let contentData: ContentData = { tags: [] }
 
-  let result = await DB.query<any[]>(`select title, description from park_contents where id='${contentID}'`)
-  if (result.length > 0) {
-    data.id = contentID as string
-    data.title = result[0].title
-    data.description = result[0].description
-    data.tags = await getContentTagsData(contentID as string)
+  const con = await getDBConnection()
+  const [rows, _] = await con.query(`select title, description from park_contents where id=?`, [contentID])
+  const data = JSON.parse(JSON.stringify(rows)) as any[]
+  if (data.length > 0) {
+    contentData.id = contentID as string
+    contentData.title = data[0].title
+    contentData.description = data[0].description
+    contentData.tags = await getContentTagsData(contentID as string)
   }
-  return data
+  return contentData
 }
 
 const ContentPage = async ({ params }: { params: any }) => {

@@ -1,12 +1,14 @@
 import 'server-only'
-import { DB } from 'util/sql'
+import { getDBConnection } from 'util/sql'
 import { SearchParams } from 'types/SearchParams'
 import { CONTENTS_NUM_PER_PAGE } from 'features/contents/const'
 import css from './PageSelector.module.scss'
 
 const getTotalContentsPageNum = async () => {
-  let result = await DB.query<any[]>(`select count(*) from park_contents`)
-  let totalNum = Math.ceil((result[0]['count(*)'] as number) / CONTENTS_NUM_PER_PAGE)
+  const con = await getDBConnection()
+  const [rows, _] = await con.query(`select count(*) from park_contents`)
+  const data = JSON.parse(JSON.stringify(rows))
+  let totalNum = Math.ceil((data[0]['count(*)'] as number) / CONTENTS_NUM_PER_PAGE)
   return totalNum
 }
 
