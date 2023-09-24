@@ -16,6 +16,7 @@ const getContentsData = async (searchParams?: SearchParams) => {
     contentsData.pageNum * CONTENTS_NUM_PER_PAGE,
     CONTENTS_NUM_PER_PAGE,
   ])
+  con.end()
   const data = JSON.parse(JSON.stringify(rows))
   for (let i = 0; i < data.length; i++) {
     let tags = await getContentTagsData(data[i].id)

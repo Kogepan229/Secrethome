@@ -7,6 +7,7 @@ import css from './PageSelector.module.scss'
 const getTotalContentsPageNum = async () => {
   const con = await getDBConnection()
   const [rows, _] = await con.query(`select count(*) from park_contents`)
+  con.end()
   const data = JSON.parse(JSON.stringify(rows))
   let totalNum = Math.ceil((data[0]['count(*)'] as number) / CONTENTS_NUM_PER_PAGE)
   return totalNum

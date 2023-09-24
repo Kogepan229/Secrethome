@@ -22,6 +22,7 @@ const getContentData = async (contentID: any) => {
 
   const con = await getDBConnection()
   const [rows, _] = await con.query(`select title, description from park_contents where id=?`, [contentID])
+  con.end()
   const data = JSON.parse(JSON.stringify(rows)) as any[]
   if (data.length > 0) {
     contentData.id = contentID as string

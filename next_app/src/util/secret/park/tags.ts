@@ -23,6 +23,8 @@ export const getContentTagsData = async (contentID: string) => {
     _tags.push({ id: data2[0].id, name: data2[0].name, priority: value.priority })
   }
 
+  con.end()
+
   _tags.sort((a: ContentTag, b: ContentTag) => {
     return a.priority - b.priority
   })
@@ -48,6 +50,9 @@ export const getSidebarTagsData = async () => {
         return { tag: value, count: data2[0]['count(*)'] }
       })
     )
+
+    con.end()
+
     tags.sort((a: { tag: TagData; count: number }, b: { tag: TagData; count: number }) => {
       return b.count - a.count
     })

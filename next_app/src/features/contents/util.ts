@@ -13,6 +13,7 @@ export const getContentsDataWithTags = async (tagIDs: string[] | undefined) => {
     `select * from park_contents where id = any (select content_id from park_tags_of_contents where tag_id=?)`,
     [tagIDs[0]]
   )
+  con.end()
   const data = JSON.parse(JSON.stringify(rows))
   for (let i = 0; i < data.length; i++) {
     let tags = await getContentTagsData(data[i].id)

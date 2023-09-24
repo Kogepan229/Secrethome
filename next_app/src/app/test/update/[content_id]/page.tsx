@@ -15,6 +15,7 @@ type ContentData = {
 const getContentData = async (contentID: any): Promise<ContentData> => {
   const con = await getDBConnection()
   const [rows, _] = await con.query<any[]>(`select title, description, updated_at from park_contents where id=?`, [contentID])
+  con.end()
   const data = JSON.parse(JSON.stringify(rows)) as any[]
   if (data.length == 0) {
     return { selectedTags: [] }
