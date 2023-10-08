@@ -21,37 +21,21 @@ const fetcher = async (url: string) => {
 }
 
 const TagModal = (props: Props) => {
-  // let dragStartX: number | null = null
-  // let dragStartY: number | null = null
   const modalRef = useRef<HTMLDivElement | null>(null)
   const [forceAny, forceUpdate] = useState(false)
   const [createTagValue, setCreatetagValue] = useState('')
   const [dragStartX, setDragStartX] = useState<number | null>(null)
   const [dragStartY, setDragStartY] = useState<number | null>(null)
   const [dragStartPos, setDragStartPos] = useState<DOMRect | null>(null)
-  const [ff, setFF] = useState<(e: MouseEvent) => void>()
   const [style, setStyle] = useState<{
     display?: string
     Visibility?: string
     top?: string
     left?: string
   }>()
-  // let style
 
   const { data, error } = useSWR<AxiosResponse<FetchedTags>, AxiosError>(process.env.NEXT_PUBLIC_BACKEND_URL + '/api/all_tags', fetcher)
   let tags: TagData[] = data?.data.tags ?? []
-
-  // useEffect(() => {
-  //   console.log('render')
-  //   if (modalRef) {
-  //     let _style = {
-  //       top: `${(document.documentElement.clientHeight - modalRef.current?.clientHeight!) / 2}px`,
-  //       left: `${(document.documentElement.clientWidth - modalRef.current?.clientWidth!) / 2}px`,
-  //     }
-  //     // setStyle(style)
-  //     style = _style
-  //   }
-  // }, [])
 
   useEffect(() => {
     if (props.isShow) {
@@ -73,21 +57,12 @@ const TagModal = (props: Props) => {
           left: `${(document.documentElement.clientWidth - modalRef.current?.clientWidth!) / 2}px`,
         }
         setStyle(_style)
-        // style = _style
       }
-
-      // document.addEventListener('mousemove', onDrag)
-      // document.addEventListener('mouseup', onDragEnd)
-      console.log('open')
     } else {
       let _style = {
-        // display: 'none',
         Visibility: 'hidden',
       }
       setStyle(_style)
-      // document.removeEventListener('mousemove', onDrag)
-      // document.removeEventListener('mouseup', onDragEnd)
-      console.log('close')
     }
   }, [props.isShow])
 
@@ -148,22 +123,18 @@ const TagModal = (props: Props) => {
   const onDragStart: DragEventHandler<HTMLDivElement> = useCallback(e => {
     e.preventDefault()
     e.stopPropagation()
-    // dragStartX = e.clientX
-    // dragStartY = e.clientY
+
     setDragStartX(e.clientX)
     setDragStartY(e.clientY)
     setDragStartPos(modalRef.current?.getBoundingClientRect()!)
-    console.log('drag start', e.clientX, e.clientY)
   }, [])
 
   const onDrag = (e: MouseEvent) => {
-    console.log('f', dragStartX, dragStartY)
     if (!dragStartX || !dragStartY || !dragStartPos) {
       return
     }
     e.clientX - dragStartX
     e.clientY - dragStartY
-    console.log(e.clientX - dragStartX, e.clientY - dragStartY)
 
     if (modalRef) {
       let _style = {
@@ -171,16 +142,12 @@ const TagModal = (props: Props) => {
         left: `${dragStartPos.x + (e.clientX - dragStartX)}px`,
       }
       setStyle(_style)
-      // style = _style
     }
   }
 
   const onDragEnd = useCallback((e: MouseEvent) => {
-    // dragStartX = null
-    // dragStartY = null
     setDragStartX(null)
     setDragStartY(null)
-    console.log('drag end')
   }, [])
 
   if (!props.isShow) {
