@@ -160,7 +160,7 @@ const TagModal = (props: Props) => {
   return (
     <div className={css.modal_container} ref={modalRef} style={style}>
       <div className={css.modal_header}>
-        <div className={css.dragable} onMouseDown={onDragStart}></div>
+        <div className={css.draggable} onMouseDown={onDragStart}></div>
         <div className={css.close_button} onClick={props.closeCallback}></div>
       </div>
       <div className={css.tags_container}>

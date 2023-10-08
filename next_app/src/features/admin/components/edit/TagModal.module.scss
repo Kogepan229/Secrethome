@@ -22,7 +22,7 @@ $modal_header_height: 38px;
   //box-sizing: border-box;
 }
 
-.dragable {
+.draggable {
   width: calc(100% - #{$modal_header_height});
   height: $modal_header_height;
   box-sizing: border-box;
