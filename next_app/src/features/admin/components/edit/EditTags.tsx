@@ -37,8 +37,8 @@ const EditTags = ({
   return (
     <div>
       <h4 className={css.item_header}>タグ</h4>
-      <SimpleButton type="button" className={css.string_button} onClick={() => setIsOpenedTagModal(true)}>
-        タグを追加
+      <SimpleButton type="button" className={css.string_button} onClick={() => setIsOpenedTagModal(!isOpenedTagModal)}>
+        {isOpenedTagModal ? '閉じる' : 'タグを追加'}
       </SimpleButton>
       <div className={css.tags_container}>{TagItems}</div>
       <TagModal
