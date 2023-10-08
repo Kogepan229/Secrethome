@@ -50,6 +50,7 @@ const TagModal = (props: Props) => {
   })
 
   useEffect(() => {
+    // 位置をリセット
     if (props.isShow) {
       if (modalRef) {
         let _style = {
@@ -58,7 +59,10 @@ const TagModal = (props: Props) => {
         }
         setStyle(_style)
       }
-    } else {
+    }
+    // 位置リセットが反映される前に一瞬元の位置に表示されるため非表示にする
+    // 位置リセットされる時に上書きされる
+    else {
       let _style = {
         Visibility: 'hidden',
       }
@@ -133,8 +137,6 @@ const TagModal = (props: Props) => {
     if (!dragStartX || !dragStartY || !dragStartPos) {
       return
     }
-    e.clientX - dragStartX
-    e.clientY - dragStartY
 
     if (modalRef) {
       let _style = {
@@ -148,6 +150,7 @@ const TagModal = (props: Props) => {
   const onDragEnd = useCallback((e: MouseEvent) => {
     setDragStartX(null)
     setDragStartY(null)
+    setDragStartPos(null)
   }, [])
 
   if (!props.isShow) {
