@@ -1,3 +1,4 @@
+import css from './ContentsList.module.scss'
 import { getDBConnection } from 'util/sql'
 import { SearchParams } from 'types/SearchParams'
 import { getContentTagsData } from 'util/secret/park/tags'
@@ -32,10 +33,15 @@ const getContentsData = async (currentPageIndex: number) => {
 
 const ContentsList = async ({ searchParams }: { searchParams?: SearchParams }) => {
   const contentsData = await getContentsData(getCurrentPageIndex(searchParams!))
-  const Contents = contentsData.map(content => {
+  const contents = contentsData.map(content => {
     return <ContentPost contentData={content} key={content.id}></ContentPost>
   })
-  return <>{Contents}</>
+
+  if (contents.length == 0) {
+    return <p className={css.no_content_message}>コンテンツがありません</p>
+  }
+
+  return <>{contents}</>
 }
 
 export default ContentsList

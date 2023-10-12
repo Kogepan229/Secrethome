@@ -47,6 +47,10 @@ const PageSelector = async ({
     return <PageNumButton baseURL={baseURL} num={num} isCurrent={num == currentPageIndex} key={num} />
   })
 
+  if (buttons.length == 0) {
+    return null
+  }
+
   return <div className={css.page_selector}>{buttons}</div>
 }
 
