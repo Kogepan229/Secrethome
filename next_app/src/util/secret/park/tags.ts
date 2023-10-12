@@ -65,5 +65,5 @@ export const getTagName = async (tagID: string): Promise<string> => {
   const [rows, _] = await con.query(`select name from park_tags where id = ?`, [tagID])
   con.end()
   const data = JSON.parse(JSON.stringify(rows))
-  return data[0].name
+  return data[0] ? data[0].name : ''
 }

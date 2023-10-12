@@ -7,34 +7,34 @@ import { getContentsDataWithTags, getCurrentPageIndex, getTotalContentsPageNumWi
 import { ContentData } from 'features/contents/types'
 import { getTagName } from 'util/secret/park/tags'
 
-const TagsPage = async ({ searchParams }: { searchParams?: SearchParams }) => {
-  let contentsData: ContentData[]
-  let tagName = ''
-  let totalPageNum = 0
-
-  const currentPageIndex = getCurrentPageIndex(searchParams!)
-
-  if (searchParams == undefined || searchParams.tags == undefined) {
-    contentsData = []
-  } else if (typeof searchParams.tags == 'string') {
-    contentsData = await getContentsDataWithTags([searchParams.tags], currentPageIndex)
-    tagName = await getTagName(searchParams.tags)
-    totalPageNum = await getTotalContentsPageNumWithTag(searchParams.tags)
-  } else {
-    contentsData = await getContentsDataWithTags(searchParams.tags, currentPageIndex)
+const Contents = async (searchParams: SearchParams): Promise<[JSX.Element[], string, string, number, number]> => {
+  if (searchParams == undefined || searchParams.tags == undefined || typeof searchParams.tags != 'string') {
+    return [[], '', '', 0, 0]
   }
 
-  const Contents = contentsData.map(content => {
+  const tagID = searchParams.tags
+  const totalPageNum = await getTotalContentsPageNumWithTag(tagID)
+  const currentPageIndex = getCurrentPageIndex(searchParams)
+  const tagName = await getTagName(tagID)
+  const contentsData: ContentData[] = await getContentsDataWithTags(tagID, currentPageIndex)
+
+  const contents = contentsData.map(content => {
     return <ContentPost contentData={content} key={content.id}></ContentPost>
   })
+
+  return [contents, tagID, tagName, totalPageNum, currentPageIndex]
+}
+
+const TagsPage = async ({ searchParams }: { searchParams: SearchParams }) => {
+  const [contents, tagID, tagName, totalPageNum, currentPageIndex] = await Contents(searchParams)
 
   return (
     <SecretRoomLayout>
       <div className={css.contents_main}>
         <h3 className={css.tag_header}>{tagName}</h3>
-        <PageSelector baseURL={`/park/contents/tags?tags=${searchParams?.tags}`} searchParams={searchParams} totalPageNum={totalPageNum} />
-        {Contents}
-        <PageSelector baseURL={`/park/contents/tags?tags=${searchParams?.tags}`} searchParams={searchParams} totalPageNum={totalPageNum} />
+        <PageSelector baseURL={`/park/contents/tags?tags=${tagID}`} totalPageNum={totalPageNum} currentPageIndex={currentPageIndex} />
+        {contents}
+        <PageSelector baseURL={`/park/contents/tags?tags=${tagID}`} totalPageNum={totalPageNum} currentPageIndex={currentPageIndex} />
       </div>
     </SecretRoomLayout>
   )

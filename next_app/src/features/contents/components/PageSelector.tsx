@@ -1,7 +1,5 @@
 import 'server-only'
-import { SearchParams } from 'types/SearchParams'
 import css from './PageSelector.module.scss'
-import { getCurrentPageIndex, getTotalContentsPageNum } from '../util'
 
 const PageNumButton = ({ baseURL, num, isCurrent }: { baseURL: string; num: number; isCurrent: boolean }) => {
   let url = baseURL
@@ -24,32 +22,29 @@ const PageNumButton = ({ baseURL, num, isCurrent }: { baseURL: string; num: numb
 
 const PageSelector = async ({
   baseURL,
-  searchParams,
   totalPageNum,
+  currentPageIndex,
 }: {
   baseURL: string
-  searchParams?: SearchParams
-  totalPageNum?: number
+  totalPageNum: number
+  currentPageIndex: number
 }) => {
-  const _totalPageNum = totalPageNum ?? (await getTotalContentsPageNum())
   let pageNums = []
 
-  let currentPageNum = getCurrentPageIndex(searchParams!)
-
-  if (_totalPageNum <= 5) {
-    for (let i = 1; i <= _totalPageNum; i++) {
+  if (totalPageNum <= 5) {
+    for (let i = 1; i <= totalPageNum; i++) {
       pageNums.push(i)
     }
-  } else if (currentPageNum <= 2) {
-    pageNums = [1, 2, 3, _totalPageNum - 1, _totalPageNum]
-  } else if (currentPageNum >= _totalPageNum - 1) {
-    pageNums = [1, 2, _totalPageNum - 2, _totalPageNum - 1, _totalPageNum]
+  } else if (currentPageIndex <= 2) {
+    pageNums = [1, 2, 3, totalPageNum - 1, totalPageNum]
+  } else if (currentPageIndex >= totalPageNum - 1) {
+    pageNums = [1, 2, totalPageNum - 2, totalPageNum - 1, totalPageNum]
   } else {
-    pageNums = [1, currentPageNum - 1, currentPageNum, currentPageNum + 1, _totalPageNum]
+    pageNums = [1, currentPageIndex - 1, currentPageIndex, currentPageIndex + 1, totalPageNum]
   }
 
   const buttons = pageNums.map(num => {
-    return <PageNumButton baseURL={baseURL} num={num} isCurrent={num == currentPageNum} key={num} />
+    return <PageNumButton baseURL={baseURL} num={num} isCurrent={num == currentPageIndex} key={num} />
   })
 
   return <div className={css.page_selector}>{buttons}</div>

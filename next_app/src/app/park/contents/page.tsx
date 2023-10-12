@@ -4,15 +4,19 @@ import ContentsList from 'features/contents/components/ContentsList'
 import { Suspense } from 'react'
 import SecretRoomLayout from 'components/layout/SecretRoomLayout'
 import PageSelector from 'features/contents/components/PageSelector'
+import { getCurrentPageIndex, getTotalContentsPageNum } from 'features/contents/util'
 
-const ContentsPage = ({ searchParams }: { searchParams?: SearchParams }) => {
+const ContentsPage = async ({ searchParams }: { searchParams: SearchParams }) => {
+  const totalPageNum = await getTotalContentsPageNum()
+  const currentPageIndex = getCurrentPageIndex(searchParams)
+
   return (
     <SecretRoomLayout>
       <div className={css.contents_main}>
-        <PageSelector baseURL="/park/contents" searchParams={searchParams} />
+        <PageSelector baseURL="/park/contents" totalPageNum={totalPageNum} currentPageIndex={currentPageIndex} />
         <Suspense fallback={null}>
           <ContentsList searchParams={searchParams}></ContentsList>
-          <PageSelector baseURL="/park/contents" searchParams={searchParams} />
+          <PageSelector baseURL="/park/contents" totalPageNum={totalPageNum} currentPageIndex={currentPageIndex} />
         </Suspense>
       </div>
     </SecretRoomLayout>

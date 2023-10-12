@@ -33,19 +33,17 @@ export const getTotalContentsPageNumWithTag = async (tagID: string) => {
   return totalNum
 }
 
-export const getContentsDataWithTags = async (tagIDs: string[] | undefined, currentPageIndex: number) => {
+export const getContentsDataWithTags = async (tagID: string, currentPageIndex: number) => {
   let contentsData: ContentData[] = []
-  if (tagIDs == undefined || tagIDs.length === 0) {
-    return contentsData
-  }
 
   const con = await getDBConnection()
   const [rows, _] = await con.query(
     `select * from park_contents where id = any (select content_id from park_tags_of_contents where tag_id=?) limit ?, ?`,
-    [tagIDs[0], (currentPageIndex - 1) * CONTENTS_NUM_PER_PAGE, CONTENTS_NUM_PER_PAGE]
+    [tagID, (currentPageIndex - 1) * CONTENTS_NUM_PER_PAGE, CONTENTS_NUM_PER_PAGE]
   )
   con.end()
   const data = JSON.parse(JSON.stringify(rows))
+
   for (let i = 0; i < data.length; i++) {
     let tags = await getContentTagsData(data[i].id)
     contentsData.push({
