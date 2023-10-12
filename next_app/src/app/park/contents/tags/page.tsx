@@ -9,7 +9,12 @@ import { getTagName } from 'util/secret/park/tags'
 
 const Contents = async (searchParams: SearchParams): Promise<[JSX.Element[], string, string, number, number]> => {
   if (searchParams == undefined || searchParams.tags == undefined || typeof searchParams.tags != 'string') {
-    return [[<p className={css.no_content_message}>コンテンツがありません</p>], '', '', 0, 0]
+    const msg = (
+      <p className={css.no_content_message} key="only one">
+        コンテンツがありません
+      </p>
+    )
+    return [[msg], '', '', 0, 0]
   }
 
   const tagID = searchParams.tags
@@ -19,7 +24,12 @@ const Contents = async (searchParams: SearchParams): Promise<[JSX.Element[], str
   const contentsData: ContentData[] = await getContentsDataWithTags(tagID, currentPageIndex)
 
   if (contentsData.length == 0) {
-    return [[<p className={css.no_content_message}>コンテンツがありません</p>], '', '', 0, 0]
+    const msg = (
+      <p className={css.no_content_message} key="only one">
+        コンテンツがありません
+      </p>
+    )
+    return [[msg], '', '', 0, 0]
   }
 
   const contents = contentsData.map(content => {
