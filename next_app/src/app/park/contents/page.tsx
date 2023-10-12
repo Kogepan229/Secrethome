@@ -12,8 +12,8 @@ const ContentsPage = ({ searchParams }: { searchParams?: SearchParams }) => {
         <PageSelector searchParams={searchParams} />
         <Suspense fallback={null}>
           <ContentsList searchParams={searchParams}></ContentsList>
+          <PageSelector searchParams={searchParams} />
         </Suspense>
-        <PageSelector searchParams={searchParams} />
       </div>
     </SecretRoomLayout>
   )
