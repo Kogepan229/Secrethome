@@ -9,10 +9,10 @@ const ContentsPage = ({ searchParams }: { searchParams?: SearchParams }) => {
   return (
     <SecretRoomLayout>
       <div className={css.contents_main}>
-        <PageSelector searchParams={searchParams} />
+        <PageSelector baseURL="/park/contents" searchParams={searchParams} />
         <Suspense fallback={null}>
           <ContentsList searchParams={searchParams}></ContentsList>
-          <PageSelector searchParams={searchParams} />
+          <PageSelector baseURL="/park/contents" searchParams={searchParams} />
         </Suspense>
       </div>
     </SecretRoomLayout>
