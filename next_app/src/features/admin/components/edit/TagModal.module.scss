@@ -1,6 +1,8 @@
 $modal_width: 300px;
 $modal_height: 400px;
-$modal_header_height: 38px;
+$modal_header_height: 36px;
+
+$color-modal-border: #808080;
 
 .modal_container {
   position: fixed;
@@ -9,7 +11,7 @@ $modal_header_height: 38px;
   width: $modal_width;
   height: $modal_height;
   background-color: white;
-  border: solid 2px rgba($color: #030303, $alpha: 0.5);
+  border: solid 2px $color-modal-border;
   box-shadow: 0 0 10px 0 rgba(0, 0, 0, 0.4);
   z-index: 100;
 }
@@ -18,8 +20,7 @@ $modal_header_height: 38px;
   display: flex;
   width: 100%;
   height: $modal_header_height;
-  border-bottom: solid 2px rgba($color: #030303, $alpha: 0.3);
-  //box-sizing: border-box;
+  border-bottom: solid 2px $color-modal-border;
 }
 
 .draggable {
@@ -29,17 +30,44 @@ $modal_header_height: 38px;
 }
 
 .close_button {
+  position: relative;
   width: $modal_header_height;
   height: $modal_header_height;
-  border: solid 2px red;
-  box-sizing: border-box;
+  border-left: solid 1px $color-modal-border;
   cursor: pointer;
+
+  &:hover {
+    background-color: rgb(230, 80, 80);
+
+    &::before,
+    &::after {
+      background-color: white;
+    }
+  }
+}
+
+.close_button::before,
+.close_button::after {
+  content: '';
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 2px;
+  height: 20px;
+  background: $color-modal-border;
+}
+
+.close_button::before {
+  transform: translate(-50%, -50%) rotate(45deg);
+}
+
+.close_button::after {
+  transform: translate(-50%, -50%) rotate(-45deg);
 }
 
 .tags_container {
   width: 100%;
   height: calc(100% - #{$modal_header_height} - 2px);
-  //box-sizing: border-box;
   background-color: #ececec;
   overflow-y: auto;
 }
@@ -48,7 +76,7 @@ $modal_header_height: 38px;
   display: flex;
   width: 100%;
   height: 30px;
-  border-bottom: solid 1px rgba($color: #030303, $alpha: 0.3);
+  border-bottom: solid 1px $color-modal-border;
   background-color: #f6f6f6;
 }
 
@@ -71,14 +99,12 @@ $modal_header_height: 38px;
   height: calc(100% - 4px);
   margin: 2px;
   padding: 0;
-  border: solid 1px rgba($color: #030303, $alpha: 0.5);
+  border: solid 1px $color-modal-border;
   border-radius: 5px;
   box-sizing: border-box;
   cursor: pointer;
   background-color: #e0e0e0;
   font-size: 12px;
-  //text-align: center;
-  //line-height: 24px;
   &:hover {
     background-color: #c7c7c7;
   }
