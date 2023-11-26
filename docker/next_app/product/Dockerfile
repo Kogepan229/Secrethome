@@ -1,4 +1,4 @@
-FROM node:20-alpine as builder
+FROM node:21-alpine as builder
 
 RUN apk add --no-cache libc6-compat
 WORKDIR /next_app
