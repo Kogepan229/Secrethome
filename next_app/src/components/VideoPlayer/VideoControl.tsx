@@ -31,7 +31,7 @@ const VideoControl = (props: Props) => {
       // 縦長の動画だと画面より大きくなってしまうのを防ぐ
       let height = resizeable.getBoundingClientRect().height
       if (screen.height < height) {
-        height = screen.height
+        height = screen.height + (height - screen.height) / 2
       }
       setVideoHeight(height)
     })
