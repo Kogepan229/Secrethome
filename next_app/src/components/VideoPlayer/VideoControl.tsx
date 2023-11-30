@@ -28,7 +28,12 @@ const VideoControl = (props: Props) => {
     const observer = new ResizeObserver(() => {
       //要素のサイズ確認
       setVideoWidth(resizeable.getBoundingClientRect().width)
-      setVideoHeight(resizeable.getBoundingClientRect().height)
+      // 縦長の動画だと画面より大きくなってしまうのを防ぐ
+      let height = resizeable.getBoundingClientRect().height
+      if (screen.height < height) {
+        height = screen.height
+      }
+      setVideoHeight(height)
     })
     observer.observe(resizeable)
   }
