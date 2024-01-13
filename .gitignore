@@ -1,3 +1,5 @@
+.vscode
+
 /data_files/contents/*
 !/data_files/contents/convert.sh
 
