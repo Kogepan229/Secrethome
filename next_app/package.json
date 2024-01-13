@@ -8,9 +8,6 @@
     "start": "next start",
     "lint": "next lint"
   },
-  "engines": {
-    "npm": "Dockerコンテナ内でのみ使用可能です。 Can use only in Docker container."
-  },
   "dependencies": {
     "@bufbuild/connect": "^0.13.0",
     "@bufbuild/connect-web": "^0.13.0",
