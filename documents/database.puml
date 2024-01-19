@@ -1,0 +1,40 @@
+@startuml modifications_E_to_T
+
+!define TRANSACTION CAE7F2
+
+entity rooms <<T,TRANSACTION>> {
+**id**: varchar(64) [PK]
+--
+**name**: varchar(64)
+**description**: varchar(4096)
+**room_type**: varchar(64)
+**key**: varchar(64)
+**created_at**: timestamp
+}
+
+
+entity contents <<T,TRANSACTION>> {
+**id**: varchar(64) [PK]
+--
+**room_id**: varchar(64)
+**title**: varchar(64)
+**description**: varchar(4096)
+**created_at**: timestamp
+**updated_at**: timestamp
+}
+
+entity tags <<T,TRANSACTION>> {
+**id**: varchar(64) [PK]
+--
+**room_id**: varchar(64)
+**name** : varchar(32)
+}
+
+entity tags_of_contents <<T,TRANSACTION>> {
+**content_id**: varchar(64) [PK]
+**tag_id**: varchar(64) [PK]
+--
+**priority**: int unsigned
+}
+
+@enduml
