@@ -3,6 +3,7 @@ package features
 import (
 	"fmt"
 	"log"
+	"net/http"
 	"os"
 	"path/filepath"
 	"runtime"
@@ -36,4 +37,9 @@ func PrintErr(err error) {
 		fmt.Printf("%s, line=%d, func=%v\n", file, line, funcName)
 		i += 1
 	}
+}
+
+func ResponseJson(res []byte, w http.ResponseWriter) (int, error) {
+	w.Header().Set("Content-Type", "application/json")
+	return w.Write(res)
 }
