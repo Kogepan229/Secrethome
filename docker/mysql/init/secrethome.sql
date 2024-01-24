@@ -4,10 +4,10 @@ CREATE TABLE `rooms` (
   `name` varchar(64) NOT NULL,
   `description` varchar(4096) DEFAULT NULL,
   `room_type` varchar(64) NOT NULL,
-  `key` varchar(64) NOT NULL,
+  `access_key` varchar(64) NOT NULL,
   `created_at` timestamp NULL DEFAULT NULL,
   PRIMARY KEY (`id`),
-  UNIQUE KEY (`key`)
+  UNIQUE KEY (`access_key`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 
 DROP TABLE IF EXISTS `contents`;

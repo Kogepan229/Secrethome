@@ -8,7 +8,7 @@ entity rooms <<T,TRANSACTION>> {
 **name**: varchar(64)
 **description**: varchar(4096)
 **room_type**: varchar(64)
-**key**: varchar(64) [UNIQUE]
+**access_key**: varchar(64) [UNIQUE]
 **created_at**: timestamp
 }
 
