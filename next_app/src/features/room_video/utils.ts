@@ -1,5 +1,5 @@
-import { getContentTagsData } from 'util/secret/park/tags'
-import { getDBConnection } from 'util/sql'
+import { getContentTagsData } from 'features/tags/tags'
+import { getDBConnection } from 'utils/sql'
 import { ContentData } from './types'
 import { SearchParams } from 'types/SearchParams'
 import { CONTENTS_NUM_PER_PAGE } from './const'
@@ -12,24 +12,24 @@ export const getCurrentPageIndex = (searchParams: SearchParams) => {
   return Number.isNaN(currentPageIndex) || currentPageIndex <= 0 ? 1 : currentPageIndex
 }
 
-export const getTotalContentsPageNum = async () => {
+export const getTotalContentsPageNum = async (roomId: string) => {
   const con = await getDBConnection()
-  const [rows, _] = await con.query(`select count(*) from park_contents`)
+  const [rows, _] = await con.query(`SELECT COUNT(*) FROM contents WHERE room_id=?`, [roomId])
   con.end()
   const data = JSON.parse(JSON.stringify(rows))
-  let totalNum = Math.ceil((data[0]['count(*)'] as number) / CONTENTS_NUM_PER_PAGE)
+  let totalNum = Math.ceil((data[0]['COUNT(*)'] as number) / CONTENTS_NUM_PER_PAGE)
   return totalNum
 }
 
 export const getTotalContentsPageNumWithTag = async (tagID: string) => {
   const con = await getDBConnection()
   const [rows, _] = await con.query(
-    `select count(*) from park_contents where id = any (select content_id from park_tags_of_contents where tag_id=?)`,
+    `SELECT COUNT(*) FROM contents WHERE id = ANY (SELECT content_id FROM tags_of_contents WHERE tag_id=?)`,
     [tagID]
   )
   con.end()
   const data = JSON.parse(JSON.stringify(rows))
-  let totalNum = Math.ceil((data[0]['count(*)'] as number) / CONTENTS_NUM_PER_PAGE)
+  let totalNum = Math.ceil((data[0]['COUNT(*)'] as number) / CONTENTS_NUM_PER_PAGE)
   return totalNum
 }
 
@@ -38,7 +38,7 @@ export const getContentsDataWithTags = async (tagID: string, currentPageIndex: n
 
   const con = await getDBConnection()
   const [rows, _] = await con.query(
-    `select * from park_contents where id = any (select content_id from park_tags_of_contents where tag_id=?) limit ?, ?`,
+    `SELECT * FROM contents WHERE id = ANY (SELECT content_id FROM tags_of_contents WHERE tag_id=?) LIMIT ?, ?`,
     [tagID, (currentPageIndex - 1) * CONTENTS_NUM_PER_PAGE, CONTENTS_NUM_PER_PAGE]
   )
   con.end()

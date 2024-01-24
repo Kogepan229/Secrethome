@@ -3,18 +3,18 @@ import { useEffect, useState } from 'react'
 import { useRouter } from 'next/navigation'
 import axios from 'axios'
 
-import css from './EditContentForm.module.scss'
-import { useEditDescription } from './EditDescription'
-import { useEditImage } from './EditImage'
-import { useEditTags } from './EditTags'
-import { useEditTitle } from './EditTitle'
-import { useEditVideo } from './EditVideo'
-import { useProgressBar } from './ProgressBar'
+import css from 'components/editForm/EditContentForm.module.scss'
+import { useEditDescription } from 'components/editForm/EditDescription'
+import { useEditImage } from 'components/editForm/EditImage'
+import { useEditTags } from 'components/editForm/EditTags'
+import { useEditTitle } from 'components/editForm/EditTitle'
+import { useEditVideo } from 'components/editForm/EditVideo'
+import { useProgressBar } from 'components/editForm//ProgressBar'
 import PopupWindowMessage from 'components/PopupWindowMessage'
 import SimpleButton from 'components/SimpleButton'
 import Header from 'features/header/Header'
 
-const UploadContentForm = () => {
+const UploadContentForm = ({ roomId }: { roomId: string }) => {
   const router = useRouter()
 
   const [isEnableSubmit, setIsEnableSubmit] = useState(false)
@@ -23,7 +23,7 @@ const UploadContentForm = () => {
 
   const { EditTitle, title } = useEditTitle({ title: '' })
   const { EditDescription, description } = useEditDescription({ description: '' })
-  const { EditTags, selectedTagList } = useEditTags({ selectedTagList: [] })
+  const { EditTags, selectedTagList } = useEditTags({ roomId: roomId, selectedTagList: [] })
   const { EditVideo, getVideoImage, video, isVideoStopped } = useEditVideo({})
   const { EditImage, image } = useEditImage({ isVideoStopped: isVideoStopped, getVideoImage: getVideoImage })
   const { ProgressBar, onProgress } = useProgressBar({ enabled: isStartedUpload })
@@ -40,6 +40,7 @@ const UploadContentForm = () => {
     e.preventDefault()
 
     const file = new FormData()
+    file.append('room_id', roomId)
     file.append('title', title)
     file.append('description', description)
     file.append('tagIDs', JSON.stringify(selectedTagList.map(value => value.id)))
@@ -48,7 +49,7 @@ const UploadContentForm = () => {
 
     setIsStartedUpload(true)
     axios
-      .post(process.env.NEXT_PUBLIC_BACKEND_URL + '/api/content', file, {
+      .post(process.env.NEXT_PUBLIC_BACKEND_URL + '/api/contents/video', file, {
         headers: { 'content-type': 'multipart/form-data' },
         onUploadProgress: onProgress,
       })
@@ -62,7 +63,7 @@ const UploadContentForm = () => {
 
   return (
     <>
-      <Header />
+      <Header roomId={roomId} />
       <div className={css.form}>
         <h2 className={css.form_header}>アップロード</h2>
         {EditTitle}
@@ -81,7 +82,7 @@ const UploadContentForm = () => {
         isShow={!!isShowCompletePopup}
         message={'追加しました'}
         buttonText="戻る"
-        buttonCallback={() => router.push(`/park/contents/${isShowCompletePopup}`)}
+        buttonCallback={() => router.push(`/${roomId}/contents/${isShowCompletePopup}`)}
       />
     </>
   )

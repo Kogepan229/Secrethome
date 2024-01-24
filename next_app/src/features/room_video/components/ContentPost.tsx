@@ -32,7 +32,7 @@ const ContentPost = ({ contentData }: { contentData: ContentData }) => {
         <Link href={`/park/contents/${contentData.id}`}>
           <img
             className={css.content_img}
-            src={`${process.env.NEXT_PUBLIC_FILESERVER_URL}/contents/${contentData.id}/${contentData.id}.webp?${contentData.updated_at}`}
+            src={`${process.env.NEXT_PUBLIC_FILESERVER_URL}/video/contents/${contentData.id}/${contentData.id}.webp?${contentData.updated_at}`}
             onError={onErrorImage}
             onClick={e => e.stopPropagation()}
           ></img>

@@ -48,8 +48,7 @@ func (c *ConversionQueueS) Pop() string {
 func convert(id string) {
 	log.Printf("[%s] Start conversion", id)
 
-	e := features.GetExeDirPath()
-	cmd := exec.Command("/bin/sh", fmt.Sprintf("%s/data_files/contents/convert.sh", e), fmt.Sprintf("%s/data_files/contents/%s/%s", e, id, id))
+	cmd := exec.Command("/bin/sh", fmt.Sprintf("%s/video/contents/convert.sh", features.DATA_FILES_PATH), fmt.Sprintf("%s/video/contents/%s/%s", features.DATA_FILES_PATH, id, id))
 
 	stdout, err := cmd.StdoutPipe()
 	if err != nil {

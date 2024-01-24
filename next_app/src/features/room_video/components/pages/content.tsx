@@ -1,8 +1,8 @@
 import { Suspense } from 'react'
 import dynamic from 'next/dynamic'
-import { getDBConnection } from 'util/sql'
+import { getDBConnection } from 'utils/sql'
 import Link from 'next/link'
-import { getContentTagsData, TagData } from 'util/secret/park/tags'
+import { getContentTagsData, TagData } from 'features/tags/tags'
 import SecretRoomLayout from 'components/layout/SecretRoomLayout'
 import css from './content.module.scss'
 import reactStringReplace from 'react-string-replace'
@@ -21,7 +21,7 @@ const getContentData = async (contentID: any) => {
   let contentData: ContentData = { tags: [] }
 
   const con = await getDBConnection()
-  const [rows, _] = await con.query(`select title, description from park_contents where id=?`, [contentID])
+  const [rows, _] = await con.query(`SELECT title, description FROM contents where id=?`, [contentID])
   con.end()
   const data = JSON.parse(JSON.stringify(rows)) as any[]
   if (data.length > 0) {
@@ -33,8 +33,8 @@ const getContentData = async (contentID: any) => {
   return contentData
 }
 
-const ContentPage = async ({ params }: { params: any }) => {
-  const contentData = await getContentData(params.content_id)
+const ContentPage = async ({ roomId, contentId }: { roomId: string; contentId: string }) => {
+  const contentData = await getContentData(contentId)
   if (contentData.id == undefined) {
     return <p>No content</p>
   }
@@ -45,17 +45,19 @@ const ContentPage = async ({ params }: { params: any }) => {
   ))
 
   return (
-    <SecretRoomLayout>
+    <SecretRoomLayout roomId={roomId}>
       <div className={css.content_container}>
         <div className={css.video_container}>
           <Suspense fallback={null}>
-            <VideoPlayer src={process.env.NEXT_PUBLIC_FILESERVER_URL + '/contents/' + contentData.id + '/' + contentData.id + '.m3u8'} />
+            <VideoPlayer
+              src={process.env.NEXT_PUBLIC_FILESERVER_URL + '/video/contents/' + contentData.id + '/' + contentData.id + '.m3u8'}
+            />
           </Suspense>
         </div>
         <div className={css.under_video}>
           <p className={css.title}>{contentData.title}</p>
           <SimpleButton className={css.button_update}>
-            <Link href={`/park/admin/update/${contentData.id}`}>更新</Link>
+            <Link href={`/${roomId}/admin/update/${contentData.id}`}>更新</Link>
           </SimpleButton>
         </div>
         <p className={css.description}>{description}</p>

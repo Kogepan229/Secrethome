@@ -3,21 +3,22 @@ import { useEffect, useState } from 'react'
 import { useRouter } from 'next/navigation'
 import axios from 'axios'
 
-import css from './EditContentForm.module.scss'
-import { useEditDescription } from './EditDescription'
-import { useEditImage } from './EditImage'
-import { useEditTags } from './EditTags'
-import { useEditTitle } from './EditTitle'
-import { useEditVideo } from './EditVideo'
-import { TagData } from 'util/secret/park/tags'
-import { useProgressBar } from './ProgressBar'
+import css from 'components/editForm/EditContentForm.module.scss'
+import { useEditDescription } from 'components/editForm/EditDescription'
+import { useEditImage } from 'components/editForm/EditImage'
+import { useEditTags } from 'components/editForm/EditTags'
+import { useEditTitle } from 'components/editForm/EditTitle'
+import { useEditVideo } from 'components/editForm/EditVideo'
+import { useProgressBar } from 'components/editForm/ProgressBar'
+import ContentDeleteButton from 'components/editForm/ContentDeleteButton'
 import PopupWindowMessage from 'components/PopupWindowMessage'
 import SimpleButton from 'components/SimpleButton'
-import ContentDeleteButton from './ContentDeleteButton'
+import { TagData } from 'features/tags/tags'
 import Header from 'features/header/Header'
 
 type Props = {
   id: string
+  roomId: string
   title: string
   description: string
   updatedAt: string
@@ -33,14 +34,14 @@ const UpdateContentForm = (props: Props) => {
 
   const { EditTitle, title } = useEditTitle({ title: props.title })
   const { EditDescription, description } = useEditDescription({ description: props.description })
-  const { EditTags, selectedTagList } = useEditTags({ selectedTagList: props.selectedTagList })
+  const { EditTags, selectedTagList } = useEditTags({ roomId: props.roomId, selectedTagList: props.selectedTagList })
   const { EditVideo, getVideoImage, video, isUpdatedVideo, isVideoStopped } = useEditVideo({
-    videoSrc: `${process.env.NEXT_PUBLIC_FILESERVER_URL}/contents/${props.id}/${props.id}.mp4?${props.updatedAt}`,
+    videoSrc: `${process.env.NEXT_PUBLIC_FILESERVER_URL}/video/contents/${props.id}/${props.id}.mp4?${props.updatedAt}`,
   })
   const { EditImage, image, isUpdatedImage } = useEditImage({
     isVideoStopped: isVideoStopped,
     getVideoImage: getVideoImage,
-    imageSrc: `${process.env.NEXT_PUBLIC_FILESERVER_URL}/contents/${props.id}/${props.id}.webp?${props.updatedAt}`,
+    imageSrc: `${process.env.NEXT_PUBLIC_FILESERVER_URL}/video/contents/${props.id}/${props.id}.webp?${props.updatedAt}`,
   })
   const { ProgressBar, onProgress } = useProgressBar({ enabled: isStartedUpload })
 
@@ -69,7 +70,7 @@ const UpdateContentForm = (props: Props) => {
 
     setIsStartedUpload(true)
     axios
-      .put(process.env.NEXT_PUBLIC_BACKEND_URL + '/api/content', file, {
+      .put(process.env.NEXT_PUBLIC_BACKEND_URL + '/api/contents/video', file, {
         headers: { 'content-type': 'multipart/form-data' },
         onUploadProgress: onProgress,
       })
@@ -83,7 +84,7 @@ const UpdateContentForm = (props: Props) => {
 
   return (
     <>
-      <Header />
+      <Header roomId={props.roomId} />
       <div className={css.form}>
         <h2 className={css.form_header}>アップデート</h2>
         {EditTitle}
@@ -95,7 +96,7 @@ const UpdateContentForm = (props: Props) => {
           <SimpleButton className={css.button_submit} onClick={handleSubmit} disabled={!isEnableSubmit}>
             更新
           </SimpleButton>
-          <ContentDeleteButton contentID={props.id} />
+          <ContentDeleteButton roomId={props.roomId} contentID={props.id} />
         </div>
         {ProgressBar}
       </div>
@@ -103,7 +104,7 @@ const UpdateContentForm = (props: Props) => {
         isShow={!!isShowCompletePopup}
         message={'更新しました'}
         buttonText="戻る"
-        buttonCallback={() => router.push(`/park/contents/${isShowCompletePopup}`)}
+        buttonCallback={() => router.push(`/${props.roomId}/contents/${isShowCompletePopup}`)}
       />
     </>
   )

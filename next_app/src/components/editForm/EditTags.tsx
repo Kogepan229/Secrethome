@@ -1,14 +1,16 @@
 'use client'
 import { useMemo, useState } from 'react'
 import css from './EditContentForm.module.scss'
-import { TagData } from 'util/secret/park/tags'
+import { TagData } from 'features/tags/tags'
 import TagModal from './TagModal'
 import SimpleButton from 'components/SimpleButton'
 
 const EditTags = ({
+  roomId,
   selectedTagList,
   setSelectedTagList,
 }: {
+  roomId: string
   selectedTagList: TagData[]
   setSelectedTagList: React.Dispatch<React.SetStateAction<TagData[]>>
 }) => {
@@ -42,6 +44,7 @@ const EditTags = ({
       </SimpleButton>
       <div className={css.tags_container}>{TagItems}</div>
       <TagModal
+        roomId={roomId}
         isShow={isOpenedTagModal}
         closeCallback={() => setIsOpenedTagModal(false)}
         selectTagCallback={addTag}
@@ -51,10 +54,13 @@ const EditTags = ({
   )
 }
 
-export const useEditTags = ({ selectedTagList }: { selectedTagList: TagData[] }) => {
+export const useEditTags = ({ roomId, selectedTagList }: { roomId: string; selectedTagList: TagData[] }) => {
   const [_selectedTagList, setSelectedTags] = useState<TagData[]>(selectedTagList)
 
-  const editTags = useMemo(() => <EditTags selectedTagList={_selectedTagList} setSelectedTagList={setSelectedTags} />, [_selectedTagList])
+  const editTags = useMemo(
+    () => <EditTags roomId={roomId} selectedTagList={_selectedTagList} setSelectedTagList={setSelectedTags} />,
+    [_selectedTagList]
+  )
 
   return {
     EditTags: editTags,

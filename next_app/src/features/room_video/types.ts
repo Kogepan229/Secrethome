@@ -1,4 +1,4 @@
-import { SidebarTagsData, TagData } from 'util/secret/park/tags'
+import { TagData } from 'features/tags/tags'
 
 export type ContentData = {
   id: string

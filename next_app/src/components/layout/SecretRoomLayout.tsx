@@ -1,12 +1,16 @@
 import 'server-only'
 import { ReactNode } from 'react'
 import _SecretRoomLayout from './_SecretRoomLayout'
-import { getSidebarTagsData } from 'util/secret/park/tags'
+import { getSidebarTagsData } from 'features/tags/tags'
 
-const SecretRoomLayout = async ({ children }: { children: ReactNode }) => {
-  const tagsData = await getSidebarTagsData()
+const SecretRoomLayout = async ({ roomId, children }: { roomId: string; children: ReactNode }) => {
+  const tagsData = await getSidebarTagsData(roomId)
 
-  return <_SecretRoomLayout sidebarTags={tagsData}>{children}</_SecretRoomLayout>
+  return (
+    <_SecretRoomLayout roomId={roomId} sidebarTags={tagsData}>
+      {children}
+    </_SecretRoomLayout>
+  )
 }
 
 export default SecretRoomLayout

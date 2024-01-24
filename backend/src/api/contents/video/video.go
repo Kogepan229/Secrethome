@@ -22,7 +22,7 @@ func VideoHandler(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 	if r.Method == http.MethodDelete {
-		deleteVideo(w, r)
+		DeleteVideo(w, r)
 		return
 	}
 

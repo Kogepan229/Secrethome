@@ -2,14 +2,13 @@
 import 'client-only'
 import axios from 'axios'
 import { useState } from 'react'
-//import css from './ContentDeleteButton.module.scss'
 import css from './EditContentForm.module.scss'
 
 import PopupWindowMessage from 'components/PopupWindowMessage'
 import { useRouter } from 'next/navigation'
 import SimpleButton from 'components/SimpleButton'
 
-const ContentDeleteButton = ({ contentID }: { contentID: string }) => {
+const ContentDeleteButton = ({ roomId, contentID }: { roomId: string; contentID: string }) => {
   const router = useRouter()
   const [isShowPopup, setIsShowPopup] = useState(false)
 
@@ -19,7 +18,7 @@ const ContentDeleteButton = ({ contentID }: { contentID: string }) => {
       let data = new FormData()
       data.append('id', contentID)
       axios
-        .delete(process.env.NEXT_PUBLIC_BACKEND_URL + '/api/content', { data: data })
+        .delete(process.env.NEXT_PUBLIC_BACKEND_URL + '/api/contents', { data: data })
         .then(res => {
           setIsShowPopup(true)
         })
@@ -38,7 +37,7 @@ const ContentDeleteButton = ({ contentID }: { contentID: string }) => {
         isShow={isShowPopup}
         message="削除しました"
         buttonText="戻る"
-        buttonCallback={() => router.push('/park/contents/')}
+        buttonCallback={() => router.push(`/${roomId}/contents/`)}
       />
     </>
   )

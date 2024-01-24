@@ -1,11 +1,11 @@
 import css from './tags.module.scss'
 import { SearchParams } from 'types/SearchParams'
 import SecretRoomLayout from 'components/layout/SecretRoomLayout'
-import ContentPost from 'features/contents/components/ContentPost'
-import PageSelector from 'features/contents/components/PageSelector'
-import { getContentsDataWithTags, getCurrentPageIndex, getTotalContentsPageNumWithTag } from 'features/contents/util'
-import { ContentData } from 'features/contents/types'
-import { getTagName } from 'util/secret/park/tags'
+import ContentPost from 'features/room_video/components/ContentPost'
+import PageSelector from 'components/PageSelector'
+import { getContentsDataWithTags, getCurrentPageIndex, getTotalContentsPageNumWithTag } from 'features/room_video/utils'
+import { ContentData } from 'features/room_video/types'
+import { getTagName } from 'features/tags/tags'
 
 const Contents = async (searchParams: SearchParams): Promise<[JSX.Element[], string, string, number, number]> => {
   if (searchParams == undefined || searchParams.tags == undefined || typeof searchParams.tags != 'string') {
@@ -39,16 +39,16 @@ const Contents = async (searchParams: SearchParams): Promise<[JSX.Element[], str
   return [contents, tagID, tagName, totalPageNum, currentPageIndex]
 }
 
-const TagsPage = async ({ searchParams }: { searchParams: SearchParams }) => {
+const TagsPage = async ({ roomId, searchParams }: { roomId: string; searchParams: SearchParams }) => {
   const [contents, tagID, tagName, totalPageNum, currentPageIndex] = await Contents(searchParams)
 
   return (
-    <SecretRoomLayout>
+    <SecretRoomLayout roomId={roomId}>
       <div className={css.contents_main}>
         <h3 className={css.tag_header}>{tagName}</h3>
-        <PageSelector baseURL={`/park/contents/tags?tags=${tagID}`} totalPageNum={totalPageNum} currentPageIndex={currentPageIndex} />
+        <PageSelector baseURL={`/${roomId}/contents/tags?tags=${tagID}`} totalPageNum={totalPageNum} currentPageIndex={currentPageIndex} />
         {contents}
-        <PageSelector baseURL={`/park/contents/tags?tags=${tagID}`} totalPageNum={totalPageNum} currentPageIndex={currentPageIndex} />
+        <PageSelector baseURL={`/${roomId}/contents/tags?tags=${tagID}`} totalPageNum={totalPageNum} currentPageIndex={currentPageIndex} />
       </div>
     </SecretRoomLayout>
   )

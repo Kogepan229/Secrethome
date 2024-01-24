@@ -1,7 +1,7 @@
-import { getDBConnection } from 'util/sql'
-import { getContentTagsData, TagData } from 'util/secret/park/tags'
+import { getDBConnection } from 'utils/sql'
+import { getContentTagsData, TagData } from 'features/tags/tags'
 
-import UpdateContentForm from 'features/admin/components/edit/UpdateContentForm'
+import UpdateContentForm from 'features/room_video/components/admin/UpdateContentForm'
 
 type ContentData = {
   id?: string
@@ -13,7 +13,7 @@ type ContentData = {
 
 const getContentData = async (contentID: string): Promise<ContentData> => {
   const con = await getDBConnection()
-  const [rows, _] = await con.query<any[]>(`select title, description, updated_at from park_contents where id=?`, [contentID])
+  const [rows, _] = await con.query<any[]>(`SELECT title, description, updated_at FROM contents WHERE id=?`, [contentID])
   con.end()
   const data = JSON.parse(JSON.stringify(rows))
   if (data.length == 0) {
@@ -29,8 +29,8 @@ const getContentData = async (contentID: string): Promise<ContentData> => {
   }
 }
 
-const UpdateContent = async ({ params }: { params: any }) => {
-  const contentData = await getContentData(params.content_id)
+const UpdateContent = async ({ roomId, contentId }: { roomId: string; contentId: string }) => {
+  const contentData = await getContentData(contentId)
   if (contentData.id == undefined) {
     return <p>No content</p>
   }
@@ -39,6 +39,7 @@ const UpdateContent = async ({ params }: { params: any }) => {
     <div>
       <UpdateContentForm
         id={contentData.id}
+        roomId={roomId}
         title={contentData.title ?? ''}
         description={contentData.description ?? ''}
         updatedAt={contentData.updatedAt ?? ''}

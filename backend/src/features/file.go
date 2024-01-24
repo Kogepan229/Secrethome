@@ -7,7 +7,7 @@ import (
 	"os"
 )
 
-const DATA_FILES_PATH = "/data_files"
+const DATA_FILES_PATH = "/backend/data_files"
 
 func ExistsFile(name string) bool {
 	_, err := os.Stat(name)

@@ -6,6 +6,7 @@ import (
 	"log"
 	"net/http"
 	"os"
+	"secrethome-back/api/contents"
 	"secrethome-back/api/contents/video"
 	"secrethome-back/api/rooms"
 	"secrethome-back/api/tags"
@@ -90,6 +91,7 @@ func main() {
 	mux.Handle(secrethomev1connect.NewSecretHomeServiceHandler(shserver))
 	mux.HandleFunc("/api/rooms/key", rooms.RoomIdFromKeyHandler)
 	mux.HandleFunc("/api/rooms", rooms.RoomsHandler)
+	mux.HandleFunc("/api/contents", contents.ContentsHandler)
 	mux.HandleFunc("/api/contents/video", video.VideoHandler)
 	mux.HandleFunc("/api/tag", tags.TagHandler)
 	mux.HandleFunc("/api/all_tags", tags.GetAllTagsHandler)

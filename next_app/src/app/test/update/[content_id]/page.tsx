@@ -1,8 +1,8 @@
-import { getDBConnection } from 'util/sql'
-import { getContentTagsData, TagData } from 'util/secret/park/tags'
+import { getDBConnection } from 'utils/sql'
+import { getContentTagsData, TagData } from 'features/tags/tags'
 
-import ContentDeleteButton from 'features/admin/components/edit/ContentDeleteButton'
-import UpdateContentForm from 'features/admin/components/edit/UpdateContentForm'
+import ContentDeleteButton from 'components/editForm/ContentDeleteButton'
+import UpdateContentForm from 'features/room_video/components/admin/UpdateContentForm'
 
 type ContentData = {
   id?: string
@@ -14,7 +14,7 @@ type ContentData = {
 
 const getContentData = async (contentID: any): Promise<ContentData> => {
   const con = await getDBConnection()
-  const [rows, _] = await con.query<any[]>(`select title, description, updated_at from park_contents where id=?`, [contentID])
+  const [rows, _] = await con.query<any[]>(`select title, description, updated_at from contents where id=?`, [contentID])
   con.end()
   const data = JSON.parse(JSON.stringify(rows)) as any[]
   if (data.length == 0) {
@@ -40,12 +40,13 @@ const UpdateContent = async ({ params }: { params: any }) => {
     <div>
       <UpdateContentForm
         id={contentData.id}
+        roomId="park"
         title={contentData.title ?? ''}
         description={contentData.description ?? ''}
         updatedAt={contentData.updatedAt ?? ''}
         selectedTagList={contentData.selectedTags ?? []}
       ></UpdateContentForm>
-      <ContentDeleteButton contentID={contentData.id} />
+      <ContentDeleteButton roomId="park" contentID={contentData.id} />
     </div>
   )
 }

@@ -8,7 +8,7 @@ import (
 	"secrethome-back/features"
 )
 
-func deleteVideo(w http.ResponseWriter, r *http.Request) {
+func DeleteVideo(w http.ResponseWriter, r *http.Request) {
 	id := r.FormValue("id")
 	if id == "" {
 		features.PrintErr(fmt.Errorf("id is empty"))

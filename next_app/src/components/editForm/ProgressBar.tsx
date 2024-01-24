@@ -1,6 +1,5 @@
 'use client'
 import { useEffect, useMemo, useState } from 'react'
-import css from './EditContentForm.module.scss'
 import { AxiosProgressEvent } from 'axios'
 
 const ProgressBar = ({ progress }: { progress: number }) => {

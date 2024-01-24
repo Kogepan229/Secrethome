@@ -1,18 +1,19 @@
 import css from './ContentsList.module.scss'
-import { getDBConnection } from 'util/sql'
+import { getDBConnection } from 'utils/sql'
 import { SearchParams } from 'types/SearchParams'
-import { getContentTagsData } from 'util/secret/park/tags'
-import { CONTENTS_NUM_PER_PAGE } from 'features/contents/const'
-import { ContentData } from 'features/contents/types'
-import ContentPost from 'features/contents/components/ContentPost'
-import { getCurrentPageIndex } from '../util'
+import { CONTENTS_NUM_PER_PAGE } from 'features/room_video/const'
+import { ContentData } from 'features/room_video/types'
+import ContentPost from './ContentPost'
+import { getCurrentPageIndex } from '../utils'
+import { getContentTagsData } from 'features/tags/tags'
 
-const getContentsData = async (currentPageIndex: number) => {
+const getContentsData = async (roomId: string, currentPageIndex: number) => {
   let contentsData: ContentData[] = []
 
   // Get contents data from DB
   const con = await getDBConnection()
-  const [rows, _] = await con.query(`select id, title, description, updated_at from park_contents limit ?, ?`, [
+  const [rows, _] = await con.query(`SELECT id, title, description, updated_at FROM contents WHERE room_id=? LIMIT ?, ?`, [
+    roomId,
     (currentPageIndex - 1) * CONTENTS_NUM_PER_PAGE,
     CONTENTS_NUM_PER_PAGE,
   ])
@@ -31,8 +32,8 @@ const getContentsData = async (currentPageIndex: number) => {
   return contentsData
 }
 
-const ContentsList = async ({ searchParams }: { searchParams?: SearchParams }) => {
-  const contentsData = await getContentsData(getCurrentPageIndex(searchParams!))
+const ContentsList = async ({ roomId, searchParams }: { roomId: string; searchParams?: SearchParams }) => {
+  const contentsData = await getContentsData(roomId, getCurrentPageIndex(searchParams!))
   const contents = contentsData.map(content => {
     return <ContentPost contentData={content} key={content.id}></ContentPost>
   })

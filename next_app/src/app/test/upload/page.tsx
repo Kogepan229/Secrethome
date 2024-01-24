@@ -1,9 +1,9 @@
-import UploadContentForm from 'features/admin/components/edit/UploadContentForm'
+import UploadContentForm from 'features/room_video/components/admin/UploadContentForm'
 
 const TestUpload = async () => {
   return (
     <div>
-      <UploadContentForm />
+      <UploadContentForm roomId="park" />
     </div>
   )
 }

@@ -1,11 +1,12 @@
 'use client'
 import css from './TagModal.module.scss'
-import { TagData } from 'util/secret/park/tags'
+import { TagData } from 'features/tags/tags'
 import { DragEventHandler, useCallback, useEffect, useMemo, useRef, useState } from 'react'
 import useSWR from 'swr'
 import axios, { AxiosError, AxiosResponse } from 'axios'
 
 type Props = {
+  roomId: string
   isShow: boolean
   closeCallback: () => void
   selectTagCallback: (tag: TagData) => void
@@ -14,10 +15,6 @@ type Props = {
 
 type FetchedTags = {
   tags: TagData[]
-}
-
-const fetcher = async (url: string) => {
-  return await axios.get(url)
 }
 
 const TagModal = (props: Props) => {
@@ -33,6 +30,13 @@ const TagModal = (props: Props) => {
     top?: string
     left?: string
   }>()
+
+  const fetcher = useCallback(
+    async (url: string) => {
+      return await axios.get(url, { params: { room_id: props.roomId } })
+    },
+    [props]
+  )
 
   const { data, error } = useSWR<AxiosResponse<FetchedTags>, AxiosError>(process.env.NEXT_PUBLIC_BACKEND_URL + '/api/all_tags', fetcher)
   let tags: TagData[] = data?.data.tags ?? []
