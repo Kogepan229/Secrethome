@@ -1,4 +1,4 @@
-package content
+package video
 
 import (
 	"fmt"
@@ -8,7 +8,7 @@ import (
 	"secrethome-back/features"
 )
 
-func deleteContent(w http.ResponseWriter, r *http.Request) {
+func deleteVideo(w http.ResponseWriter, r *http.Request) {
 	id := r.FormValue("id")
 	if id == "" {
 		features.PrintErr(fmt.Errorf("id is empty"))
@@ -16,7 +16,7 @@ func deleteContent(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	log.Printf("[%s] Start delete process", id)
+	log.Printf("Start to delete content. id[%s]", id)
 
 	err := backupVideoFile(id)
 	if err != nil {
@@ -26,7 +26,7 @@ func deleteContent(w http.ResponseWriter, r *http.Request) {
 	}
 
 	// content path
-	contentDirPath := fmt.Sprintf("data_files/contents/%s", id)
+	contentDirPath := fmt.Sprintf("%s/contents/%s", DATA_VIDEO_PATH, id)
 
 	// remove all files
 	err = os.RemoveAll(contentDirPath)
@@ -43,7 +43,7 @@ func deleteContent(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	_, err = tx.Exec(`delete from park_contents where id=?`, id)
+	_, err = tx.Exec(`DELETE FROM contents WHERE id=?`, id)
 	if err != nil {
 		features.PrintErr(err)
 		tx.Rollback()
@@ -51,7 +51,7 @@ func deleteContent(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	_, err = tx.Exec(`delete from park_tags_of_contents where content_id=?`, id)
+	_, err = tx.Exec(`DELETE FROM tags_of_contents where content_id=?`, id)
 	if err != nil {
 		features.PrintErr(err)
 		tx.Rollback()
@@ -62,5 +62,5 @@ func deleteContent(w http.ResponseWriter, r *http.Request) {
 	tx.Commit()
 	w.WriteHeader(http.StatusOK)
 
-	log.Printf("[%s] Finished delete process", id)
+	log.Printf("Deleted content. id[%s]", id)
 }

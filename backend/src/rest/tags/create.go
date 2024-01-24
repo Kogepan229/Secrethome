@@ -1,4 +1,4 @@
-package tag
+package tags
 
 import (
 	"encoding/json"
@@ -10,17 +10,16 @@ import (
 	"github.com/oklog/ulid/v2"
 )
 
-func addTag(w http.ResponseWriter, r *http.Request) {
-	id := ulid.Make().String()
-	log.Printf("[%s] Start process to add tag", id)
-
+func createTag(w http.ResponseWriter, r *http.Request) {
+	roomId := r.FormValue("room_id")
 	name := r.FormValue("name")
-	if name == "" {
-		features.PrintErr(fmt.Errorf("name is empty"))
-		http.Error(w, "name is empty", http.StatusBadRequest)
+	if roomId == "" || name == "" {
+		features.PrintErr(fmt.Errorf("room_id or name is empty"))
+		http.Error(w, "room_id or name is empty", http.StatusBadRequest)
 		return
 	}
-	log.Printf("[%s] tag name: %s", id, name)
+
+	id := ulid.Make().String()
 
 	tx, err := features.DB.Begin()
 	if err != nil {
@@ -29,7 +28,7 @@ func addTag(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	row := tx.QueryRow(`select count(*) from park_tags where name=?`, name)
+	row := tx.QueryRow(`SELECT COUNT(*) FROM tags WHERE room_id=? AND name=?`, roomId, name)
 	if row.Err() != nil {
 		features.PrintErr(err)
 		tx.Rollback()
@@ -41,13 +40,12 @@ func addTag(w http.ResponseWriter, r *http.Request) {
 	row.Scan(&count)
 	if count != 0 {
 		errStr := "requested tag already exists"
-		log.Printf("[%s] %s", id, errStr)
 		tx.Rollback()
 		http.Error(w, errStr, http.StatusBadRequest)
 		return
 	}
 
-	_, err = tx.Exec(`insert into  park_tags values (?, ?)`, id, name)
+	_, err = tx.Exec(`INSERT INTO tags VALUES (?, ?, ?)`, id, roomId, name)
 	if err != nil {
 		features.PrintErr(err)
 		tx.Rollback()
@@ -65,14 +63,14 @@ func addTag(w http.ResponseWriter, r *http.Request) {
 	}
 
 	// write response
-	_, err = w.Write(b)
+	_, err = features.ResponseJson(b, w)
 	if err != nil {
 		features.PrintErr(err)
 		tx.Rollback()
 		http.Error(w, err.Error(), http.StatusInternalServerError)
 		return
 	}
-
 	tx.Commit()
-	log.Printf("[%s] Finished process to add tag", id)
+
+	log.Printf("Created new tag id[%s]", id)
 }

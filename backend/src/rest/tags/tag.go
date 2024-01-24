@@ -1,4 +1,4 @@
-package tag
+package tags
 
 import (
 	"net/http"
@@ -6,7 +6,7 @@ import (
 
 func TagHandler(w http.ResponseWriter, r *http.Request) {
 	if r.Method == http.MethodPost {
-		addTag(w, r)
+		createTag(w, r)
 		return
 	}
 

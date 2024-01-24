@@ -10,9 +10,9 @@ import (
 	"secrethome-back/features"
 	v1 "secrethome-back/gen/secrethome/v1"
 	"secrethome-back/gen/secrethome/v1/secrethomev1connect"
-	"secrethome-back/rest/content"
-	"secrethome-back/rest/secretkey"
-	"secrethome-back/rest/tag"
+	"secrethome-back/rest/contents/video"
+	"secrethome-back/rest/rooms"
+	"secrethome-back/rest/tags"
 
 	"golang.org/x/net/http2"
 	"golang.org/x/net/http2/h2c"
@@ -88,10 +88,11 @@ func main() {
 	shserver := &SecrethomeServer{}
 	mux := http.NewServeMux()
 	mux.Handle(secrethomev1connect.NewSecretHomeServiceHandler(shserver))
-	mux.HandleFunc("/api/secretkey", secretkey.SecretkeyHandler)
-	mux.HandleFunc("/api/content", content.ContentHandler)
-	mux.HandleFunc("/api/tag", tag.TagHandler)
-	mux.HandleFunc("/api/all_tags", tag.GetAllTagsHandler)
+	mux.HandleFunc("/api/rooms/key", rooms.RoomIdFromKeyHandler)
+	mux.HandleFunc("/api/rooms", rooms.RoomsHandler)
+	mux.HandleFunc("/api/contents/video", video.VideoHandler)
+	mux.HandleFunc("/api/tag", tags.TagHandler)
+	mux.HandleFunc("/api/all_tags", tags.GetAllTagsHandler)
 	err = http.ListenAndServe(
 		":60133",
 		c.Handler(h2c.NewHandler(mux, &http2.Server{})),

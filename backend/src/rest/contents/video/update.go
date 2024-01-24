@@ -1,4 +1,4 @@
-package content
+package video
 
 import (
 	"encoding/json"
@@ -10,7 +10,7 @@ import (
 	"secrethome-back/features"
 )
 
-func updateContent(w http.ResponseWriter, r *http.Request) {
+func updateVideo(w http.ResponseWriter, r *http.Request) {
 	id := r.FormValue("id")
 	title := r.FormValue("title")
 	description := r.FormValue("description")
@@ -23,7 +23,7 @@ func updateContent(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	log.Printf("[%s] Start content update process", id)
+	log.Printf("Start to update video content. id[%s]", id)
 
 	tagsJson := r.FormValue("tagIDs")
 	var tagIDs []string
@@ -59,7 +59,7 @@ func updateContent(w http.ResponseWriter, r *http.Request) {
 	}
 
 	// content path
-	contentDirPath := fmt.Sprintf("data_files/contents/%s", id)
+	contentDirPath := fmt.Sprintf("%s/contents/%s", DATA_VIDEO_PATH, id)
 
 	// save video file
 	if videoFile != nil {
@@ -76,7 +76,7 @@ func updateContent(w http.ResponseWriter, r *http.Request) {
 		//// remove directory ////
 		// backup image to tmp
 		if imageFile != nil {
-			err = os.Rename(fmt.Sprintf("data_files/contents/%s/%s.webp", id, id), fmt.Sprintf("data_files/tmp/%s.webp", id))
+			err = os.Rename(fmt.Sprintf("%s/contents/%s/%s.webp", DATA_VIDEO_PATH, id, id), fmt.Sprintf("%s/tmp/%s.webp", DATA_VIDEO_PATH, id))
 			if err != nil {
 				features.PrintErr(err)
 				http.Error(w, err.Error(), http.StatusInternalServerError)
@@ -96,7 +96,7 @@ func updateContent(w http.ResponseWriter, r *http.Request) {
 			return
 		}
 		if imageFile != nil {
-			err = os.Rename(fmt.Sprintf("data_files/tmp/%s.webp", id), fmt.Sprintf("data_files/contents/%s/%s.webp", id, id))
+			err = os.Rename(fmt.Sprintf("%s/tmp/%s.webp", DATA_VIDEO_PATH, id), fmt.Sprintf("%s/contents/%s/%s.webp", DATA_VIDEO_PATH, id, id))
 			if err != nil {
 				features.PrintErr(err)
 				http.Error(w, err.Error(), http.StatusInternalServerError)
@@ -141,7 +141,7 @@ func updateContent(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	_, err = tx.Exec(`update park_contents set title=?, description=?, updated_at=? where id=?`, title, description, updatedAt, id)
+	_, err = tx.Exec(`UPDATE contents SET title=?, description=?, updated_at=? WHERE id=?`, title, description, updatedAt, id)
 	if err != nil {
 		features.PrintErr(err)
 		tx.Rollback()
@@ -150,7 +150,7 @@ func updateContent(w http.ResponseWriter, r *http.Request) {
 	}
 
 	// delete tags info
-	_, err = tx.Exec(`delete from park_tags_of_contents where content_id=?`, id)
+	_, err = tx.Exec(`DELETE FROM tags_of_contents WHERE content_id=?`, id)
 	if err != nil {
 		features.PrintErr(err)
 		tx.Rollback()
@@ -159,7 +159,7 @@ func updateContent(w http.ResponseWriter, r *http.Request) {
 	}
 
 	//// insert tags info ////
-	stmt, err := tx.Prepare(`insert into park_tags_of_contents values (?, ?, ?)`)
+	stmt, err := tx.Prepare(`INSERT INTO tags_of_contents values (?, ?, ?)`)
 	if err != nil {
 		features.PrintErr(err)
 		tx.Rollback()
@@ -188,8 +188,8 @@ func updateContent(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	// write response
-	_, err = w.Write(b)
+	// Send response
+	_, err = features.ResponseJson(b, w)
 	if err != nil {
 		features.PrintErr(err)
 		tx.Rollback()
@@ -205,5 +205,5 @@ func updateContent(w http.ResponseWriter, r *http.Request) {
 		convert.ConversionQueue.Push(id)
 	}
 
-	log.Printf("[%s] Finished content update process", id)
+	log.Printf("Updated video content. id[%s]", id)
 }

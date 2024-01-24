@@ -1,4 +1,4 @@
-package content
+package video
 
 import (
 	"encoding/json"
@@ -13,20 +13,20 @@ import (
 	"github.com/oklog/ulid/v2"
 )
 
-func uploadContent(w http.ResponseWriter, r *http.Request) {
-	id := ulid.Make().String()
-	createdAt := features.GetCurrentTime()
-
-	log.Printf("[%s] Start content upload process", id)
-
-	// values
+func uploadVideo(w http.ResponseWriter, r *http.Request) {
+	// Check values
+	roomId := r.FormValue("room_id")
 	title := r.FormValue("title")
 	description := r.FormValue("description")
-	if title == "" || description == "" {
-		features.PrintErr(fmt.Errorf("[%s] title or description is empty", id))
-		http.Error(w, "title or description is empty", http.StatusBadRequest)
+	if roomId == "" || title == "" || description == "" {
+		err := fmt.Errorf("room_id, title or description is empty")
+		features.PrintErr(err)
+		http.Error(w, err.Error(), http.StatusBadRequest)
 		return
 	}
+
+	id := ulid.Make().String()
+	createdAt := features.GetCurrentTime()
 
 	tagsJson := r.FormValue("tagIDs")
 	var tagIDs []string
@@ -56,7 +56,7 @@ func uploadContent(w http.ResponseWriter, r *http.Request) {
 	defer imageFile.Close()
 
 	// content path
-	contentPath := fmt.Sprintf("data_files/contents/%s", id)
+	contentPath := fmt.Sprintf("%s/contents/%s", DATA_VIDEO_PATH, id)
 
 	// create content dir
 	err = os.MkdirAll(contentPath, os.ModePerm)
@@ -94,7 +94,7 @@ func uploadContent(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	_, err = tx.Exec(`insert into park_contents values (?, ?, ?, ?, ?)`, id, title, description, createdAt, createdAt)
+	_, err = tx.Exec(`INSERT INTO contents values (?, ?, ?, ?, ?, ?)`, id, roomId, title, description, createdAt, createdAt)
 	if err != nil {
 		features.PrintErr(err)
 		tx.Rollback()
@@ -103,7 +103,7 @@ func uploadContent(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	stmt, err := tx.Prepare(`insert into park_tags_of_contents values (?, ?, ?)`)
+	stmt, err := tx.Prepare(`INSERT INTO tags_of_contents values (?, ?, ?)`)
 	if err != nil {
 		features.PrintErr(err)
 		tx.Rollback()
@@ -133,8 +133,8 @@ func uploadContent(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	// write response
-	_, err = w.Write(b)
+	// Send response
+	_, err = features.ResponseJson(b, w)
 	if err != nil {
 		features.PrintErr(err)
 		tx.Rollback()
@@ -148,5 +148,5 @@ func uploadContent(w http.ResponseWriter, r *http.Request) {
 	// 変換開始
 	convert.ConversionQueue.Push(id)
 
-	log.Printf("[%s] Finished content upload process", id)
+	log.Printf("Uploaded new video content. id[%s]", id)
 }

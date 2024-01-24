@@ -1,7 +1,8 @@
-package tag
+package tags
 
 import (
 	"encoding/json"
+	"fmt"
 	"net/http"
 	"secrethome-back/features"
 )
@@ -17,14 +18,20 @@ type Tags struct {
 
 func GetAllTagsHandler(w http.ResponseWriter, r *http.Request) {
 	if r.Method == http.MethodGet {
-		rows, err := features.DB.Query(`select id, name from park_tags`)
+		roomId := r.FormValue("room_id")
+		if roomId == "" {
+			features.PrintErr(fmt.Errorf("room_id is empty"))
+			http.Error(w, "room_id is empty", http.StatusBadRequest)
+			return
+		}
+
+		rows, err := features.DB.Query(`SELECT id, name FROM tags WHERE room_id=?`, roomId)
 		if err != nil {
 			features.PrintErr(err)
 			http.Error(w, err.Error(), http.StatusInternalServerError)
 			return
 		}
 
-		//tags := map[string]string{}
 		tags := Tags{[]Tag{}}
 		for rows.Next() {
 			var tag Tag
@@ -35,9 +42,6 @@ func GetAllTagsHandler(w http.ResponseWriter, r *http.Request) {
 				return
 			}
 			tags.Tags = append(tags.Tags, tag)
-			//tags.tags[tag.id] = tag.name
-
-			//tags[tag.id] = tag.name
 		}
 		rows.Close()
 
@@ -49,7 +53,7 @@ func GetAllTagsHandler(w http.ResponseWriter, r *http.Request) {
 		}
 
 		// write response
-		_, err = w.Write(b)
+		_, err = features.ResponseJson(b, w)
 		if err != nil {
 			features.PrintErr(err)
 			http.Error(w, err.Error(), http.StatusInternalServerError)

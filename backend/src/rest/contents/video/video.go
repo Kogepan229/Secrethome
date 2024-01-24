@@ -1,7 +1,8 @@
-package content
+package video
 
 import (
 	"fmt"
+	"log"
 	"net/http"
 	"os"
 	"secrethome-back/features"
@@ -9,17 +10,19 @@ import (
 	"github.com/oklog/ulid/v2"
 )
 
-func ContentHandler(w http.ResponseWriter, r *http.Request) {
+const DATA_VIDEO_PATH = features.DATA_FILES_PATH + "/video"
+
+func VideoHandler(w http.ResponseWriter, r *http.Request) {
 	if r.Method == http.MethodPost {
-		uploadContent(w, r)
+		uploadVideo(w, r)
 		return
 	}
 	if r.Method == http.MethodPut {
-		updateContent(w, r)
+		updateVideo(w, r)
 		return
 	}
 	if r.Method == http.MethodDelete {
-		deleteContent(w, r)
+		deleteVideo(w, r)
 		return
 	}
 
@@ -27,22 +30,24 @@ func ContentHandler(w http.ResponseWriter, r *http.Request) {
 }
 
 func backupVideoFile(id string) error {
-	oldPath := fmt.Sprintf("data_files/contents/%s/%s.mp4", id, id)
+	oldPath := fmt.Sprintf("%s/contents/%s/%s.mp4", DATA_VIDEO_PATH, id, id)
 
 	if !features.ExistsFile(oldPath) {
 		err := fmt.Errorf(fmt.Sprintf("Not found %s", oldPath))
 		return err
 	}
 
-	err := os.MkdirAll(fmt.Sprintf("data_files/deleted/%s", id), os.ModePerm)
+	err := os.MkdirAll(fmt.Sprintf("%s/deleted/%s", DATA_VIDEO_PATH, id), os.ModePerm)
 	if err != nil {
 		return err
 	}
 
-	err = os.Rename(oldPath, fmt.Sprintf("data_files/deleted/%s/del_%s.mp4", id, ulid.Make().String()))
+	newId := ulid.Make().String()
+	err = os.Rename(oldPath, fmt.Sprintf("%s/deleted/%s/del_%s.mp4", DATA_VIDEO_PATH, id, newId))
 	if err != nil {
 		return err
 	}
 
+	log.Printf("Backuped video file. oldid[%s] newid[%s]", id, newId)
 	return nil
 }
