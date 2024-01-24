@@ -8,7 +8,7 @@ entity rooms <<T,TRANSACTION>> {
 **name**: varchar(64)
 **description**: varchar(4096)
 **room_type**: varchar(64)
-**key**: varchar(64)
+**key**: varchar(64) [UNIQUE]
 **created_at**: timestamp
 }
 
@@ -17,7 +17,7 @@ entity contents <<T,TRANSACTION>> {
 **id**: varchar(64) [PK]
 --
 **room_id**: varchar(64)
-**title**: varchar(64)
+**title**: varchar(128)
 **description**: varchar(4096)
 **created_at**: timestamp
 **updated_at**: timestamp
