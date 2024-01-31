@@ -6,7 +6,7 @@ export const getRoomType = async (roomId: string): Promise<RoomType> => {
   const [rows, _] = await con.query(`SELECT room_type FROM rooms WHERE id = ?`, [roomId])
   con.end()
   const data = JSON.parse(JSON.stringify(rows))
-  return convertRoomType(data[0].room_type)
+  return convertRoomType(data[0] ? data[0].room_type : undefined)
 }
 
 export const convertRoomType = (roomTypeStr: string) => {
