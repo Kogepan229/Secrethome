@@ -37,3 +37,12 @@ CREATE TABLE `tags_of_contents` (
   `priority` int unsigned NOT NULL,
   PRIMARY KEY (`content_id`,`tag_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+
+INSERT INTO `rooms` VALUES (
+  `admin`,
+  `Admin`,
+  `Admin Page`,
+  `admin`,
+  `admin`,
+  current_timestamp()
+);
