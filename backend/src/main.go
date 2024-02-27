@@ -89,8 +89,9 @@ func main() {
 	shserver := &SecrethomeServer{}
 	mux := http.NewServeMux()
 	mux.Handle(secrethomev1connect.NewSecretHomeServiceHandler(shserver))
-	mux.HandleFunc("/api/rooms/key", rooms.RoomIdFromKeyHandler)
 	mux.HandleFunc("/api/rooms", rooms.RoomsHandler)
+	mux.HandleFunc("/api/rooms/key", rooms.RoomIdFromKeyHandler)
+	mux.HandleFunc("/api/rooms/type", rooms.RoomTypeFromIdHandler)
 	mux.HandleFunc("/api/contents", contents.ContentsHandler)
 	mux.HandleFunc("/api/contents/video", video.VideoHandler)
 	mux.HandleFunc("/api/tag", tags.TagHandler)

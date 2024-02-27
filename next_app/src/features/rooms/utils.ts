@@ -1,16 +1,15 @@
-import { getDBConnection } from 'utils/sql'
 import { RoomType } from './types'
+import axios from 'axios'
 
 export const getRoomType = async (roomId: string): Promise<RoomType> => {
-  const con = await getDBConnection()
-  const [rows, _] = await con.query(`SELECT room_type FROM rooms WHERE id = ?`, [roomId])
-  con.end()
-  const data = JSON.parse(JSON.stringify(rows))
-  return convertRoomType(data[0] ? data[0].room_type : undefined)
+  const url = new URL('http://backend:60133' + '/api/rooms/type')
+  url.search = new URLSearchParams({ id: roomId }).toString()
+
+  const res = await axios.get(url.href)
+  return convertRoomType(res.data.room_type)
 }
 
 export const convertRoomType = (roomTypeStr: string) => {
-  console.log(roomTypeStr)
   switch (roomTypeStr) {
     case 'admin':
       return RoomType.Admin

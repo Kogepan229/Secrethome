@@ -7,16 +7,14 @@ import (
 	"secrethome-back/features"
 )
 
-func RoomIdFromKeyHandler(w http.ResponseWriter, r *http.Request) {
+func RoomTypeFromIdHandler(w http.ResponseWriter, r *http.Request) {
 	if r.Method == http.MethodGet {
-		key := r.FormValue("key")
-		println(key)
+		id := r.FormValue("id")
 
-		var id string
 		var roomType string
-		err := features.DB.QueryRow(`SELECT id, room_type FROM rooms WHERE access_key=?`, key).Scan(&id, &roomType)
+		err := features.DB.QueryRow(`SELECT room_type FROM rooms WHERE id=?`, id).Scan(&roomType)
 		if err == sql.ErrNoRows {
-			http.Error(w, "Invalid key", http.StatusBadRequest)
+			http.Error(w, "Invalid Id", http.StatusBadRequest)
 			return
 		}
 		if err != nil {
@@ -25,7 +23,7 @@ func RoomIdFromKeyHandler(w http.ResponseWriter, r *http.Request) {
 			return
 		}
 
-		resData, err := json.Marshal(map[string]string{"id": id, "room_type": roomType})
+		resData, err := json.Marshal(map[string]string{"room_type": roomType})
 		if err != nil {
 			features.PrintErr(err)
 			http.Error(w, err.Error(), http.StatusInternalServerError)

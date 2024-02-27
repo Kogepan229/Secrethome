@@ -3,6 +3,8 @@ import axios from 'axios'
 import React, { useState } from 'react'
 import { useRouter } from 'next/navigation'
 import css from './index.module.scss'
+import { convertRoomType } from 'features/rooms/utils'
+import { RoomType } from 'features/rooms/types'
 
 const Home = () => {
   const router = useRouter()
@@ -14,7 +16,10 @@ const Home = () => {
       .get(process.env.NEXT_PUBLIC_BACKEND_URL + '/api/rooms/key', { params: { key: key } })
       .then(res => {
         console.log(res.data)
-        if (res.data.id) {
+
+        if (convertRoomType(res.data.room_type) == RoomType.Admin) {
+          router.push('/admin/')
+        } else if (res.data.id) {
           router.push(`/${res.data.id}/contents`)
         } else {
           setKey('')

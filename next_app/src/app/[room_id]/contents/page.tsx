@@ -7,6 +7,7 @@ import PageSelector from 'components/PageSelector'
 import { getCurrentPageIndex, getTotalContentsPageNum } from 'features/room_video/utils'
 import { getRoomType } from 'features/rooms/utils'
 import { RoomType } from 'features/rooms/types'
+import { redirect } from 'next/navigation'
 
 const ContentsPage = async ({ params, searchParams }: { params: { room_id: string }; searchParams: SearchParams }) => {
   const roomType = await getRoomType(params.room_id)
@@ -18,7 +19,7 @@ const ContentsPage = async ({ params, searchParams }: { params: { room_id: strin
       case RoomType.Video:
         return <VideoContentsList roomId={params.room_id} searchParams={searchParams}></VideoContentsList>
       default:
-        return null
+        redirect('/')
     }
   }
 
