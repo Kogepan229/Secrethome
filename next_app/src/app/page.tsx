@@ -15,8 +15,6 @@ const Home = () => {
     axios
       .get(process.env.NEXT_PUBLIC_BACKEND_URL + '/api/rooms/key', { params: { key: key } })
       .then(res => {
-        console.log(res.data)
-
         if (convertRoomType(res.data.room_type) == RoomType.Admin) {
           router.push('/admin/')
         } else if (res.data.id) {

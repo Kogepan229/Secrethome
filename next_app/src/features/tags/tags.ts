@@ -40,7 +40,6 @@ export const getSidebarTagsData = async (roomId: string) => {
   const con = await getDBConnection()
   let [rows1, _] = await con.query(`SELECT id, name FROM tags WHERE room_id=?`, [roomId])
   const data1 = JSON.parse(JSON.stringify(rows1)) as TagData[]
-  console.log(data1, roomId)
   if (data1.length == 0) {
     return []
   } else {
