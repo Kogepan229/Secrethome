@@ -22,26 +22,17 @@ export const getContentTagsData = async (contentID: string) => {
 
 export const getSidebarTagsData = async (roomId: string) => {
   const con = await getDBConnection()
-  let [rows1, _] = await con.query(`SELECT id, name FROM tags WHERE room_id=?`, [roomId])
-  const data1 = JSON.parse(JSON.stringify(rows1)) as TagData[]
-  if (data1.length == 0) {
-    return []
-  } else {
-    let tags = await Promise.all(
-      data1.map(async value => {
-        let [rows2, _] = await con.query<any[]>(`SELECT COUNT(*) FROM tags_of_contents WHERE tag_id=?`, [value.id])
-        const data2 = JSON.parse(JSON.stringify(rows2)) as any[]
-        return { tag: value, count: data2[0]['COUNT(*)'] }
-      })
-    )
+  let [rows1, _] = await con.query(
+    `SELECT tags.id, tags.name, (SELECT COUNT(*) FROM tags_of_contents WHERE tag_id = tags.id) as count FROM tags WHERE tags.room_id=? ORDER BY count DESC, tags.name`,
+    [roomId]
+  )
+  con.end()
 
-    con.end()
-
-    tags.sort((a: { tag: TagData; count: number }, b: { tag: TagData; count: number }) => {
-      return b.count - a.count
-    })
-    return tags
-  }
+  const data: any[] = JSON.parse(JSON.stringify(rows1))
+  const tags = data.map(v => {
+    return { tag: { id: v.id, name: v.name }, count: v.count }
+  })
+  return tags
 }
 
 export const getTagName = async (tagID: string): Promise<string> => {
