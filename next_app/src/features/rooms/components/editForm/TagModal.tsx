@@ -113,6 +113,7 @@ const TagModal = (props: Props) => {
         })
       ) {
         let data = new FormData()
+        data.append('room_id', props.roomId)
         data.append('name', createTagValue.trim())
         axios
           .post(process.env.NEXT_PUBLIC_BACKEND_URL + '/api/tag', data)
