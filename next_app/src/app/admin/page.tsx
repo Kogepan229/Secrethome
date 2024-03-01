@@ -66,7 +66,7 @@ const RoomInfoPanelList = async () => {
   const data: any[] = JSON.parse(JSON.stringify(rows))
 
   return data.map(v => {
-    return <RoomInfoPanel roomId={v.id} />
+    return <RoomInfoPanel roomId={v.id} key={v.id} />
   })
 }
 
