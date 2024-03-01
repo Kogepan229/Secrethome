@@ -5,6 +5,8 @@ import { ContentsGridHeader } from 'components/ContentsGridHeader'
 import { RoomType } from 'features/rooms/types'
 import { convertRoomType } from 'features/rooms/utils'
 
+export const dynamic = 'force-dynamic'
+
 type RoomInfo = {
   id: string
   name: string
@@ -37,6 +39,7 @@ const getRoomInfo = async (roomId: string): Promise<RoomInfo> => {
 }
 
 const RoomInfoPanel = async ({ roomId }: { roomId: string }) => {
+  'use server'
   const info = await getRoomInfo(roomId)
 
   const numbers =
@@ -70,6 +73,7 @@ const getRoomList = async (): Promise<string[]> => {
 }
 
 const RoomInfoPanelList = async () => {
+  'use server'
   const roomList = await getRoomList()
 
   return roomList.map(id => {
