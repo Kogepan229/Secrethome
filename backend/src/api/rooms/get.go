@@ -4,16 +4,15 @@ import (
 	"encoding/json"
 	"net/http"
 	"secrethome-back/features"
-	"time"
 )
 
 type RoomSelect struct {
-	Id          string    `json:"id"`
-	Name        string    `json:"name"`
-	Description string    `json:"description"`
-	Room_type   string    `json:"room_type"`
-	Key         string    `json:"key"`
-	Created_at  time.Time `json:"created_at"`
+	Id          string `json:"id"`
+	Name        string `json:"name"`
+	Description string `json:"description"`
+	Room_type   string `json:"room_type"`
+	Key         string `json:"key"`
+	Created_at  string `json:"created_at"`
 }
 
 func getRoom(w http.ResponseWriter, r *http.Request) {
