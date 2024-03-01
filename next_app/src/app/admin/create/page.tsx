@@ -32,19 +32,19 @@ const Page = () => {
 
   const [FormPartId, id] = useFormPartText({ title: 'ID', name: 'id' })
   const [FormPartName, name] = useFormPartText({ title: '名前', name: 'name' })
-  const [FormPartType, type] = useFormPartSelect({ title: 'Room Type', name: 'type', options: createOptions() })
+  const [FormPartRoomType, roomType] = useFormPartSelect({ title: 'Room Type', name: 'type', options: createOptions() })
   const [FormPartAccessKey, accessKey] = useFormPartText({ title: 'Access Key', name: 'access_key' })
 
   const [isEnableSubmit, setIsEnableSubmit] = useState(false)
   const [isShowCompletePopup, setIsShowCompletePopup] = useState(false)
 
   useEffect(() => {
-    if (id && name && type && accessKey) {
+    if (id && name && roomType && accessKey) {
       setIsEnableSubmit(true)
     } else {
       setIsEnableSubmit(false)
     }
-  }, [id, name, type, accessKey])
+  }, [id, name, roomType, accessKey])
 
   const handleSubmit = (e: any) => {
     e.preventDefault()
@@ -52,10 +52,11 @@ const Page = () => {
     const file = new FormData()
     file.append('id', id)
     file.append('name', name)
-    file.append('access_key', accessKey)
+    file.append('room_type', roomType)
+    file.append('key', accessKey)
 
     axios
-      .post(process.env.NEXT_PUBLIC_BACKEND_URL + '/api/admin/room', file, {
+      .post(process.env.NEXT_PUBLIC_BACKEND_URL + '/api/rooms', file, {
         headers: { 'content-type': 'multipart/form-data' },
       })
       .then(res => {
@@ -73,7 +74,7 @@ const Page = () => {
         <ContentsGridHeader title="新規ルーム作成" />
         {FormPartId}
         {FormPartName}
-        {FormPartType}
+        {FormPartRoomType}
         {FormPartAccessKey}
         <SimpleButton className={css.button_submit} onClick={handleSubmit} disabled={!isEnableSubmit}>
           作成
@@ -83,7 +84,7 @@ const Page = () => {
         isShow={isShowCompletePopup}
         message={'作成しました'}
         buttonText="戻る"
-        buttonCallback={() => router.push(`/admin}`)}
+        buttonCallback={() => router.push(`/admin`)}
       />
     </>
   )
