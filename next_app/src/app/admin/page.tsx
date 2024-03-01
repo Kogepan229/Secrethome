@@ -58,15 +58,22 @@ const RoomInfoPanel = async ({ roomId }: { roomId: string }) => {
   )
 }
 
-const RoomInfoPanelList = async () => {
+const getRoomList = async (): Promise<string[]> => {
   const con = await getDBConnection()
   let [rows, _] = await con.query(`SELECT id FROM rooms`)
   con.end()
 
   const data: any[] = JSON.parse(JSON.stringify(rows))
-
   return data.map(v => {
-    return <RoomInfoPanel roomId={v.id} key={v.id} />
+    return v.id
+  })
+}
+
+const RoomInfoPanelList = async () => {
+  const roomList = await getRoomList()
+
+  return roomList.map(id => {
+    return <RoomInfoPanel roomId={id} key={id} />
   })
 }
 
