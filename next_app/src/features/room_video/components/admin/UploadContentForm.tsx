@@ -4,10 +4,10 @@ import { useRouter } from 'next/navigation'
 import axios from 'axios'
 
 import css from 'features/rooms/components/editForm/EditContentForm.module.scss'
-import { useEditDescription } from 'features/rooms/components/editForm/EditDescription'
+import { useFormPartText } from 'components/form/FormPartText'
+import { useFormPartTextArea } from 'components/form/FormPartTextArea'
 import { useEditImage } from 'features/rooms/components/editForm/EditImage'
 import { useEditTags } from 'features/rooms/components/editForm/EditTags'
-import { useEditTitle } from 'features/rooms/components/editForm/EditTitle'
 import { useEditVideo } from 'features/rooms/components/editForm/EditVideo'
 import { useProgressBar } from 'features/rooms/components/editForm//ProgressBar'
 import PopupWindowMessage from 'components/PopupWindowMessage'
@@ -22,8 +22,8 @@ const UploadContentForm = ({ roomId }: { roomId: string }) => {
   const [isStartedUpload, setIsStartedUpload] = useState(false)
   const [isShowCompletePopup, setIsShowCompletePopup] = useState('')
 
-  const { EditTitle, title } = useEditTitle({ title: '' })
-  const { EditDescription, description } = useEditDescription({ description: '' })
+  const [FormPartTitle, title] = useFormPartText({ title: 'タイトル', name: 'name' })
+  const [FormPartDescription, description] = useFormPartTextArea({ title: '概要', name: 'description' })
   const { EditTags, selectedTagList } = useEditTags({ roomId: roomId, selectedTagList: [] })
   const { EditVideo, getVideoImage, video, isVideoStopped } = useEditVideo({})
   const { EditImage, image } = useEditImage({ isVideoStopped: isVideoStopped, getVideoImage: getVideoImage })
@@ -67,8 +67,8 @@ const UploadContentForm = ({ roomId }: { roomId: string }) => {
       <Header roomId={roomId} />
       <div className={css.form}>
         <ContentsGridHeader title="アップロード" />
-        {EditTitle}
-        {EditDescription}
+        {FormPartTitle}
+        {FormPartDescription}
         {EditTags}
         {EditVideo}
         {EditImage}

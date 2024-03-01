@@ -4,10 +4,10 @@ import { useRouter } from 'next/navigation'
 import axios from 'axios'
 
 import css from 'features/rooms/components/editForm/EditContentForm.module.scss'
-import { useEditDescription } from 'features/rooms/components/editForm/EditDescription'
+import { useFormPartText } from 'components/form/FormPartText'
+import { useFormPartTextArea } from 'components/form/FormPartTextArea'
 import { useEditImage } from 'features/rooms/components/editForm/EditImage'
 import { useEditTags } from 'features/rooms/components/editForm/EditTags'
-import { useEditTitle } from 'features/rooms/components/editForm/EditTitle'
 import { useEditVideo } from 'features/rooms/components/editForm/EditVideo'
 import { useProgressBar } from 'features/rooms/components/editForm/ProgressBar'
 import ContentDeleteButton from 'features/rooms/components/editForm/ContentDeleteButton'
@@ -33,8 +33,8 @@ const UpdateContentForm = (props: Props) => {
   const [isStartedUpload, setIsStartedUpload] = useState(false)
   const [isShowCompletePopup, setIsShowCompletePopup] = useState('')
 
-  const { EditTitle, title } = useEditTitle({ title: props.title })
-  const { EditDescription, description } = useEditDescription({ description: props.description })
+  const [FormPartTitle, title] = useFormPartText({ title: 'タイトル', name: 'name', initial: props.title })
+  const [FormPartDescription, description] = useFormPartTextArea({ title: '概要', name: 'description', initial: props.description })
   const { EditTags, selectedTagList } = useEditTags({ roomId: props.roomId, selectedTagList: props.selectedTagList })
   const { EditVideo, getVideoImage, video, isUpdatedVideo, isVideoStopped } = useEditVideo({
     videoSrc: `${process.env.NEXT_PUBLIC_FILESERVER_URL}/video/contents/${props.id}/${props.id}.mp4?${props.updatedAt}`,
@@ -88,8 +88,8 @@ const UpdateContentForm = (props: Props) => {
       <Header roomId={props.roomId} />
       <div className={css.form}>
         <ContentsGridHeader title="アップデート" />
-        {EditTitle}
-        {EditDescription}
+        {FormPartTitle}
+        {FormPartDescription}
         {EditTags}
         {EditVideo}
         {EditImage}
