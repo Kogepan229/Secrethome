@@ -13,6 +13,7 @@ import { useProgressBar } from 'components/editForm//ProgressBar'
 import PopupWindowMessage from 'components/PopupWindowMessage'
 import SimpleButton from 'components/SimpleButton'
 import Header from 'features/header/Header'
+import { ContentsGridHeader } from 'components/ContentsGridHeader'
 
 const UploadContentForm = ({ roomId }: { roomId: string }) => {
   const router = useRouter()
@@ -65,7 +66,7 @@ const UploadContentForm = ({ roomId }: { roomId: string }) => {
     <>
       <Header roomId={roomId} />
       <div className={css.form}>
-        <h2 className={css.form_header}>アップロード</h2>
+        <ContentsGridHeader title="アップロード" />
         {EditTitle}
         {EditDescription}
         {EditTags}

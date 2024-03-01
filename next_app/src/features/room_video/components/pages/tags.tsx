@@ -6,6 +6,7 @@ import PageSelector from 'components/PageSelector'
 import { getContentsDataWithTags, getCurrentPageIndex, getTotalContentsPageNumWithTag } from 'features/room_video/utils'
 import { ContentData } from 'features/room_video/types'
 import { getTagName } from 'features/tags/tags'
+import { ContentsGridHeader } from 'components/ContentsGridHeader'
 
 const Contents = async (searchParams: SearchParams): Promise<[JSX.Element[], string, string, number, number]> => {
   if (searchParams == undefined || searchParams.tags == undefined || typeof searchParams.tags != 'string') {
@@ -45,7 +46,7 @@ const TagsPage = async ({ roomId, searchParams }: { roomId: string; searchParams
   return (
     <SecretRoomLayout roomId={roomId}>
       <div className={css.contents_main}>
-        <h3 className={css.tag_header}>{tagName}</h3>
+        <ContentsGridHeader title={tagName} />
         <PageSelector baseURL={`/${roomId}/contents/tags?tags=${tagID}`} totalPageNum={totalPageNum} currentPageIndex={currentPageIndex} />
         {contents}
         <PageSelector baseURL={`/${roomId}/contents/tags?tags=${tagID}`} totalPageNum={totalPageNum} currentPageIndex={currentPageIndex} />

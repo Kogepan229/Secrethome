@@ -15,6 +15,7 @@ import PopupWindowMessage from 'components/PopupWindowMessage'
 import SimpleButton from 'components/SimpleButton'
 import { TagData } from 'features/tags/tags'
 import Header from 'features/header/Header'
+import { ContentsGridHeader } from 'components/ContentsGridHeader'
 
 type Props = {
   id: string
@@ -86,7 +87,7 @@ const UpdateContentForm = (props: Props) => {
     <>
       <Header roomId={props.roomId} />
       <div className={css.form}>
-        <h2 className={css.form_header}>アップデート</h2>
+        <ContentsGridHeader title="アップデート" />
         {EditTitle}
         {EditDescription}
         {EditTags}
