@@ -20,7 +20,11 @@ const FormPartSelect = ({
   }, [])
 
   const optionList = options.map(v => {
-    return <option value={v.value}>{v.name}</option>
+    return (
+      <option value={v.value} key={v.value}>
+        {v.name}
+      </option>
+    )
   })
 
   return (
