@@ -4,6 +4,8 @@ import Header from 'features/header/Header'
 import { ContentsGridHeader } from 'components/ContentsGridHeader'
 import { RoomType } from 'features/rooms/types'
 import { convertRoomType } from 'features/rooms/utils'
+import SimpleButton from 'components/SimpleButton'
+import Link from 'next/link'
 
 export const dynamic = 'force-dynamic'
 
@@ -85,6 +87,9 @@ const AdminRoomPage = async () => {
       <Header roomId="" />
       <div className={css.main_container}>
         <ContentsGridHeader title="Room List" />
+        <Link href={'/admin/create'}>
+          <SimpleButton>新規ルーム作成</SimpleButton>
+        </Link>
         <div className={css.info_panel_list}>
           <RoomInfoPanelList />
         </div>
