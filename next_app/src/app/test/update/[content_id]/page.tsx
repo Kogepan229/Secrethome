@@ -1,7 +1,7 @@
 import { getDBConnection } from 'utils/sql'
 import { getContentTagsData, TagData } from 'features/tags/tags'
 
-import ContentDeleteButton from 'components/editForm/ContentDeleteButton'
+import ContentDeleteButton from 'features/rooms/components/editForm/ContentDeleteButton'
 import UpdateContentForm from 'features/room_video/components/admin/UpdateContentForm'
 
 type ContentData = {
