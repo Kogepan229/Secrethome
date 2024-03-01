@@ -19,6 +19,7 @@ import { ContentsGridHeader } from 'components/ContentsGridHeader'
 
 type Props = {
   id: string
+  roomName: string
   roomId: string
   title: string
   description: string
@@ -85,7 +86,7 @@ const UpdateContentForm = (props: Props) => {
 
   return (
     <>
-      <Header roomId={props.roomId} />
+      <Header roomName={props.roomName} link={`/${props.roomId}/contents`} />
       <div className={css.form}>
         <ContentsGridHeader title="アップデート" />
         {FormPartTitle}

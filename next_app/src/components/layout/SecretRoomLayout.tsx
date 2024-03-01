@@ -3,11 +3,11 @@ import { ReactNode } from 'react'
 import _SecretRoomLayout from './_SecretRoomLayout'
 import { getSidebarTagsData } from 'features/tags/tags'
 
-const SecretRoomLayout = async ({ roomId, children }: { roomId: string; children: ReactNode }) => {
+const SecretRoomLayout = async ({ roomName, roomId, children }: { roomName: string; roomId: string; children: ReactNode }) => {
   const tagsData = await getSidebarTagsData(roomId)
 
   return (
-    <_SecretRoomLayout roomId={roomId} sidebarTags={tagsData}>
+    <_SecretRoomLayout roomName={roomName} roomId={roomId} sidebarTags={tagsData}>
       {children}
     </_SecretRoomLayout>
   )

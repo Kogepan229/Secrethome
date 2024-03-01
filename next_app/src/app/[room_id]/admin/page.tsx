@@ -1,8 +1,11 @@
 import Header from 'features/header/Header'
 import css from './admin.module.scss'
 import Link from 'next/link'
+import { getRoomData } from 'features/rooms/utils'
 
 const AdminPage = async ({ params }: { params: { room_id: string } }) => {
+  const roomData = await getRoomData(params.room_id)
+
   const LinkItem = ({ url, text }: { url: string; text: string }) => {
     return (
       <Link href={url}>
@@ -13,7 +16,7 @@ const AdminPage = async ({ params }: { params: { room_id: string } }) => {
 
   return (
     <div>
-      <Header roomId={params.room_id} />
+      <Header roomName={roomData.name} link={`/${params.room_id}/contents`} />
       <div className={css.main_container}>
         <div className={css.admin_header}>
           <p>管理</p>

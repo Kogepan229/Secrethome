@@ -33,7 +33,7 @@ const getContentData = async (contentID: any) => {
   return contentData
 }
 
-const ContentPage = async ({ roomId, contentId }: { roomId: string; contentId: string }) => {
+const ContentPage = async ({ roomName, roomId, contentId }: { roomName: string; roomId: string; contentId: string }) => {
   const contentData = await getContentData(contentId)
   if (contentData.id == undefined) {
     return <p>No content</p>
@@ -45,7 +45,7 @@ const ContentPage = async ({ roomId, contentId }: { roomId: string; contentId: s
   ))
 
   return (
-    <SecretRoomLayout roomId={roomId}>
+    <SecretRoomLayout roomName={roomName} roomId={roomId}>
       <div className={css.content_container}>
         <div className={css.video_container}>
           <Suspense fallback={null}>

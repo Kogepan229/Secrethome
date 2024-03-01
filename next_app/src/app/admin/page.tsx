@@ -84,7 +84,7 @@ const RoomInfoPanelList = async () => {
 const AdminRoomPage = async () => {
   return (
     <div>
-      <Header roomId="" />
+      <Header roomName="Admin" link="/admin/" />
       <div className={css.main_container}>
         <ContentsGridHeader title="Room List" />
         <Link href={'/admin/create'}>

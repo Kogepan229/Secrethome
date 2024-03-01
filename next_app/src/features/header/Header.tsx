@@ -1,16 +1,14 @@
 import Link from 'next/link'
 import css from './Header.module.scss'
 
-const Header = ({ roomId }: { roomId: string }) => {
-  let url = `/${roomId}/contents`
-  if (!roomId) {
-    url = '/'
-  }
-
+const Header = ({ roomName, link }: { roomName: string; link: string }) => {
   return (
     <div className={css.header}>
-      <Link href={url}>
+      <Link href={'/'}>
         <div className={css.header_logo}>Secret Home</div>
+      </Link>
+      <Link href={link}>
+        <div className={css.header_room_name}>{roomName}</div>
       </Link>
     </div>
   )

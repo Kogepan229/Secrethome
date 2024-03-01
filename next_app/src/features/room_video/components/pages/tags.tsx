@@ -40,11 +40,11 @@ const Contents = async (searchParams: SearchParams): Promise<[JSX.Element[], str
   return [contents, tagID, tagName, totalPageNum, currentPageIndex]
 }
 
-const TagsPage = async ({ roomId, searchParams }: { roomId: string; searchParams: SearchParams }) => {
+const TagsPage = async ({ roomName, roomId, searchParams }: { roomName: string; roomId: string; searchParams: SearchParams }) => {
   const [contents, tagID, tagName, totalPageNum, currentPageIndex] = await Contents(searchParams)
 
   return (
-    <SecretRoomLayout roomId={roomId}>
+    <SecretRoomLayout roomName={roomName} roomId={roomId}>
       <div className={css.contents_main}>
         <ContentsGridHeader title={tagName} />
         <PageSelector baseURL={`/${roomId}/contents/tags?tags=${tagID}`} totalPageNum={totalPageNum} currentPageIndex={currentPageIndex} />

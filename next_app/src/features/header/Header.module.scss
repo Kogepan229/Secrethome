@@ -5,12 +5,24 @@ $header_height: 50px;
 .header {
   display: flex;
   justify-content: center;
+  position: relative;
   width: 100%;
   height: $header_height;
   background-color: $color-primary-1;
 }
 
 .header_logo {
+  position: absolute;
+  left: 20px;
+  color: $color-white-text;
+  line-height: $header_height;
+  font-weight: bold;
+  font-size: 25px;
+  cursor: pointer;
+  font-family: 'Oswald', sans-serif;
+}
+
+.header_room_name {
   color: $color-white-text;
   line-height: $header_height;
   font-weight: bold;

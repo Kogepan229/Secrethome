@@ -29,7 +29,7 @@ const getContentData = async (contentID: string): Promise<ContentData> => {
   }
 }
 
-const UpdateContent = async ({ roomId, contentId }: { roomId: string; contentId: string }) => {
+const UpdateContent = async ({ roomName, roomId, contentId }: { roomName: string; roomId: string; contentId: string }) => {
   const contentData = await getContentData(contentId)
   if (contentData.id == undefined) {
     return <p>No content</p>
@@ -39,6 +39,7 @@ const UpdateContent = async ({ roomId, contentId }: { roomId: string; contentId:
     <div>
       <UpdateContentForm
         id={contentData.id}
+        roomName={roomName}
         roomId={roomId}
         title={contentData.title ?? ''}
         description={contentData.description ?? ''}

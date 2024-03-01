@@ -69,7 +69,7 @@ const Page = () => {
 
   return (
     <>
-      <Header roomId="" />
+      <Header roomName="Admin" link="/admin/" />
       <div className={css.form}>
         <ContentsGridHeader title="新規ルーム作成" />
         {FormPartId}

@@ -15,7 +15,7 @@ import SimpleButton from 'components/SimpleButton'
 import Header from 'features/header/Header'
 import { ContentsGridHeader } from 'components/ContentsGridHeader'
 
-const UploadContentForm = ({ roomId }: { roomId: string }) => {
+const UploadContentForm = ({ roomId, roomName }: { roomId: string; roomName: string }) => {
   const router = useRouter()
 
   const [isEnableSubmit, setIsEnableSubmit] = useState(false)
@@ -64,7 +64,7 @@ const UploadContentForm = ({ roomId }: { roomId: string }) => {
 
   return (
     <>
-      <Header roomId={roomId} />
+      <Header roomName={roomName} link={`/${roomId}/contents`} />
       <div className={css.form}>
         <ContentsGridHeader title="アップロード" />
         {FormPartTitle}

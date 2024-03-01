@@ -5,17 +5,17 @@ import { Suspense } from 'react'
 import SecretRoomLayout from 'components/layout/SecretRoomLayout'
 import PageSelector from 'components/PageSelector'
 import { getCurrentPageIndex, getTotalContentsPageNum } from 'features/room_video/utils'
-import { getRoomType } from 'features/rooms/utils'
+import { getRoomData } from 'features/rooms/utils'
 import { RoomType } from 'features/rooms/types'
 import { redirect } from 'next/navigation'
 
 const ContentsPage = async ({ params, searchParams }: { params: { room_id: string }; searchParams: SearchParams }) => {
-  const roomType = await getRoomType(params.room_id)
+  const roomData = await getRoomData(params.room_id)
   const totalPageNum = await getTotalContentsPageNum(params.room_id)
   const currentPageIndex = getCurrentPageIndex(searchParams)
 
   const contentsList = () => {
-    switch (roomType) {
+    switch (roomData.roomType) {
       case RoomType.Video:
         return <VideoContentsList roomId={params.room_id} searchParams={searchParams}></VideoContentsList>
       default:
@@ -24,7 +24,7 @@ const ContentsPage = async ({ params, searchParams }: { params: { room_id: strin
   }
 
   return (
-    <SecretRoomLayout roomId={params.room_id}>
+    <SecretRoomLayout roomName={roomData.name} roomId={params.room_id}>
       <div className={css.contents_main}>
         <PageSelector baseURL={`/${params.room_id}/contents`} totalPageNum={totalPageNum} currentPageIndex={currentPageIndex} />
         <Suspense fallback={null}>

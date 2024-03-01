@@ -1,14 +1,14 @@
-import { getRoomType } from 'features/rooms/utils'
+import { getRoomData } from 'features/rooms/utils'
 import { RoomType } from 'features/rooms/types'
 import VideoUploadPage from 'features/room_video/components/pages/admin_upload'
 
 const ContentsPage = async ({ params }: { params: { room_id: string } }) => {
-  const roomType = await getRoomType(params.room_id)
+  const roomData = await getRoomData(params.room_id)
 
   const page = () => {
-    switch (roomType) {
+    switch (roomData.roomType) {
       case RoomType.Video:
-        return <VideoUploadPage roomId={params.room_id} />
+        return <VideoUploadPage roomName={roomData.name} roomId={params.room_id} />
       default:
         return null
     }
