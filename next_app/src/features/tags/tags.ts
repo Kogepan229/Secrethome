@@ -7,7 +7,7 @@ export type TagData = {
 
 export type SidebarTagsData = { tag: TagData; count: number }[]
 
-export const getContentTagsData = async (contentID: string) => {
+export const getContentTagsData = async (contentID: string): Promise<TagData[]> => {
   const con = await getDBConnection()
   const [rows, _] = await con.query(
     `SELECT tags.id, tags.name FROM tags JOIN tags_of_contents ON tags.id = tags_of_contents.tag_id WHERE tags_of_contents.content_id=? ORDER BY tags_of_contents.priority`,
@@ -20,7 +20,7 @@ export const getContentTagsData = async (contentID: string) => {
   return tags
 }
 
-export const getSidebarTagsData = async (roomId: string) => {
+export const getSidebarTagsData = async (roomId: string): Promise<{ tag: TagData; count: number }[]> => {
   const con = await getDBConnection()
   let [rows1, _] = await con.query(
     `SELECT tags.id, tags.name, (SELECT COUNT(*) FROM tags_of_contents WHERE tag_id = tags.id) as count FROM tags WHERE tags.room_id=? ORDER BY count DESC, tags.name`,
