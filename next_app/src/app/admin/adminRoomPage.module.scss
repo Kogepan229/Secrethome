@@ -7,6 +7,10 @@
 
 .info_panel {
   padding: 16px;
+
+  &:hover {
+    background-color: $color-hover-gray;
+  }
 }
 
 .info_panel_name {

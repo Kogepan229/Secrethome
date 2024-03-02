@@ -22,7 +22,7 @@ type RoomInfo = {
 const getRoomInfo = async (roomId: string): Promise<RoomInfo> => {
   const con = await getDBConnection()
   let [rows, _] = await con.query(
-    `SELECT name, description, room_type, access_key, (SELECT COUNT(*) from contents WHERE room_id=rooms.id) as content_num, (SELECT COUNT(*) from tags WHERE room_id=rooms.id) as tag_num FROM rooms WHERE id=?`,
+    `SELECT id, name, description, room_type, access_key, (SELECT COUNT(*) from contents WHERE room_id=rooms.id) as content_num, (SELECT COUNT(*) from tags WHERE room_id=rooms.id) as tag_num FROM rooms WHERE id=?`,
     [roomId]
   )
   con.end()
@@ -52,12 +52,16 @@ const RoomInfoPanel = async ({ roomId }: { roomId: string }) => {
     )
 
   return (
-    <div className={css.info_panel}>
-      <p className={css.info_panel_name}>{info.name}</p>
-      <p className={css.info_panel_desc}>{info.description}</p>
-      <p>Type: {info.type}</p>
-      <p>Access Key: {info.accessKey}</p>
-      {numbers}
+    <div>
+      <Link href={`/admin/update/${info.id}`}>
+        <div className={css.info_panel}>
+          <p className={css.info_panel_name}>{info.name}</p>
+          <p className={css.info_panel_desc}>{info.description}</p>
+          <p>Type: {info.type}</p>
+          <p>Access Key: {info.accessKey}</p>
+          {numbers}
+        </div>
+      </Link>
     </div>
   )
 }

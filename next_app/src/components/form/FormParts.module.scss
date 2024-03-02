@@ -1,5 +1,19 @@
 @import 'styles/variables';
 
+.form {
+  width: 100%;
+  max-width: 500px;
+  margin: auto;
+
+  margin-bottom: 50px;
+}
+
+.button_submit {
+  margin-top: 16px;
+  padding-left: 10px !important;
+  padding-right: 10px !important;
+}
+
 .item_header {
   margin-top: 15px;
   padding: 3px 0px;
