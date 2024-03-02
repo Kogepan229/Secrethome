@@ -1,6 +1,9 @@
 'use client'
+import dynamic from 'next/dynamic'
 import css from './EditContentForm.module.scss'
 import React, { useCallback, useMemo, useRef, useState } from 'react'
+
+const VideoPlayer = dynamic(() => import('components/VideoPlayer/VideoPlayer'), { ssr: false, suspense: true })
 
 const EditVideo = ({
   videoRef,
@@ -58,10 +61,10 @@ const EditVideo = ({
         </div>
       </div>
       <div className={css.video_div}>
-        <video
+        <VideoPlayer
           src={_videoSrc}
           controls
-          ref={videoRef}
+          videoRef={videoRef}
           onPause={onStopVideo}
           onSeeked={onStopVideo}
           onPlay={onPlayingVideo}
@@ -69,7 +72,7 @@ const EditVideo = ({
           onDragOver={e => e.preventDefault()}
           onDrop={handleDrop}
           crossOrigin="anonymous"
-        ></video>
+        />
       </div>
     </div>
   )

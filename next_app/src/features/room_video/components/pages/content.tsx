@@ -8,7 +8,7 @@ import css from './content.module.scss'
 import reactStringReplace from 'react-string-replace'
 import SimpleButton from 'components/SimpleButton'
 
-const VideoPlayer = dynamic(() => import('components/VideoPlayer/VideoPlayer'), { ssr: false, suspense: true })
+const VideoPlayerHls = dynamic(() => import('components/VideoPlayer/VideoPlayerHls'), { ssr: false, suspense: true })
 
 type ContentData = {
   id?: string
@@ -49,7 +49,7 @@ const ContentPage = async ({ roomName, roomId, contentId }: { roomName: string; 
       <div className={css.content_container}>
         <div className={css.video_container}>
           <Suspense fallback={null}>
-            <VideoPlayer
+            <VideoPlayerHls
               src={process.env.NEXT_PUBLIC_FILESERVER_URL + '/video/contents/' + contentData.id + '/' + contentData.id + '.m3u8'}
             />
           </Suspense>
