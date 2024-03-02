@@ -34,16 +34,6 @@ func updateRoom(w http.ResponseWriter, r *http.Request) {
 		}
 	}
 
-	if description != "" {
-		_, err = tx.Exec(`UPDATE rooms SET description=? where id=?`, description, id)
-		if err != nil {
-			features.PrintErr(err)
-			tx.Rollback()
-			http.Error(w, err.Error(), http.StatusInternalServerError)
-			return
-		}
-	}
-
 	if key != "" {
 		_, err = tx.Exec(`UPDATE rooms SET key=? where id=?`, key, id)
 		if err != nil {
@@ -52,6 +42,14 @@ func updateRoom(w http.ResponseWriter, r *http.Request) {
 			http.Error(w, err.Error(), http.StatusInternalServerError)
 			return
 		}
+	}
+
+	_, err = tx.Exec(`UPDATE rooms SET description=? where id=?`, description, id)
+	if err != nil {
+		features.PrintErr(err)
+		tx.Rollback()
+		http.Error(w, err.Error(), http.StatusInternalServerError)
+		return
 	}
 
 	tx.Commit()
