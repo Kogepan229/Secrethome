@@ -10,7 +10,6 @@ import (
 func RoomIdFromKeyHandler(w http.ResponseWriter, r *http.Request) {
 	if r.Method == http.MethodGet {
 		key := r.FormValue("key")
-		println(key)
 
 		var id string
 		var roomType string
