@@ -8,6 +8,17 @@ import (
 )
 
 func createRoom(w http.ResponseWriter, r *http.Request) {
+	id := r.FormValue("id")
+	name := r.FormValue("name")
+	key := r.FormValue("key")
+
+	if id == "" || name == "" || key == "" {
+		http.Error(w, "id, name or key is empty", http.StatusBadRequest)
+		return
+	}
+
+	description := r.FormValue("description")
+
 	roomType := room.GetRoomType(r.FormValue("room_type"))
 	if roomType == room.Unknown {
 		http.Error(w, "Invalid room type.", http.StatusBadRequest)
@@ -27,7 +38,6 @@ func createRoom(w http.ResponseWriter, r *http.Request) {
 		}
 	}
 
-	id := r.FormValue("id")
 	var count int
 	err := features.DB.QueryRow(`SELECT COUNT(*) FROM rooms WHERE id=?`, id).Scan(&count)
 	if err != nil {
@@ -40,9 +50,6 @@ func createRoom(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	name := r.FormValue("name")
-	description := r.FormValue("description")
-	key := r.FormValue("key")
 	createdAt := features.GetCurrentTime()
 	_, err = features.DB.Exec(`INSERT INTO rooms VALUES (?, ?, ?, ?, ?, ?)`, id, name, description, string(roomType), key, createdAt)
 	if err != nil {
