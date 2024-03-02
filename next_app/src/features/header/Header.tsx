@@ -1,11 +1,14 @@
 import Link from 'next/link'
 import css from './Header.module.scss'
 
-const Header = () => {
+const Header = ({ roomName, link }: { roomName: string; link: string }) => {
   return (
     <div className={css.header}>
-      <Link href="/park/contents">
+      <Link href={'/'}>
         <div className={css.header_logo}>Secret Home</div>
+      </Link>
+      <Link href={link}>
+        <div className={css.header_room_name}>{roomName}</div>
       </Link>
     </div>
   )

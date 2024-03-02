@@ -1,0 +1,13 @@
+@import 'styles/variables';
+
+.contents_main {
+  width: 80%;
+  margin: auto;
+  margin-top: 0;
+  display: flex;
+  flex-wrap: wrap;
+}
+
+.no_content_message {
+  margin: 0 10px;
+}

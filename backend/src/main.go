@@ -6,13 +6,14 @@ import (
 	"log"
 	"net/http"
 	"os"
+	"secrethome-back/api/contents"
+	"secrethome-back/api/contents/video"
+	"secrethome-back/api/rooms"
+	"secrethome-back/api/tags"
 	"secrethome-back/convert"
 	"secrethome-back/features"
 	v1 "secrethome-back/gen/secrethome/v1"
 	"secrethome-back/gen/secrethome/v1/secrethomev1connect"
-	"secrethome-back/rest/content"
-	"secrethome-back/rest/secretkey"
-	"secrethome-back/rest/tag"
 
 	"golang.org/x/net/http2"
 	"golang.org/x/net/http2/h2c"
@@ -88,10 +89,13 @@ func main() {
 	shserver := &SecrethomeServer{}
 	mux := http.NewServeMux()
 	mux.Handle(secrethomev1connect.NewSecretHomeServiceHandler(shserver))
-	mux.HandleFunc("/api/secretkey", secretkey.SecretkeyHandler)
-	mux.HandleFunc("/api/content", content.ContentHandler)
-	mux.HandleFunc("/api/tag", tag.TagHandler)
-	mux.HandleFunc("/api/all_tags", tag.GetAllTagsHandler)
+	mux.HandleFunc("/api/rooms", rooms.RoomsHandler)
+	mux.HandleFunc("/api/rooms/key", rooms.RoomIdFromKeyHandler)
+	mux.HandleFunc("/api/rooms/type", rooms.RoomTypeFromIdHandler)
+	mux.HandleFunc("/api/contents", contents.ContentsHandler)
+	mux.HandleFunc("/api/contents/video", video.VideoHandler)
+	mux.HandleFunc("/api/tag", tags.TagHandler)
+	mux.HandleFunc("/api/all_tags", tags.GetAllTagsHandler)
 	err = http.ListenAndServe(
 		":60133",
 		c.Handler(h2c.NewHandler(mux, &http2.Server{})),
