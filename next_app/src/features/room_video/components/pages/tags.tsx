@@ -8,7 +8,13 @@ import { ContentData } from 'features/room_video/types'
 import { getTagName } from 'features/tags/tags'
 import { ContentsGridHeader } from 'components/ContentsGridHeader'
 
-const Contents = async (searchParams: SearchParams): Promise<[JSX.Element[], string, string, number, number]> => {
+const Contents = async ({
+  searchParams,
+  roomId,
+}: {
+  searchParams: SearchParams
+  roomId: string
+}): Promise<[JSX.Element[], string, string, number, number]> => {
   if (searchParams == undefined || searchParams.tags == undefined || typeof searchParams.tags != 'string') {
     const msg = (
       <p className={css.no_content_message} key="only one">
@@ -34,14 +40,14 @@ const Contents = async (searchParams: SearchParams): Promise<[JSX.Element[], str
   }
 
   const contents = contentsData.map(content => {
-    return <ContentPost contentData={content} key={content.id}></ContentPost>
+    return <ContentPost roomId={roomId} contentData={content} key={content.id}></ContentPost>
   })
 
   return [contents, tagID, tagName, totalPageNum, currentPageIndex]
 }
 
 const TagsPage = async ({ roomName, roomId, searchParams }: { roomName: string; roomId: string; searchParams: SearchParams }) => {
-  const [contents, tagID, tagName, totalPageNum, currentPageIndex] = await Contents(searchParams)
+  const [contents, tagID, tagName, totalPageNum, currentPageIndex] = await Contents({ roomId, searchParams })
 
   return (
     <SecretRoomLayout roomName={roomName} roomId={roomId}>

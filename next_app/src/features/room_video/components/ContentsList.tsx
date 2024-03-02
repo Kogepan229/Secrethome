@@ -35,7 +35,7 @@ const getContentsData = async (roomId: string, currentPageIndex: number) => {
 const ContentsList = async ({ roomId, searchParams }: { roomId: string; searchParams?: SearchParams }) => {
   const contentsData = await getContentsData(roomId, getCurrentPageIndex(searchParams!))
   const contents = contentsData.map(content => {
-    return <ContentPost contentData={content} key={content.id}></ContentPost>
+    return <ContentPost roomId={roomId} contentData={content} key={content.id}></ContentPost>
   })
 
   if (contents.length == 0) {

@@ -5,7 +5,7 @@ import SimpleButton from 'components/SimpleButton'
 import { useRouter } from 'next/navigation'
 import { ContentData } from '../types'
 
-const ContentPost = ({ contentData }: { contentData: ContentData }) => {
+const ContentPost = ({ roomId, contentData }: { roomId: string; contentData: ContentData }) => {
   const router = useRouter()
 
   const onErrorImage = (e: any) => {
@@ -13,12 +13,12 @@ const ContentPost = ({ contentData }: { contentData: ContentData }) => {
   }
 
   const onClickPost = () => {
-    router.push(`/park/contents/${contentData.id}`)
+    router.push(`/${roomId}/contents/${contentData.id}`)
   }
 
   const Tags = contentData.tags.map(value => {
     return (
-      <Link href={`/park/contents/tags/?tags=${value.id}`} key={value.id}>
+      <Link href={`/${roomId}/contents/tags/?tags=${value.id}`} key={value.id}>
         <SimpleButton className={css.content_tag} onClick={e => e.stopPropagation()}>
           {value.name}
         </SimpleButton>
@@ -29,7 +29,7 @@ const ContentPost = ({ contentData }: { contentData: ContentData }) => {
   return (
     <div className={css.content_post} onClick={onClickPost}>
       <div className={css.content_post_inside}>
-        <Link href={`/park/contents/${contentData.id}`}>
+        <Link href={`/${roomId}/contents/${contentData.id}`}>
           <img
             className={css.content_img}
             src={`${process.env.NEXT_PUBLIC_FILESERVER_URL}/video/contents/${contentData.id}/${contentData.id}.webp?${contentData.updated_at}`}
