@@ -12,6 +12,11 @@ func updateRoom(w http.ResponseWriter, r *http.Request) {
 	description := r.FormValue("description")
 	key := r.FormValue("key")
 
+	if id == "" {
+		http.Error(w, "id is empty", http.StatusBadRequest)
+		return
+	}
+
 	if name == "" && description == "" && key == "" {
 		http.Error(w, "No things to update.", http.StatusBadRequest)
 		return
@@ -35,7 +40,7 @@ func updateRoom(w http.ResponseWriter, r *http.Request) {
 	}
 
 	if key != "" {
-		_, err = tx.Exec(`UPDATE rooms SET key=? where id=?`, key, id)
+		_, err = tx.Exec(`UPDATE rooms SET access_key=? where id=?`, key, id)
 		if err != nil {
 			features.PrintErr(err)
 			tx.Rollback()
