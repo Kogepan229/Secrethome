@@ -21,8 +21,9 @@ const VideoPlayer = (props: Props) => {
           if (typeof window !== 'undefined' && browserName(window.navigator.userAgent) !== 'ios') {
             return (
               <>
-                <video {...p2} className={css.video} ref={props.videoRef} controls={false}></video>
-                <VideoControl videoRef={props.videoRef} videoContainerRef={videoContainerRef}></VideoControl>
+                <video {...p2} className={css.video} ref={props.videoRef} controls={false}>
+                  <VideoControl videoRef={props.videoRef} videoContainerRef={videoContainerRef}></VideoControl>
+                </video>
               </>
             )
           } else {
