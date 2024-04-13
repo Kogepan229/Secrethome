@@ -1,18 +1,20 @@
 'use client'
 import 'client-only'
-import { DetailedHTMLProps, RefObject, VideoHTMLAttributes, useRef } from 'react'
+import { DetailedHTMLProps, DragEventHandler, RefObject, VideoHTMLAttributes, useRef } from 'react'
 import { browserName } from 'detect-browser'
 import css from './VideoPlayer.module.scss'
 import VideoControl from './VideoControl'
 
 type Props = DetailedHTMLProps<VideoHTMLAttributes<HTMLVideoElement>, HTMLVideoElement> & {
   videoRef: RefObject<HTMLVideoElement>
+  onDragOverController?: DragEventHandler
+  onDropController?: DragEventHandler
 }
 
 const VideoPlayer = (props: Props) => {
   const videoContainerRef = useRef<HTMLDivElement>(null)
 
-  const { ['videoRef']: {} = {}, ...p2 } = props
+  const { ['videoRef']: {} = {}, ['onDragOverController']: {} = {}, ['onDropController']: {} = {}, ...p2 } = props
 
   return (
     <div className={css.video_container} ref={videoContainerRef}>
@@ -21,13 +23,27 @@ const VideoPlayer = (props: Props) => {
           if (typeof window !== 'undefined' && browserName(window.navigator.userAgent) !== 'ios') {
             return (
               <>
-                <video {...p2} className={css.video} ref={props.videoRef} controls={false}>
-                  <VideoControl videoRef={props.videoRef} videoContainerRef={videoContainerRef}></VideoControl>
-                </video>
+                <video {...p2} className={css.video} ref={props.videoRef} controls={false}></video>
+                <VideoControl
+                  videoRef={props.videoRef}
+                  videoContainerRef={videoContainerRef}
+                  onDragOverController={props.onDragOverController}
+                  onDropController={props.onDropController}
+                ></VideoControl>
               </>
             )
           } else {
-            return <video {...p2} className={css.video} ref={props.videoRef} controls playsInline></video>
+            return (
+              <video
+                {...p2}
+                className={css.video}
+                ref={props.videoRef}
+                controls
+                playsInline
+                onDrop={props.onDropController}
+                onDragOver={props.onDragOverController}
+              ></video>
+            )
           }
         })()}
       </div>

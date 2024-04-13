@@ -1,11 +1,13 @@
 'use client'
-import React, { useMemo } from 'react'
+import React, { DragEventHandler, useMemo } from 'react'
 import { ReactEventHandler, ReactNode, RefObject, useCallback, useEffect, useRef, useState } from 'react'
 import css from './VideoControl.module.scss'
 
 type Props = {
   videoRef: RefObject<HTMLVideoElement>
   videoContainerRef: RefObject<HTMLDivElement>
+  onDragOverController?: DragEventHandler
+  onDropController?: DragEventHandler
 }
 
 const VideoControl = (props: Props) => {
@@ -346,6 +348,8 @@ const VideoControl = (props: Props) => {
       className={`${css.control_container} ${isCursorOutVideo && !isCursorOnControls && isPlaying ? css.cursor_hide : ''}`}
       ref={controlContainerRef}
       style={{ width: `${videoWidth}px`, height: `${videoHeight}px` }}
+      onDragOver={props.onDragOverController}
+      onDrop={props.onDropController}
     >
       <div className={css.video_main_aria} onClick={switchPlayStop}></div>
       <div className={css.video_bottom_control_aria} onMouseMove={onControlsMousemove} onMouseLeave={onControlsMouseleave}>

@@ -69,8 +69,8 @@ const EditVideo = ({
           onSeeked={onStopVideo}
           onPlay={onPlayingVideo}
           onSeeking={onPlayingVideo}
-          onDragOver={e => e.preventDefault()}
-          onDrop={handleDrop}
+          onDragOverController={e => e.preventDefault()}
+          onDropController={handleDrop}
           crossOrigin="anonymous"
         />
       </div>
